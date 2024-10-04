@@ -58,33 +58,8 @@ Le pasamos la variable de entorno
 **servidor**
 - Se divide la lógica del servidor Node apiciber, en dos servidores Nodejs :
     - /api/ciber    Contiene la lógica de edición y gestión del material de ciber
-    - /api/inout    Realiza todo el proceso de importación / exportación (generación de plantillas)
+
 
 ## Funcionalidad aplicativo
-- Fase I: Generador html y ePub
-- Fase II: Autenticación
-- Fase III: Workflow de trabajo, integración conocimiento + edición + diseño (profesor/autor + editor + diseñador)
-
 
 ## Dependencias:
-- xml2js
-- xmlbuilder
-- request: {@link https://github.com/request/request-promise-native}
-
-### Pandoc. Importar documentos word
-- Requiere la instalación de pandoc. 
-- sudo apt install pandoc
-
-<img src="../../recursos/cu-autenticacion-uned.png">
-
-
-## Servicios
-
-### Servicios Ciber
-
-const { ciberUsuarios }  = require('../../servicios/index.js');
-
-
-ciberUsuarios()
-    .then(result => res.status(200).json(result))
-    .catch(err => next(err))
