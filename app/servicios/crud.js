@@ -13,7 +13,7 @@
 const debug = require('debug')('gcono:crud');
 debug('CRUD Versión: 3.0.1')
 
-const {tablas} = require('./modelos')
+const {tablas} = require('./modelos/prueba.model')
 
 module.exports = {
     contar: contar, 

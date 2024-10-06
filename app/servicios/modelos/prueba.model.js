@@ -38,4 +38,10 @@ const pruebaSchema = new Schema(
 
 const Prueba = mongoose.model('Prueba', pruebaSchema)
 
-module.exports = {Prueba: Prueba}
+const tablas = {
+	Prueba: {
+		modelo: Prueba
+	}
+};
+
+module.exports = { tablas };

@@ -1,6 +1,13 @@
-'use strict'
-const mantenimiento_difusion_api = require('./ciber.api.js');
+'use strict';
+const ciberAPI = require('./prueba.api.js'); // si este archivo define funciones o controladores
 
 module.exports = (app) => {    
-    mantenimiento_difusion_api(app, '/api/ciber')
-}
+    // Definir una ruta básica para /api/ciber
+    app.get('/api/ciber', (req, res) => {
+        res.json({
+            ok: true,
+            mensaje: 'Bienvenido a la API Ciber',
+            datos: []
+        });
+    });
+};

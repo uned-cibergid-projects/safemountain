@@ -6,8 +6,8 @@
   "main": "./app/bin/www",
   "author": "Intecca",
   "scripts": {
-    "dev": "nodemon ./bin/www",
-    "start": "node ./bin/www"
+    "dev": "nodemon ./app/bin/www",
+    "start": "node ./app/bin/www"
   },
   "dependencies": {
     "@ctrl/tinycolor": "^4.0.3",

@@ -8,8 +8,12 @@ const CARPETAS = {
 };
 const DEBUG = 'http:*,mail:*,express:*,ciber:*';
 
+const EXPORTACION = {
+    host: 'localhost', // Puedes reemplazar 'localhost' por la dirección del servidor si es necesario
+};
+
 module.exports = {
-   'desarrollo': {
+    'desarrollo': {
         ENTORNO: 'desarrollo',
         VERSION: VERSION,
         APP: APP,
@@ -21,8 +25,9 @@ module.exports = {
             pass: '',
             port: 49016
         },
-        AVIP: AVIP,
+        // AVIP: AVIP,
         CARPETAS: CARPETAS,
-        DEBUG: DEBUG
+        DEBUG: DEBUG,
+        EXPORTACION: EXPORTACION
     },
 }

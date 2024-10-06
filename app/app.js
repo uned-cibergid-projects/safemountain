@@ -17,8 +17,6 @@ mongoose.cargarBd();
 const middleware = require('./config/middleware.js')
 var app = middleware()
 
-
-
 // Comprobamos existencia carpetas definidas dentro de config
 const TOOLS = require('./servicios/tools.js')
 TOOLS.comprobarCarpetaYCrear(CONFIG)
