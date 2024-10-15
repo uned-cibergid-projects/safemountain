@@ -12,7 +12,7 @@ const PRUEBAS = require('../../modpruebas/pruebas.js');
 module.exports = (app, ruta) => {
    /**
      * @name GET /
-     * @route {GET} /api/ciber/pruebas
+     * @route {GET} /api/ciber/
      * @authentication Esta ruta requiere autenticación HTTP.
      * @see modpruebas/pruebas.leerVarios
      * @description Devuelve todos los pruebas
@@ -34,7 +34,7 @@ module.exports = (app, ruta) => {
 
     /**
      * @name GET /:id
-     * @route {GET} /api/ciber/pruebas/:id
+     * @route {GET} /api/ciber/:id
      * @routeparam {String} :id Identificador del usuario
      * @authentication Esta ruta requiere autenticación HTTP.
      * @see modpruebas/pruebas.leerId
@@ -50,7 +50,7 @@ module.exports = (app, ruta) => {
 
    /**
    * @name POST /
-   * @route {POST} /api/ciber/pruebas/
+   * @route {POST} /api/ciber/
    * @bodyparam {Object} registro Ver MODELO {@link modpruebas/pruebas_model}
    * @authentication Esta ruta requiere autenticación HTTP.
    * @see modpruebas/pruebas.nuevo
@@ -66,7 +66,7 @@ module.exports = (app, ruta) => {
 
     /**
      * @name PUT /:id
-     * @route {PUT} /api/ciber/pruebas/:id`
+     * @route {PUT} /api/ciber/:id`
      * @routeparam {String} :id Identificador del usuario
      * @bodyparam {Object} registro Ver MODELO {@link modpruebas/pruebas_model}
      * @authentication Esta ruta requiere autenticación HTTP
@@ -84,7 +84,7 @@ module.exports = (app, ruta) => {
 
     /**
      * @name DELETE /:id
-     * @route {DELETE} /api/ciber/pruebas/:id`
+     * @route {DELETE} /api/ciber/:id`
      * @routeparam {String} :id Identificador del usuario
      * @authentication Esta ruta requiere autenticación HTTP.
      * @see modpruebas/pruebas.borrar 
@@ -99,7 +99,7 @@ module.exports = (app, ruta) => {
         })
     /**
      * @name POST /query
-     * @route {GET} /api/ciber/pruebas/query
+     * @route {GET} /api/ciber/query
      * @authentication Esta ruta requiere autenticación HTTP.
      * @see modpruebas/pruebas.leerCampo
      * @bodyparam {Object} Opciones de búsqueda

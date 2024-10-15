@@ -39,7 +39,7 @@ let cargarBd = function() {
 	mongoose.connect(db_addr,{authSource: "admin"})
 		.then((res) => {
 			console.log('Connected Successfully')
-			require('./modelos');	
+			require('./modelos/prueba.model');	
 			return res
 		
 		})
