@@ -5,7 +5,7 @@
  * @see pruebas_api
  * */
 'use strict'
-const TABLA = 'Prueba';
+const TABLA = 'apks';
 const CRUD = require('../servicios/crud');
 
 module.exports = {

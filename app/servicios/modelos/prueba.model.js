@@ -6,41 +6,34 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const pruebaSchema = new Schema(
-	{ 
-		// codEstudios: String,
-		// estudios: String,
-		// nivelEstudios: String,
-		// codigo: String,
-		// nombre: String,
-		// funciones:[String],
-		// docentes:{type:[]},
-		// otros:{type:[]},
-		// tutores:{type:[]},
-		// estado:{
-		// 	usuarios: {type:Boolean, default:false},
-		// 	fecha: { type: Date, default: Date.now}
-		// }
-	},
+
+const apkSchema  = new Schema(
 	{
-		strict:false,
-		versionKey:false,	
-		timestamps: {
-			createdAt: 'f_creacion',
-			updatedAt: 'f_modificacion'
-		}
-	}
+		name: String,
+	  }, { collection: 'apks' }
+);
+
+
+const versionSchema  = new Schema(
+	{
+		name: String,
+	  }, { collection: 'versions' }
 );
 
   
 
 // pruebaSchema.index({codigo: 1}, {unique: true});
 
-const Prueba = mongoose.model('Prueba', pruebaSchema)
+const apks = mongoose.model('apks', apkSchema )
+const versions = mongoose.model('versions', versionSchema); 
+
 
 const tablas = {
-	Prueba: {
-		modelo: Prueba
+	apks: {
+		modelo: apks
+	},
+	versions: {
+	  	modelo: versions
 	}
 };
 
