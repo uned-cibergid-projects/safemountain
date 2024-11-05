@@ -1,5 +1,4 @@
 'use strict'
- // Versión 1.0.5
  const debug = require('debug')('ciber:tools');
  
  const fsp = require('fs').promises;
@@ -46,29 +45,14 @@
  
  function copiarCarpeta(origen, destino){
      let promesa = (resolve,reject) =>{
-         // With Promises:
          fse.copy(origen, destino)
              .then(() => {
-                 //debug('success!')
                  resolve({ok:true, mensaje:'Carpeta '+origen+' copiada a '+destino,  datos: {origen:origen}})
              })
              .catch(err => {
                  console.error(err)
                  resolve(err)
              })     
- 
- 
- /*
-         fs.copyFile(origen, destino, function(err){
-             if(err){
-                 debug('err= ', err)
-               if(err.code === 'ENOENT') reject('Fichero ' + origen +' no existe')
-               reject(err)
-             }
-             debug('ok copiado', origen)
-             resolve({ok:true, mensaje:'Fichero '+origen+' copiado a '+destino,  datos: {origen:origen}});
-         });
-         */
      }
      return new Promise(promesa)
  }
@@ -88,7 +72,6 @@
                         accion: 'Copiar carpetas',
                         resultado: {ok:true, mensaje:'copiarArrayCarpetas', contar:resCopiar.length, contarOk:contarOk, contarFalse:contarFalse,datos:resCopiar}
                     }
-                    // insertarLogFichero(rutaLog, contenido);
                     ficheroDisco(rutaLog, 'copiar', contenido, 'mensual');
                     resolve({ok:true, mensaje:'copiarArrayCarpetas', contar:resCopiar.length, contarOk:contarOk, contarFalse:contarFalse,datos:resCopiar})
                 })
@@ -100,7 +83,6 @@
                 resultadoOK: carpetas.length,
                 detalle: 'no hay carpetas que procesar'
             }
-            // insertarLogFichero(rutaLog, contenido);
             ficheroDisco(rutaLog, 'copiar', contenido, 'mensual');
             resolve({ok:true, mensaje:contenido, datos:''})  
         }                                     
@@ -121,11 +103,10 @@ function copiarArrayFicheros(rutaLog, ficheros){
                     }
                     let contenido = {
                         accion: 'Copiar ficheros',
-                        //resultado: resCopiar 
+
                         resultado: {ok:true, mensaje:'copiarArrayFicheros', contar:resCopiar.length, contarOk:contarOk, contarFalse:contarFalse,datos:resCopiar}
                     }
-                    // si la operación de copia es correcta, la promesa se resuelve sin argumentos
-                    //debug('resCopiar= ', resCopiar.length, ' resCopiar[0] ',resCopiar[0])
+
                     insertarLogFichero(rutaLog, contenido);
                     resolve({ok:true, mensaje:'copiarArrayCarpetas', contar:resCopiar.length, contarOk:contarOk, contarFalse:contarFalse,datos:resCopiar})
                 })
@@ -153,7 +134,6 @@ function copiarArrayFicheros(rutaLog, ficheros){
      let rutaLogs = '';
      switch(proceso) {
         case 'crear' :{
-            // crear uno nuevo
             rutaLogs = `${ruta}/${hoy.getFullYear()}${hoy.getMonth()+1}${hoy.getDate()}\-${hoy.getHours()}${hoy.getMinutes()+hoy.getSeconds()}-${preFichero}.log`;
             
             fsp.writeFile(rutaLogs, JSON.stringify(contenido, null, 4), function(err){
@@ -174,11 +154,11 @@ function copiarArrayFicheros(rutaLog, ficheros){
 
             existeFichero(rutaLogs)
                 .then(resultado =>{
-                    if(resultado){ //añadimos
+                    if(resultado){ 
                         fsp.appendFile(rutaLogs, JSON.stringify(contenido, null, 4), function(err){
                             if(err) {debug('error', err) }
                         });
-                    }else{ //creamos la primera vez
+                    }else{ 
                         fsp.writeFile(rutaLogs, JSON.stringify(contenido, null, 4), function(err){
                             if(err) {debug('error', err) }
                         });
@@ -189,16 +169,16 @@ function copiarArrayFicheros(rutaLog, ficheros){
                 break;
         }
 
-        case 'diario' :{// sobre un fichero con año - mes - dia 
+        case 'diario' :{
             rutaLogs = `${ruta}/${hoy.getFullYear()}${hoy.getMonth()+1}${hoy.getDate()}-${preFichero}.log`;
 
             existeFichero(rutaLogs)
                .then(resultado =>{
-                   if(resultado){ //añadimos
+                   if(resultado){
                        fsp.appendFile(rutaLogs, JSON.stringify(contenido, null, 4), function(err){
                            if(err) {debug('error', err) }
                        });
-                   }else{ //creamos la primera vez
+                   }else{ 
                        fsp.writeFile(rutaLogs, JSON.stringify(contenido, null, 4), function(err){
                            if(err) {debug('error', err) }
                        });
@@ -213,11 +193,11 @@ function copiarArrayFicheros(rutaLog, ficheros){
             
             existeFichero(rutaLogs)
                 .then(resultado =>{
-                    if(resultado){ //añadimos
+                    if(resultado){ 
                         fsp.appendFile(rutaLogs, JSON.stringify(contenido, null, 4), function(err){
                             if(err) {debug('error', err) }
                         });
-                    }else{ //creamos la primera vez
+                    }else{
                         fsp.writeFile(rutaLogs, JSON.stringify(contenido, null, 4), function(err){
                             if(err) {debug('error', err) }
                         });
@@ -232,11 +212,11 @@ function copiarArrayFicheros(rutaLog, ficheros){
             
             existeFichero(rutaLogs)
                 .then(resultado =>{
-                    if(resultado){ //añadimos
+                    if(resultado){ 
                         fsp.appendFile(rutaLogs, JSON.stringify(contenido, null, 4), function(err){
                             if(err) {debug('error', err) }
                         });
-                    }else{ //creamos la primera vez
+                    }else{
                         fsp.writeFile(rutaLogs, JSON.stringify(contenido, null, 4), function(err){
                             if(err) {debug('error', err) }
                         });
@@ -251,11 +231,9 @@ function copiarArrayFicheros(rutaLog, ficheros){
  }
  
  function exportarExcel(ruta, preFichero, contenido, proceso){
-     // proceso = añadir / crear / machacar
  
      let hoy = new Date();
-     contenido.fecha = hoy;
-     // const rutaLogs = ruta+'/'+hoy.getDate()+'_'+(hoy.getMonth()+1)+'_'+hoy.getFullYear()+'_'+hoy.getHours()+hoy.getMinutes()+hoy.getSeconds()+'_'+preFichero+'.log';   
+     contenido.fecha = hoy;   
      
      let workbook = new Excel.Workbook()
  
@@ -264,7 +242,6 @@ function copiarArrayFicheros(rutaLog, ficheros){
  
      let columnas = [];
      for(const propiedad of propiedades){
-       //debug(contenido[0][propiedades[i]],' ', typeof contenido[0][propiedades[i]] === 'object' )
        if(typeof contenido[0][propiedad] === 'object'){
          let subPropiedades = Object.getOwnPropertyNames(contenido[0][propiedad]);
          for(const subPropiedad of subPropiedades){
@@ -281,7 +258,6 @@ function copiarArrayFicheros(rutaLog, ficheros){
        }
      
      }
-     // debug('columnas; ',columnas)
      
      worksheet.columns = columnas;
      
@@ -289,7 +265,6 @@ function copiarArrayFicheros(rutaLog, ficheros){
        column.width = column.header.length < 12 ? 12 : column.header.length
      })
      
-       // Dump all the data into Excel
      contenido.forEach((fila, index) => {
        let datos = [];
        for(const propiedad of propiedades){
@@ -328,7 +303,6 @@ function copiarArrayFicheros(rutaLog, ficheros){
              break;
          }
          case 'crear' :{
-             // crear uno nuevo
              rutaExcel = ruta+'/'+hoy.getDate()+'_'+(hoy.getMonth()+1)+'_'+hoy.getFullYear()+'_'+hoy.getHours()+hoy.getMinutes()+hoy.getSeconds()+'_'+preFichero+'.xlsx';
  
              workbook.xlsx.writeFile(rutaExcel);
@@ -339,14 +313,6 @@ function copiarArrayFicheros(rutaLog, ficheros){
  }
  
  
- /**
-  * @function existeFichero
-  * @description Comprueba si existe un fichero
-
-  * @param {String} fichero Archivo a comprobar
-  * @return {Boolean} stats.isFile()
-  * 
- * */
  function existeFichero(fichero) {
      return new Promise((resolve, reject) => {
          fs.stat(fichero, (err,stats) => {
@@ -357,14 +323,6 @@ function copiarArrayFicheros(rutaLog, ficheros){
      });
  }
  
- /**
-  * @function existeDirectorio
-  * @description Comprueba si existe un fichero
-
-  * @param {String} directorio Carpeta a comprobar
-  * @return {Boolean} stats.isDirectory()
-  * 
- * */
  function existeDirectorio(directorio) {
      return new Promise((resolve, reject) => {
          fs.stat(directorio, (err,stats) => {
@@ -376,15 +334,6 @@ function copiarArrayFicheros(rutaLog, ficheros){
      });
  }
  
- /**
-  * @function copiarFichero
-  * @description Copia un archivo
-
-  * @param {String} origen Ruta archivo a copiar, incluído nombre de fichero
-  * @param {String} destino Rtua destino, incluido nombre de fichero
-  * @return {String} 'Ok COPIADO en'+destino
-  * 
- * */
  function copiarFichero(origen,destino){
      return new Promise(function(resolve, reject) {
          fs.copyFile(origen, destino, function(err){
@@ -414,15 +363,6 @@ function copiarArrayFicheros(rutaLog, ficheros){
      })
  } 
  
- /**
-  * @function copiarContenidoDirectorio
-  * @description Copia el contenido de un directorio
-
-  * @param {String} origen Ruta carpeta a copiar.
-  * @param {String} destino Ruta carpeta destino.
-  * @return {String} filtro
-  * 
- * */
  function copiarContenidoDirectorio(origen, destino){
      if(!origen) resolve()
      let filtro = [];
@@ -437,14 +377,6 @@ function copiarArrayFicheros(rutaLog, ficheros){
      });
  }
  
- /**
-  * @function borrarFichero
-  * @description Borra un archivo
-
-  * @param {String} fichero Ruta fichero a borrar.
-  * @return {String} fichero +' ¡Borrado!'
-  * 
- * */
  function borrarFichero(fichero){
      return new Promise(function(resolve, reject) {
          fs.unlink(fichero, function(err) {
@@ -455,15 +387,7 @@ function copiarArrayFicheros(rutaLog, ficheros){
      })
  }  
  
- /**
-  * @function comprobarCampos
-  * @description Comprobar si existe un campo en un objeto
-
-  * @param {Objeto} objeto Objeto en el que buscar el campo
-  * @param {String} campo Campo a comprobar
-  * @return {Object} {status:200,mensaje:'ok', data:resultado}
-  * 
- * */
+ 
  function comprobarCampos(objeto, campo) {
      let promesa = (resolve,reject) =>{
          let campos = campo.split('.');
@@ -488,13 +412,6 @@ function copiarArrayFicheros(rutaLog, ficheros){
  }
  
  
- /**
-  * @function comprobarCarpetaYCrear
-  * @description Comprobar si existe una carpeta, si no existe se crea
-  * @param {Objeto} objeto Objeto en el que vienen las carpetas
-  * @return
-  * 
- * */
  function comprobarCarpetaYCrear(objeto){
      let promesa = (resolve,reject) =>{
          debug(`objeto ${JSON.stringify(objeto)}`)
@@ -502,7 +419,6 @@ function copiarArrayFicheros(rutaLog, ficheros){
  
          for(let i=0; i<nCarpetas; i++){
              let carpeta = Object.values(objeto.CARPETAS)[i];
-             // debug(carpeta)
              existeDirectorio(carpeta)
                  .then(result => {        
                      resolve(result)
@@ -514,7 +430,6 @@ function copiarArrayFicheros(rutaLog, ficheros){
                              resolve(result)
                          })
                          .catch(err => reject(err))
-                     //reject(err)
                  })
          }
  
@@ -522,13 +437,6 @@ function copiarArrayFicheros(rutaLog, ficheros){
      return new Promise(promesa)
  }
  
- /**
-  * @function crearCarpeta
-  * @description Crea una carpeta
-  * @param {String} carpeta String en el que viene la ruta de la carpeta a crear
-  * @return
-  * 
- * */
  function crearCarpeta(carpeta){
      let promesa = (resolve,reject) =>{
  

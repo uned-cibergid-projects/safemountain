@@ -1,5 +1,5 @@
 'use strict';
-const APKS = require('../../modAppCollector/apks.js');
+const APKS = require('../../modpruebas/apks.js');
 
 /**
  * @module modAppCollector/apks_api
@@ -100,7 +100,6 @@ module.exports = (app, ruta) => {
     .post((req, res, next) => {
         const opciones = req.body;
 
-        // Validación básica de las opciones
         if (typeof opciones !== 'object') {
             return res.status(400).json({
                 ok: false,

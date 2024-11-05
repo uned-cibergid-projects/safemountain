@@ -7,13 +7,15 @@
   "author": "Intecca",
   "scripts": {
     "dev": "nodemon ./app/bin/www",
-    "start": "node ./app/bin/www"
+    "start": "node ./app/bin/www",
+    "docs": "node_modules/.bin/jsdoc --configure jsdoc.json --verbose"
   },
   "dependencies": {
     "@ctrl/tinycolor": "^4.0.3",
     "axios": "^1.5.1",
     "bcryptjs": "2.4.3",
     "child_process": "^1.0.2",
+    "clean-jsdoc-theme": "^4.3.0",
     "cron": "1.8.2",
     "debug": "^4.3.1",
     "dom-parser": "0.1.6",

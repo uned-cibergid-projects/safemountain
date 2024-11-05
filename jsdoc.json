@@ -1,0 +1,17 @@
+{
+    "source": {
+      "include": ["./app"], 
+      "exclude": ["node_modules"]
+    },
+    "opts": {
+      "destination": "./docs",           
+      "recurse": true,
+      "template": "node_modules/clean-jsdoc-theme"                                
+    },
+    "plugins": [],
+    "templates": {
+      "cleverLinks": false,
+      "monospaceLinks": false
+    }
+  }
+  

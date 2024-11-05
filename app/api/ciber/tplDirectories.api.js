@@ -6,10 +6,8 @@
  * 
  */
 
-// var ObjectId = require('mongodb').ObjectId;
-
 'use strict'
-const VER = require('../../modpruebas/versions.js');
+const PRUEBAS = require('../../modAppCollector/tplDirectories.js');
 
 module.exports = (app, ruta) => {
    /**
@@ -28,7 +26,7 @@ module.exports = (app, ruta) => {
                 limite: 0,
                 orden: {}
             }
-            VER.leerCampo(opciones)
+            PRUEBAS.leerCampo(opciones)
                 .then(result => res.status(200).json(result))
                 .catch(err => next(err))
         });
@@ -45,58 +43,10 @@ module.exports = (app, ruta) => {
      */ 
     app.route(`${ruta}/:id`)
         .get((req, res, next) => {
-            VER.leerId(req.params.id)
+            PRUEBAS.leerId(req.params.id)
                 .then(result => res.status(200).json(result))
                 .catch(err => next(err))
         })
-
-    /**
-     * @name GET /:id
-     * @route {GET} /api/versions/parent/:id
-     * @routeparam {String} :id parentId a buscar
-     * @authentication Esta ruta requiere autenticación HTTP.
-     * @see modAppCollector/pruebas.leerCampo
-     * @description Devuelve todas las versions con el mismo parentId
-     * - **Devuelve** {result}
-     */ 
-
-    /*req.params.name*/
-    app.route(`${ruta}/parent/:id`)
-        .get((req, res, next) => {
-        let opciones = {
-            buscar:{ parentId:req.params.id },
-            campos:{ /*name:1*/ },
-            limite: 0,
-            orden: {}
-        }
-        VER.leerCampo(opciones)
-            .then(result => res.status(200).json(result))
-            .catch(err => next(err))
-        });
-
-    /**
-     * @name GET /:id
-     * @route {GET} /api/versions/getparent/:id
-     * @routeparam {String} :id id de la version
-     * @authentication Esta ruta requiere autenticación HTTP.
-     * @see modAppCollector/pruebas.leerCampo
-     * @description Devuelve el parentId de la version
-     * - **Devuelve** {result}
-     */ 
-
-    /*req.params.name*/
-    app.route(`${ruta}/getparent/:id`)
-        .get((req, res, next) => {
-        let opciones = {
-            buscar:{ _id:req.params.id },
-            campos:{ parentId:1 },
-            limite: 0,
-            orden: {}
-        }
-        VER.leerCampo(opciones)
-            .then(result => res.status(200).json(result))
-            .catch(err => next(err))
-        });
 
    /**
    * @name POST /
@@ -109,7 +59,7 @@ module.exports = (app, ruta) => {
      */ 
     app.route(ruta)
         .post((req, res,next) => {
-            VER.nuevo(req.body, req.idciber)
+            PRUEBAS.nuevo(req.body, req.idciber)
                 .then(result => res.status(201).json(result))
                 .catch(err => next(err))
         }) 
@@ -127,7 +77,7 @@ module.exports = (app, ruta) => {
     app.route(`${ruta}/:id`)
         .put((req, res,next) => {
             let id = req.params.id;
-            VER.modificar(id, req.body, req.idciber)
+            PRUEBAS.modificar(id, req.body, req.idciber)
                 .then(result => res.status(200).json(result))
                 .catch(err => next(err))
         }) 
@@ -143,7 +93,7 @@ module.exports = (app, ruta) => {
      */ 
     app.route(`${ruta}/:id`)
         .delete((req, res,next) => {
-            VER.borrar(req.params.id, req.idciber)
+            PRUEBAS.borrar(req.params.id, req.idciber)
                 .then(result => res.status(200).json(result))
                 .catch(err => next(err))
         })
