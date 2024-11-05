@@ -2,7 +2,7 @@
 
 const CONFIG = require('./config.js')[process.env.NODE_ENV || 'desarrollo'];
 
-process.env.DEBUG= [CONFIG.DEBUG || '*:*'];
+process.env.DEBUG = CONFIG.DEBUG || '*:*';
 
 // const debug = require('debug')('ciber:inicio');
 

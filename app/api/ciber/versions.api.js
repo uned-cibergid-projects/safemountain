@@ -1,20 +1,22 @@
 /**
- * @module modpruebas/pruebas_api
+ * @module modAppCollector/pruebas_api
  * @description API CRUD de pruebas
- * @see modpruebas
- * @requires modpruebas/pruebas
+ * @see modAppCollector
+ * @requires modAppCollector/pruebas
  * 
  */
 
+// var ObjectId = require('mongodb').ObjectId;
+
 'use strict'
-const PRUEBAS = require('../../modpruebas/pruebas.js');
+const VER = require('../../modAppCollector/versions.js');
 
 module.exports = (app, ruta) => {
    /**
      * @name GET /
      * @route {GET} /api/ciber/
      * @authentication Esta ruta requiere autenticación HTTP.
-     * @see modpruebas/pruebas.leerVarios
+     * @see modAppCollector/pruebas.leerVarios
      * @description Devuelve todos los pruebas
      * - **Devuelve** {result}
     */
@@ -26,7 +28,7 @@ module.exports = (app, ruta) => {
                 limite: 0,
                 orden: {}
             }
-            PRUEBAS.leerCampo(opciones)
+            VER.leerCampo(opciones)
                 .then(result => res.status(200).json(result))
                 .catch(err => next(err))
         });
@@ -37,29 +39,77 @@ module.exports = (app, ruta) => {
      * @route {GET} /api/ciber/:id
      * @routeparam {String} :id Identificador del usuario
      * @authentication Esta ruta requiere autenticación HTTP.
-     * @see modpruebas/pruebas.leerId
+     * @see modAppCollector/pruebas.leerId
      * @description Devuelve un pruebas por id
      * - **Devuelve** {result}
      */ 
     app.route(`${ruta}/:id`)
         .get((req, res, next) => {
-            PRUEBAS.leerId(req.params.id)
+            VER.leerId(req.params.id)
                 .then(result => res.status(200).json(result))
                 .catch(err => next(err))
         })
 
+    /**
+     * @name GET /:id
+     * @route {GET} /api/versions/parent/:id
+     * @routeparam {String} :id parentId a buscar
+     * @authentication Esta ruta requiere autenticación HTTP.
+     * @see modAppCollector/pruebas.leerCampo
+     * @description Devuelve todas las versions con el mismo parentId
+     * - **Devuelve** {result}
+     */ 
+
+    /*req.params.name*/
+    app.route(`${ruta}/parent/:id`)
+        .get((req, res, next) => {
+        let opciones = {
+            buscar:{ parentId:req.params.id },
+            campos:{ /*name:1*/ },
+            limite: 0,
+            orden: {}
+        }
+        VER.leerCampo(opciones)
+            .then(result => res.status(200).json(result))
+            .catch(err => next(err))
+        });
+
+    /**
+     * @name GET /:id
+     * @route {GET} /api/versions/getparent/:id
+     * @routeparam {String} :id id de la version
+     * @authentication Esta ruta requiere autenticación HTTP.
+     * @see modAppCollector/pruebas.leerCampo
+     * @description Devuelve el parentId de la version
+     * - **Devuelve** {result}
+     */ 
+
+    /*req.params.name*/
+    app.route(`${ruta}/getparent/:id`)
+        .get((req, res, next) => {
+        let opciones = {
+            buscar:{ _id:req.params.id },
+            campos:{ parentId:1 },
+            limite: 0,
+            orden: {}
+        }
+        VER.leerCampo(opciones)
+            .then(result => res.status(200).json(result))
+            .catch(err => next(err))
+        });
+
    /**
    * @name POST /
    * @route {POST} /api/ciber/
-   * @bodyparam {Object} registro Ver MODELO {@link modpruebas/pruebas_model}
+   * @bodyparam {Object} registro Ver MODELO {@link modAppCollector/pruebas_model}
    * @authentication Esta ruta requiere autenticación HTTP.
-   * @see modpruebas/pruebas.nuevo
+   * @see modAppCollector/pruebas.nuevo
      * @description Crea un nuevo asignatura
      * - **Devuelve** {result} 
      */ 
     app.route(ruta)
         .post((req, res,next) => {
-            PRUEBAS.nuevo(req.body, req.idciber)
+            VER.nuevo(req.body, req.idciber)
                 .then(result => res.status(201).json(result))
                 .catch(err => next(err))
         }) 
@@ -68,16 +118,16 @@ module.exports = (app, ruta) => {
      * @name PUT /:id
      * @route {PUT} /api/ciber/:id`
      * @routeparam {String} :id Identificador del usuario
-     * @bodyparam {Object} registro Ver MODELO {@link modpruebas/pruebas_model}
+     * @bodyparam {Object} registro Ver MODELO {@link modAppCollector/pruebas_model}
      * @authentication Esta ruta requiere autenticación HTTP
-     * @see modpruebas/pruebas.modificar
+     * @see modAppCollector/pruebas.modificar
      * @description Modifica un pruebas
      * - **Devuelve** { result }
      */ 
     app.route(`${ruta}/:id`)
         .put((req, res,next) => {
             let id = req.params.id;
-            PRUEBAS.modificar(id, req.body, req.idciber)
+            VER.modificar(id, req.body, req.idciber)
                 .then(result => res.status(200).json(result))
                 .catch(err => next(err))
         }) 
@@ -87,13 +137,13 @@ module.exports = (app, ruta) => {
      * @route {DELETE} /api/ciber/:id`
      * @routeparam {String} :id Identificador del usuario
      * @authentication Esta ruta requiere autenticación HTTP.
-     * @see modpruebas/pruebas.borrar 
+     * @see modAppCollector/pruebas.borrar 
      * @description Elimina un asignatsuras
      * - **Devuelve** {result} 
      */ 
     app.route(`${ruta}/:id`)
         .delete((req, res,next) => {
-            PRUEBAS.borrar(req.params.id, req.idciber)
+            VER.borrar(req.params.id, req.idciber)
                 .then(result => res.status(200).json(result))
                 .catch(err => next(err))
         })
@@ -101,7 +151,7 @@ module.exports = (app, ruta) => {
      * @name POST /query
      * @route {GET} /api/ciber/query
      * @authentication Esta ruta requiere autenticación HTTP.
-     * @see modpruebas/pruebas.leerCampo
+     * @see modAppCollector/pruebas.leerCampo
      * @bodyparam {Object} Opciones de búsqueda
      * @description Devuelve todos los registros que cumplen la condición de búsqueda
      * - **Devuelve** {result}

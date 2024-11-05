@@ -1,6 +1,11 @@
 'use strict'
-const prueba_api = require('./prueba.api.js');
+const apks_api = require('./apks.api.js');
+const versions_api = require('./versions.api.js');
+const tpls_api = require('./tpls.api.js')
+
 
 module.exports = (app) => {    
-    prueba_api(app, '/api/ciber')
+    apks_api(app, '/api/apks'),
+    versions_api(app, '/api/versions'),
+    tpls_api(app, '/api/tpls')
 }

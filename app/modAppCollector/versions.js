@@ -1,11 +1,11 @@
 /** 
- * @class modciber/pruebas
+ * @class modAppCollector/pruebas
  * @description funciones
  * 
  * @see pruebas_api
  * */
 'use strict'
-const TABLA = 'apks';
+const TABLA = 'versions';
 const CRUD = require('../servicios/crud');
 
 module.exports = {
@@ -19,12 +19,12 @@ module.exports = {
 /**
  * @function leerId
  * @description Lee un pruebas
- * @memberOf modciber/pruebas
+ * @memberOf modAppCollector/pruebas
  * @param {String} id
  * @param {String} buscar búsqueda {nombre:'Ana'}
  * @param {Object} campos lista campos. Ejem.  {fn:1, photo:1} 
- * @see modciber/crud.leerId
- * @return {RespuestaFuncionTipo} res - Respuesta de tipo {@link modciber.RespuestaFuncionTipo}. Data es de tipo  {@link modciber/usuario_model}
+ * @see modAppCollector/crud.leerId
+ * @return {RespuestaFuncionTipo} res - Respuesta de tipo {@link modAppCollector.RespuestaFuncionTipo}. Data es de tipo  {@link modAppCollector/usuario_model}
  * 
 * */
 function leerId(id){
@@ -40,12 +40,12 @@ function leerId(id){
 /**
  * @function leerVarios
  * @description Lista pruebas
- * @memberOf modciber/pruebas
+ * @memberOf modAppCollector/pruebas
  * @param {Object} orden orden. Ejem. {'n.given':'asc'}
  * @param {Object} campos lista campos. Ejem.  {fn:1, photo:1} 
  * @param {Object} buscar búsqueda {nombre:'Ana'}
- * @see modciber/crud.leerVarios
- * @return {RespuestaFuncionTipo} res - Respuesta de tipo {@link modciber.RespuestaFuncionTipo}. Data es de tipo  {@link modciber/usuario_model}
+ * @see modAppCollector/crud.leerVarios
+ * @return {RespuestaFuncionTipo} res - Respuesta de tipo {@link modAppCollector.RespuestaFuncionTipo}. Data es de tipo  {@link modAppCollector/usuario_model}
  * 
 * */
 function leerCampo(opciones){
@@ -61,9 +61,9 @@ function leerCampo(opciones){
 /**
  * @function nuevo
  * @description Crea un nuevo pruebas
- * @memberOf modciber/pruebas
+ * @memberOf modAppCollector/pruebas
  * @param {Object} reg Datos del registro a crear
- * @return {RespuestaFuncionTipo} res - Respuesta de tipo {@link modciber.RespuestaFuncionTipo}. Data es de tipo  {@link modciber/usuario_model}
+ * @return {RespuestaFuncionTipo} res - Respuesta de tipo {@link modAppCollector.RespuestaFuncionTipo}. Data es de tipo  {@link modAppCollector/usuario_model}
  * 
 * */
 function nuevo(reg, idGcono){
@@ -79,10 +79,10 @@ function nuevo(reg, idGcono){
 /**
  * @function modificar
  * @description Modifica un registro de pruebas
- * @memberOf modciber/pruebas
+ * @memberOf modAppCollector/pruebas
  * @param {String} id
  * @param {Object} reg Datos del registro a crear
- * @return {RespuestaFuncionTipo} res - Respuesta de tipo {@link modciber.RespuestaFuncionTipo}. Data es de tipo  {@link modciber/usuario_model}
+ * @return {RespuestaFuncionTipo} res - Respuesta de tipo {@link modAppCollector.RespuestaFuncionTipo}. Data es de tipo  {@link modAppCollector/usuario_model}
  * 
 * */
 function modificar(id, reg, idGcono){
@@ -98,9 +98,9 @@ function modificar(id, reg, idGcono){
 /**
  * @function borrar
  * @description Borra una asignatura
- * @memberOf modciber/pruebas
+ * @memberOf modAppCollector/pruebas
  * @param {String} id
- * @return {RespuestaFuncionTipo} res - Respuesta de tipo {@link modciber.RespuestaFuncionTipo}. Data es de tipo  {@link modciber/usuario_model}
+ * @return {RespuestaFuncionTipo} res - Respuesta de tipo {@link modAppCollector.RespuestaFuncionTipo}. Data es de tipo  {@link modAppCollector/usuario_model}
  * 
 * */
 function borrar(id, idGcono){
@@ -112,4 +112,3 @@ function borrar(id, idGcono){
     }
     return new Promise(promesa)
 }
-
