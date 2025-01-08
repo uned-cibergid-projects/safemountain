@@ -1,14 +1,3 @@
-/** 
- * @class modcrud/crud
- * @description funciones
- * 
- * */
-
-/**
- * DEPRECATED
- * save() -->MongoDB deprecates the db.collection.save() method. Instead use db.collection.insertOne() or db.collection.replaceOne() instead.
- * 
- */
 'use strict'
 const debug = require('debug')('gcono:crud');
 debug('CRUD Versión: 3.0.1')
@@ -32,16 +21,6 @@ module.exports = {
     grabarLog:grabarLog
 }
 
-/**
- * @function contar
- * @description contar documentos sobre una consulta
- * @memberOf modcrud/crud
- * @param {Object} campos lista campos. Ejem.  {fn:1, photo:1} 
- * @param {String} buscar búsqueda {nombre:'Ana'}
- * @param {Object} tabla Objeto Collección
- * @return {RespuestaFuncionTipo} res - Respuesta de tipo {@link modcrud.RespuestaFuncionTipo}. Data es de tipo  {@link modcrud/usuario_model}
- * 
-* */
 function contar(buscar={}, tabla){
     let promesa = (resolve,reject) =>{
 
@@ -62,16 +41,6 @@ function contar(buscar={}, tabla){
     return new Promise(promesa)
 }
 
-/**
- * @function leerId
- * @description Lee un registro
- * @memberOf modcrud/crud
- * @param {String} id
- * @param {Object} campos lista campos. Ejem.  {fn:1, photo:1} 
- * @param {Object} modelo Objeto Collección
- * @return {RespuestaFuncionTipo} res - Respuesta de tipo {@link modcrud.RespuestaFuncionTipo}. Data es de tipo  {@link modcrud/usuario_model}
- * 
-* */
 function leerId(id, tabla){
     let promesa = (resolve,reject) =>{
         const MODELO = tablas[tabla].modelo;
@@ -94,16 +63,6 @@ function leerId(id, tabla){
     return new Promise(promesa)
 }
 
-/**
- * @function leerCampo
- * @description Lee un registro
- * @memberOf modcrud/crud
- * @param {Object} campos lista campos. Ejem.  {fn:1, photo:1} 
- * @param {String} buscar búsqueda {nombre:'Ana'}
- * @param {Object} tabla Objeto Collección
- * @return {RespuestaFuncionTipo} res - Respuesta de tipo {@link modcrud.RespuestaFuncionTipo}. Data es de tipo  {@link modcrud/usuario_model}
- * 
-* */
 function leerCampo(opciones, tabla){
     let promesa = (resolve,reject) =>{
         let buscar = {};
@@ -167,16 +126,6 @@ function leerCampo(opciones, tabla){
     return new Promise(promesa)
 }
 
-/**
- * @function nuevo
- * @description Crea un registro
- * @memberOf modcrud/crud
- * @param {Object} reg Datos del registro a crear
- * @param {Object} tabla Objeto Collección
- * @return {RespuestaFuncionTipo} res - Respuesta de tipo {@link modcrud.RespuestaFuncionTipo}. Data es de tipo  {@link modcrud/usuario_model}
- * 
-* */
-
 function nuevo(reg, tabla, idGcono=0,  {tipo='log', mensaje='', accion='nuevo'}= {}){    
     let promesa = async (resolve,reject) =>{
         try{
@@ -217,17 +166,6 @@ function nuevo(reg, tabla, idGcono=0,  {tipo='log', mensaje='', accion='nuevo'}=
     return new Promise(promesa)
 }
 
-/**
- * @function modificar
- * @description Modifica un registro de CRUD
- * @memberOf modcrud/crud
- * @param {String} id
- * @param {Object} reg Datos del registro a crear
- * @param {Object} tabla Objeto Collección
- * @param {String} accion pasamos la acción a realizar para utilizarla en el log
- * @return {RespuestaFuncionTipo} res - Respuesta de tipo {@link modcrud.RespuestaFuncionTipo}. Data es de tipo  {@link modcrud/usuario_model}
- * 
-* */
 function modificarId(id, reg, tabla, idGcono=0,  {tipo='log', mensaje='', accion='modificar'}= {}){
 // function modificarId(id, reg, tabla, idGcono=0,  {tipo='log', mensaje='', accion='modificar', notimestamp=false}={}){
     let promesa = async (resolve,reject) =>{
@@ -273,16 +211,6 @@ function modificarId(id, reg, tabla, idGcono=0,  {tipo='log', mensaje='', accion
     return new Promise(promesa)
 }
 
-/**
- * @function modificarUno
- * @description Modifica un registro de CRUD
- * @memberOf modcrud/crud
- * @param {Object} buscar
- * @param {Object} reg Datos del registro a crear
- * @param {Object} tabla Objeto Collección
- * @return {RespuestaFuncionTipo} res - Respuesta de tipo {@link modcrud.RespuestaFuncionTipo}. Data es de tipo  {@link modcrud/usuario_model}
- * 
-* */
 function modificarUno(buscar, reg, tabla, idGcono=0,  {tipo='log', mensaje='', accion='modificar'}= {}){
     let promesa = async (resolve,reject) =>{
         try{
@@ -323,16 +251,6 @@ function modificarUno(buscar, reg, tabla, idGcono=0,  {tipo='log', mensaje='', a
     return new Promise(promesa)
 }
 
-/**
- * @function borrar
- * @description Borra un registro
- * @memberOf modcrud/crud
- * @param {String} id
- * @param {Object} tabla Objeto Collección
- * @param {Number} idGcono idGcono
- * @return {RespuestaFuncionTipo} res - Respuesta de tipo {@link modcrud.RespuestaFuncionTipo}. Data es de tipo  {@link modcrud/usuario_model}
- * 
-* */
 function borrar(id, tabla, idGcono=0,  {tipo='log', mensaje='', accion='borrar'}= {}){
     let promesa = async (resolve,reject) =>{
         try{
@@ -367,16 +285,6 @@ function borrar(id, tabla, idGcono=0,  {tipo='log', mensaje='', accion='borrar'}
     return new Promise(promesa)
 }
 
-/**
- * @function borrarVarios
- * @description Borra varios registros
- * @memberOf modcrud/crud
- * @param {Object} buscar Búsqueda
- * @param {Object} tabla Objeto Collección
- * @param {Number} idGcono idGcono
- * @return {RespuestaFuncionTipo} res - Respuesta de tipo {@link modcrud.RespuestaFuncionTipo}. Data es de tipo  {@link modcrud/usuario_model}
- * 
-* */
 function borrarVarios(buscar, tabla, idGcono=0, {tipo='log', mensaje='', accion='borrarVarios'}= {}){
     let promesa = async (resolve,reject) =>{
         try{
@@ -410,15 +318,6 @@ function borrarVarios(buscar, tabla, idGcono=0, {tipo='log', mensaje='', accion=
     return new Promise(promesa)
 }
 
-/**
- * @function modificarVarios
- * @description Modifica registros en masa
- * @memberOf modcrud/crud
- * @param {Object} buscar criterio de búsqueda
- * @param {Object} modificar valores a modificar
- * @param {Object} tabla Objeto Collección
-*
-*/
 function modificarVarios(buscar, modificar, tabla, idGcono=0, {tipo='log', mensaje='', accion='modificarVarios'}= {}){
     let promesa = async (resolve,reject) =>{
         try{

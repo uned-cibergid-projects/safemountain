@@ -1,9 +1,9 @@
 /** 
  * @module modAppCollector/tpls
- * @description funciones
+ * @description Funciones para gestionar TPLs en el módulo modAppCollector.
  * 
  * @see tpls_api
- * */
+ */
 'use strict'
 const TABLA = 'tpls';
 const CRUD = require('../servicios/crud');
@@ -17,7 +17,6 @@ module.exports = {
  * @description Lee una TPL por su identificador único.
  *
  * @function leerId
- * @memberof modAppCollector/tpls
  * @param {string} id - El identificador único de la TPL que se desea recuperar.
  * @returns {Promise<Object>} Una promesa que resuelve con el objeto TPL correspondiente al ID especificado.
  * @throws {Error} Si la operación falla, se lanza un error.
@@ -36,7 +35,6 @@ function leerId(id){
  * @description Recupera múltiples TPLs basándose en criterios de búsqueda específicos.
  *
  * @function leerCampo
- * @memberof modAppCollector/tpls
  * @param {Object} opciones - Las opciones para la consulta de TPLs.
  * @param {Object} [opciones.buscar] - Criterios de búsqueda como pares clave-valor.
  * @param {Object} [opciones.orden] - Ordenamiento de los resultados.

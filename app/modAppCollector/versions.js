@@ -1,6 +1,6 @@
 /** 
  * @module modAppCollector/versions
- * @description funciones
+ * @description Funciones para gestionar versions en el módulo modAppCollector.
  * 
  * @see versions_api
  * */
@@ -17,7 +17,6 @@ module.exports = {
  * @description Lee una version por su identificador único.
  *
  * @function leerId
- * @memberof modAppCollector/versions
  * @param {string} id - El identificador único de la version que se desea recuperar.
  * @returns {Promise<Object>} Una promesa que resuelve con el objeto version correspondiente al ID especificado.
  * @throws {Error} Si la operación falla, se lanza un error.
@@ -36,7 +35,6 @@ function leerId(id){
  * @description Recupera múltiples versions basándose en criterios de búsqueda específicos.
  *
  * @function leerCampo
- * @memberof modAppCollector/versions
  * @param {Object} opciones - Las opciones para la consulta de versions.
  * @param {Object} [opciones.buscar] - Criterios de búsqueda como pares clave-valor.
  * @param {Object} [opciones.orden] - Ordenamiento de los resultados.

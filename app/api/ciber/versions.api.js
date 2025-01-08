@@ -3,9 +3,9 @@ const VERSIONS = require('../../modAppCollector/versions.js');
 const ObjectId = require('mongodb').ObjectId;
 
 /**
- * @module modAppCollector/versions_api
- * @description Este módulo define las rutas de la API CRUD para gestionar versiones dentro de la aplicación modAppCollector.
- * Proporciona endpoints para crear, leer, actualizar y eliminar versiones, facilitando la interacción con la base de datos a través de operaciones definidas en el módulo versions.
+ * @module ciber/versions_api
+ * @description Este módulo define las rutas de la API CRUD para gestionar versions dentro de la aplicación modAppCollector.
+ * Proporciona endpoints para crear, leer, actualizar y eliminar versions, facilitando la interacción con la base de datos a través de operaciones definidas en el módulo versions.
  * 
  * @requires modAppCollector/versions
  */

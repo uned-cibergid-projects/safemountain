@@ -1,24 +1,9 @@
-/** 
- * @class modbasico/sistema
- * @description Funciones básicas sin dependencias que cargar.
- * @see modbasico
- * */
-
 'use strict'
 var {exec} = require("child_process");
 
 module.exports = {
     runComandos:runComandos
 }
-
-/**
- * @function runComando
- * @description Ejecuta un comando exec de child_process.
- * @memberOf modbasico/sistema
- * @param {String} comando
- * @return {Object} {comando:commandDescription, salida:finsalida}
- * 
-* */
 
 function runComando(comando) {
     let promesa = (resolve,reject) =>{        
@@ -47,13 +32,6 @@ function runComando(comando) {
     return new Promise(promesa)
 }
 
-/**
- * @function runComandos
- * @description Promise.all de runComando(comando)
- * @memberOf modbasico/sistema
- * @return {Object} {data}
- * 
-* */
 function runComandos(comandos) {
     let promesa = (resolve,reject) => {
         var promesaComandos = [];
