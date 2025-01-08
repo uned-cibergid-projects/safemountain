@@ -4,7 +4,7 @@ const APKS = require('../../modAppCollector/apks.js');
 /**
  * @module modAppCollector/apks_api
  * @description Este módulo define las rutas de la API CRUD para gestionar APKs dentro de la aplicación modAppCollector.
- * Proporciona endpoints para crear, leer, actualizar y eliminar APKs, facilitando la interacción con la base de datos a través de operaciones definidas en el módulo APKs.
+ * Proporciona endpoints para crear, leer, actualizar y eliminar APKs, facilitando la interacción con la base de datos a través de operaciones definidas en el módulo apks.
  * 
  * @requires modAppCollector/apks
  */
@@ -57,20 +57,20 @@ module.exports = (app, ruta) => {
         });
 
     /**
-     * Define la ruta para obtener una APK específica por su nombre de paquete.
+     * Define la ruta para obtener una APK específica por su nombre.
      *
      * @param {string} ruta - La ruta base para los endpoints de APKs ('/api/apks').
-     * @param {string} package - Nombre del package de la APK a buscar.
+     * @param {string} name - Nombre de la APK a buscar.
      * @authentication Esta ruta requiere autenticación HTTP.
-     * @description Devuelve una APK específica basada en el nombre de paquete proporcionado.
+     * @description Devuelve una APK específica basada en el nombre proporcionado.
      * @returns {Object} Respuesta JSON con el estado de la operación y los datos de la APK.
      * 
      */
-    app.route(`${ruta}/package/:package`)
+    app.route(`${ruta}/name/:name`)
         .get((req, res, next) => {
             let opciones = {
                 buscar: { 
-                    package: req.params.package 
+                    name: req.params.name 
                 },
                 orden: {},
                 campos: {},
