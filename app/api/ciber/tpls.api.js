@@ -1,5 +1,5 @@
 'use strict';
-const TPLS = require('../../modpruebas/tpls.js');
+const TPLS = require('../../modAppCollector/tpls.js');
 
 /**
  * @module modAppCollector/tpls_api

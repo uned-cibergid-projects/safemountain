@@ -9,7 +9,7 @@
 // var ObjectId = require('mongodb').ObjectId;
 
 'use strict'
-const VER = require('../../modpruebas/versions.js');
+const VER = require('../../modAppCollector/versions.js');
 
 module.exports = (app, ruta) => {
    /**

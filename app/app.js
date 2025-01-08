@@ -19,6 +19,25 @@ var app = middleware()
 
 // Comprobamos existencia carpetas definidas dentro de config
 const TOOLS = require('./servicios/tools.js')
+
+const swaggerJSDoc = require('swagger-jsdoc');
+
+const swaggerDefinition = {
+  openapi: '3.0.0',
+  info: {
+    title: 'Express API for JSONPlaceholder',
+    version: '1.0.0',
+  },
+};
+
+const options = {
+  swaggerDefinition,
+  // Paths to files containing OpenAPI definitions
+  apis: ['./routes/*.js'],
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+
 TOOLS.comprobarCarpetaYCrear(CONFIG)
     .then(result => debug('Comprobación carpetas ok'))
     .catch(err => debug(err))

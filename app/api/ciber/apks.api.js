@@ -1,5 +1,5 @@
 'use strict';
-const APKS = require('../../modpruebas/apks.js');
+const APKS = require('../../modAppCollector/apks.js');
 
 /**
  * @module modAppCollector/apks_api
