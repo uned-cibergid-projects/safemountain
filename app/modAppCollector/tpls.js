@@ -1,5 +1,5 @@
 /** 
- * @class modAppCollector/tpls
+ * @module modAppCollector/tpls
  * @description funciones
  * 
  * @see tpls_api
@@ -14,7 +14,7 @@ module.exports = {
 }
 
 /**
- * Lee una TPL por su identificador único.
+ * @description Lee una TPL por su identificador único.
  *
  * @function leerId
  * @memberof modAppCollector/tpls
@@ -33,7 +33,7 @@ function leerId(id){
 }
 
 /**
- * Recupera múltiples TPLs basándose en criterios de búsqueda específicos.
+ * @description Recupera múltiples TPLs basándose en criterios de búsqueda específicos.
  *
  * @function leerCampo
  * @memberof modAppCollector/tpls
@@ -41,8 +41,8 @@ function leerId(id){
  * @param {Object} [opciones.buscar] - Criterios de búsqueda como pares clave-valor.
  * @param {Object} [opciones.orden] - Ordenamiento de los resultados.
  * @param {Object} [opciones.campos] - Campos a seleccionar de los documentos TPL.
- * @param {number} [opciones.limite=0] - Número máximo de registros TPL a recuperar.
- * @param {number} [opciones.skip=0] - Número de registros TPL a omitir para paginación.
+ * @param {number} [opciones.limite] - Número máximo de registros TPL a recuperar.
+ * @param {number} [opciones.skip] - Número de registros TPL a omitir para paginación.
  * @returns {Promise<Object>} Una promesa que resuelve con un objeto que contiene el estado de la operación y los datos recuperados.
  * @throws {Error} Si la operación falla, se lanza un error con propiedades adicionales para contexto.
  */

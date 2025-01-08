@@ -2,7 +2,7 @@
  * @module modAppCollector/apks
  * @description Funciones para gestionar APKs en el módulo modAppCollector.
  * 
- * @see modAppCollector/apks_api
+ * @see apks_api
  */
 'use strict';
 const TABLA = 'apks';
@@ -14,7 +14,7 @@ module.exports = {
 };
 
 /**
- * Lee una APK por su identificador único.
+ * @description Lee una APK por su identificador único.
  *
  * @function leerId
  * @param {string} id - El identificador único de la APK que se desea recuperar.
@@ -31,15 +31,15 @@ function leerId(id){
 }
 
 /**
- * Recupera múltiples APKs basándose en criterios de búsqueda específicos.
+ * @description Recupera múltiples APKs basándose en criterios de búsqueda específicos.
  *
  * @function leerCampo
  * @param {Object} opciones - Las opciones para la consulta de APKs.
  * @param {Object} [opciones.buscar] - Criterios de búsqueda como pares clave-valor.
  * @param {Object} [opciones.orden] - Ordenamiento de los resultados.
  * @param {Object} [opciones.campos] - Campos a seleccionar de los documentos APK.
- * @param {number} [opciones.limite=0] - Número máximo de registros APK a recuperar.
- * @param {number} [opciones.skip=0] - Número de registros APK a omitir para paginación.
+ * @param {number} [opciones.limite] - Número máximo de registros APK a recuperar.
+ * @param {number} [opciones.skip] - Número de registros APK a omitir para paginación.
  * @returns {Promise<Object>} Una promesa que resuelve con un objeto que contiene el estado de la operación y los datos recuperados.
  * @throws {Error} Si la operación falla, se lanza un error con propiedades adicionales para contexto.
  */
