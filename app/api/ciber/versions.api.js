@@ -15,13 +15,13 @@ module.exports = (app, ruta) => {
      * Configura las rutas de la API CRUD para versions.
      *
      * @param {Object} app - La instancia de la aplicación Express.
-     * @param {string} ruta - La ruta base para los endpoints de APKs ('/api/versions').
+     * @param {string} ruta - La ruta base para los endpoints de versions ('/api/versions').
      * 
      */
     /**
      * Define la ruta para obtener una version específica por su identificador único.
      *
-     * @param {string} ruta - La ruta base para los endpoints de APKs ('/api/versions').
+     * @param {string} ruta - La ruta base para los endpoints de versions ('/api/versions').
      * @param {string} id - Identificador único de la version a recuperar.
      * @authentication Esta ruta requiere autenticación HTTP.
      * @description Devuelve una version específica basada en el ID proporcionado.
@@ -38,7 +38,7 @@ module.exports = (app, ruta) => {
     /**
      * Define la ruta para obtener versions por el ID de su parent.
      *
-     * @param {string} ruta - La ruta base para los endpoints de APKs ('/api/versions').
+     * @param {string} ruta - La ruta base para los endpoints de versions ('/api/versions').
      * @param {string} package - ID del parent de las versions a buscar.
      * @authentication Esta ruta requiere autenticación HTTP.
      * @description Devuelve versions cuyo parentId es el ID proporcionado.
