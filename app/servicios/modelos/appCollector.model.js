@@ -11,9 +11,9 @@ const Schema = mongoose.Schema;
  * @description Schema Mongoose para las APKs.
  * 
  * @typedef {Object} apkSchema
- * @property {string} _id - Identificador único de la APK. Debe ser único.
- * @property {string} name - Nombre de la APK. Debe ser único.
- * @property {string} package - Nombre del package de la APK.
+ * @property {string} [_id] - Identificador único de la APK. Debe ser único.
+ * @property {string} [name] - Nombre de la APK. Debe ser único.
+ * @property {string} [package] - Nombre del package de la APK.
  * @property {string} [category] - Categoría de la APK.
  * @property {boolean} [adSupported] - ¿La APK tiene soporte para anuncios?
  * @property {boolean} [containsAds] - ¿La APK tiene contiene anuncios?
@@ -81,6 +81,25 @@ const apkSchema  = new Schema(
 	}, { collection: 'apks' }
 );
 
+/**
+ * @description Schema Mongoose para las TPLs.
+ * 
+ * @typedef {Object} tplSchema
+ * @property {string} [_id] - Identificador único de la TPL. Debe ser único.
+ * @property {string} [name] - Nombre de la TPL. 
+ * @property {string} [package] - Nombre del package de la TPL. Debe ser único.
+ * @property {string} [continuousIntegrationUrl] - URL al panel de flujos de trabajo del repositorio.
+ * @property {string} [description] - Descripción de la TPL que proporciona el desarrollador.
+ * @property {string} [issueTrackerUrl] - URL al sistema de seguimiento de problemas del repositorio.
+ * @property {string} [lastTimeChecked] - Fecha de la última comprobación de la TPL en formato "%Y%m%d".
+ * @property {string[]} [licenses] - Array con las licencias bajo las que se publicó la TPL.
+ * @property {string} [ossindexVulnerabilities] - Identificación de vulnerabilidades a través de OSS Index.
+ * @property {string} [pomFile] - Archivo pom.xml de la TPL.
+ * @property {string} [projectUrl] - URL a la página web del proyecto.
+ * @property {string} [published] - Fecha en la que se publicó originalmente la TPL.
+ * @property {string} [size] - Peso de la TPL.
+ * @property {string} [sourceControlUrl] - URL al repositorio con el código fuente de la TPL.
+ */
 const tplSchema  = new Schema(
 	{
 		_id: { $oid: String, required: true, unique: true },
