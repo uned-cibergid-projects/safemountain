@@ -1,25 +1,28 @@
-'use strict';
-const VERSIONS = require('../../modAppCollector/versions.js');
-const ObjectId = require('mongodb').ObjectId;
-
 /**
  * @module ciber/versions_api
+ * 
  * @description Este módulo define las rutas de la API CRUD para gestionar versions dentro de la aplicación modAppCollector.
  * Proporciona endpoints para crear, leer, actualizar y eliminar versions, facilitando la interacción con la base de datos a través de operaciones definidas en el módulo versions.
  * 
  * @requires modAppCollector/versions
  */
+
+'use strict';
+const VERSIONS = require('../../modAppCollector/versions.js');
+const ObjectId = require('mongodb').ObjectId;
+
 module.exports = (app, ruta) => {
     
     /**
-     * Configura las rutas de la API CRUD para versions.
+     * @description Configura las rutas de la API CRUD para versions.
      *
      * @param {Object} app - La instancia de la aplicación Express.
      * @param {string} ruta - La ruta base para los endpoints de versions ('/api/versions').
      * 
      */
+
     /**
-     * Define la ruta para obtener una version específica por su identificador único.
+     * @description Define la ruta para obtener una version específica por su identificador único.
      *
      * @param {string} ruta - La ruta base para los endpoints de versions ('/api/versions').
      * @param {string} id - Identificador único de la version a recuperar.
@@ -36,7 +39,7 @@ module.exports = (app, ruta) => {
         });
 
     /**
-     * Define la ruta para obtener versions por el ID de su parent.
+     * @description Define la ruta para obtener versions por el ID de su parent.
      *
      * @param {string} ruta - La ruta base para los endpoints de versions ('/api/versions').
      * @param {string} package - ID del parent de las versions a buscar.
@@ -61,7 +64,7 @@ module.exports = (app, ruta) => {
         });
 
     /**
-     * Define la ruta para realizar consultas personalizadas sobre las versions.
+     * @description Define la ruta para realizar consultas personalizadas sobre las versions.
      *
      * @route {POST} /api/versions/search
      * @authentication Esta ruta requiere autenticación HTTP.

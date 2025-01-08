@@ -1,9 +1,11 @@
 /** 
  * @module modAppCollector/versions
+ * 
  * @description Funciones para gestionar versions en el módulo modAppCollector.
  * 
  * @see versions_api
- * */
+ */
+
 'use strict'
 const TABLA = 'versions';
 const CRUD = require('../servicios/crud');

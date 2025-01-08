@@ -1,9 +1,11 @@
 /** 
  * @module modAppCollector/apks
+ * 
  * @description Funciones para gestionar APKs en el módulo modAppCollector.
  * 
  * @see apks_api
  */
+
 'use strict';
 const TABLA = 'apks';
 const CRUD = require('../servicios/crud');

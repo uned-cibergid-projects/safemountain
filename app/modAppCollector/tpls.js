@@ -1,9 +1,11 @@
 /** 
  * @module modAppCollector/tpls
+ * 
  * @description Funciones para gestionar TPLs en el módulo modAppCollector.
  * 
  * @see tpls_api
  */
+
 'use strict'
 const TABLA = 'tpls';
 const CRUD = require('../servicios/crud');

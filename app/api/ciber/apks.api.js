@@ -1,24 +1,27 @@
-'use strict';
-const APKS = require('../../modAppCollector/apks.js');
-
 /**
  * @module ciber/apks_api
+ * 
  * @description Este módulo define las rutas de la API CRUD para gestionar APKs dentro de la aplicación modAppCollector.
  * Proporciona endpoints para crear, leer, actualizar y eliminar APKs, facilitando la interacción con la base de datos a través de operaciones definidas en el módulo apks.
  * 
  * @requires modAppCollector/apks
  */
+
+'use strict';
+const APKS = require('../../modAppCollector/apks.js');
+
 module.exports = (app, ruta) => {
     
     /**
-     * Configura las rutas de la API CRUD para APKs.
+     * @description Configura las rutas de la API CRUD para APKs.
      *
      * @param {Object} app - La instancia de la aplicación Express.
      * @param {string} ruta - La ruta base para los endpoints de APKs ('/api/apks').
      * 
      */
+    
     /**
-     * Define la ruta para obtener todas las APKs.
+     * @description Define la ruta para obtener todas las APKs.
      *
      * @param {string} ruta - La ruta base para los endpoints de APKs ('/api/apks').
      * @authentication Esta ruta requiere autenticación HTTP.
@@ -40,7 +43,7 @@ module.exports = (app, ruta) => {
         });
 
     /**
-     * Define la ruta para obtener una APK específica por su identificador único.
+     * @description Define la ruta para obtener una APK específica por su identificador único.
      *
      * @param {string} ruta - La ruta base para los endpoints de APKs ('/api/apks').
      * @param {string} id - Identificador único de la APK a recuperar.
@@ -57,7 +60,7 @@ module.exports = (app, ruta) => {
         });
 
     /**
-     * Define la ruta para obtener una APK específica por su nombre.
+     * @description Define la ruta para obtener una APK específica por su nombre.
      *
      * @param {string} ruta - La ruta base para los endpoints de APKs ('/api/apks').
      * @param {string} name - Nombre de la APK a buscar.
@@ -82,7 +85,7 @@ module.exports = (app, ruta) => {
         });
 
     /**
-     * Define la ruta para realizar consultas personalizadas sobre las APKs.
+     * @description Define la ruta para realizar consultas personalizadas sobre las APKs.
      *
      * @route {POST} /api/apks/search
      * @authentication Esta ruta requiere autenticación HTTP.
