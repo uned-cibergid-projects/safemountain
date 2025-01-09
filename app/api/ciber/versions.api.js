@@ -39,31 +39,6 @@ module.exports = (app, ruta) => {
         });
 
     /**
-     * @description Define la ruta para obtener versions por el ID de su parent.
-     *
-     * @param {string} ruta - La ruta base para los endpoints de versions ('/api/versions').
-     * @param {string} package - ID del parent de las versions a buscar.
-     * @authentication Esta ruta requiere autenticación HTTP.
-     * @description Devuelve versions cuyo parentId es el ID proporcionado.
-     * @returns {Object} Respuesta JSON con el estado de la operación y los datos de la version.
-     * 
-     */
-    app.route(`${ruta}/parent/:id`)
-        .get((req, res, next) => {
-            let opciones = {
-                filtro: { 
-                    parentId: new ObjectId(req.params.id) 
-                },
-                orden: {},
-                campos: {},
-                limite: 0
-            };
-            VERSIONS.leerCampo(opciones)
-                .then(result => res.status(200).json(result))
-                .catch(err => next(err));
-        });
-
-    /**
      * @description Define la ruta para realizar consultas personalizadas sobre las versions.
      *
      * @route {POST} /api/versions/search
