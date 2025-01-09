@@ -1,5 +1,5 @@
 /**
- * @module ciber/tpls_api
+ * @module metadata/tpls_api
  * 
  * @description Este módulo define las rutas de la API CRUD para gestionar TPLs dentro de la aplicación modAppCollector.
  * Proporciona endpoints para crear, leer, actualizar y eliminar TPLs, facilitando la interacción con la base de datos a través de operaciones definidas en el módulo tpls.
