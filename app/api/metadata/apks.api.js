@@ -1,5 +1,5 @@
 /**
- * @module ciber/apks_api
+ * @module metadata/apks_api
  * 
  * @description Este módulo define las rutas de la API CRUD para gestionar APKs dentro de la aplicación modAppCollector.
  * Proporciona endpoints para crear, leer, actualizar y eliminar APKs, facilitando la interacción con la base de datos a través de operaciones definidas en el módulo apks.

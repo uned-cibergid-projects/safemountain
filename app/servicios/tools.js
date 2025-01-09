@@ -1,5 +1,5 @@
 'use strict'
- const debug = require('debug')('ciber:tools');
+ const debug = require('debug')('metadata:tools');
  
  const fsp = require('fs').promises;
  const fs = require('fs');

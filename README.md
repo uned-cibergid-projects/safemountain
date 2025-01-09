@@ -114,7 +114,7 @@ Para ejecutar y depurar el proyecto en **Visual Studio Code**:
 A continuación, se describen las rutas principales de la API vinculadas al módulo **AppCollector**. Estas rutas permiten gestionar recursos específicos relacionados con APKs, TPLs y versiones.
 
 ### 📂 **Rutas para gestionar APKs**
-Módulo: `ciber/apks_api`
+Módulo: `metadata/apks_api`
 
 **`GET /api/apks`**  
   - **Descripción**: Devuelve todas las APKs disponibles en la base de datos.  
@@ -134,7 +134,7 @@ Módulo: `ciber/apks_api`
   - **Respuesta**: JSON con los datos de las APKs que cumplen con los criterios de búsqueda.  
 
 ### 📂 **Rutas para gestionar TPLs**
-Módulo: `ciber/tpls_api`
+Módulo: `metadata/tpls_api`
 
 **`GET /api/tpls/:id`**  
   - **Descripción**: Devuelve una TPL específica según su identificador único (`id`).  
@@ -145,7 +145,7 @@ Módulo: `ciber/tpls_api`
   - **Respuesta**: JSON con los datos de la TPL solicitada.  
 
 ### 📂 **Rutas para gestionar versions**
-Módulo: `ciber/versions_api`
+Módulo: `metadata/versions_api`
 
 **`GET /api/versions/:id`**  
   - **Descripción**: Devuelve una versión específica según su identificador único (`id`).  

@@ -3,7 +3,7 @@
 const CONFIG = require('../config')[process.env.NODE_ENV || 'desarrollo'];
 
 const app = require('../app');
-const debug = require('debug')('ciber:server');
+const debug = require('debug')('metadata:server');
 
 const http = require('http');
 

@@ -1,12 +1,12 @@
 const VERSION = '1.0.1';
-const APP = 'ciber';
+const APP = 'metadata';
 const CARPETAS = {
     // Aquí se definen las carpetas que utiliza el aplicativo NodeJs; si no existen se crean
     carpeta1: "./public",
     carpeta2: "./public/logs",
     carpeta3: "./public/procesos"
 };
-const DEBUG = 'http:*,mail:*,express:*,ciber:*';
+const DEBUG = 'http:*,mail:*,express:*,metadata:*';
 
 const EXPORTACION = {
     host: 'localhost', // Puedes reemplazar 'localhost' por la dirección del servidor si es necesario

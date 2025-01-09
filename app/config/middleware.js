@@ -49,7 +49,8 @@ module.exports = (app) => {
 	// RUTAS
 	// rutas sin autenticar
 
-	require('../api/ciber/ciber.rutas')(app)
+	require('../api/metadata/metadata.rutas')(app)
+	//require('../api/analisis/analisis.rutas')(app)
 	
 	require('../api/error.rutas')(app)
 	

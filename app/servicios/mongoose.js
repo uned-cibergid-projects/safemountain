@@ -1,5 +1,5 @@
 'use strict'
-const debug = require('debug')('ciber:cargarBD');
+const debug = require('debug')('metadata:cargarBD');
 const mongoose = require('mongoose');
 
 const config = require('../config')[process.env.NODE_ENV ||'desarrollo']

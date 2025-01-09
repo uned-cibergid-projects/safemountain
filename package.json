@@ -1,7 +1,7 @@
 {
-  "name": "apiciber",
+  "name": "safemountain",
   "version": "1.0.1",
-  "description": "Aplicativo ciber",
+  "description": "SafeMountain es una herramienta diseñada con el objetivo de detectar y evaluar todos los riesgos de privacidad asociados a una determinada aplicación móvil o página web.",
   "private": true,
   "main": "./app/bin/www",
   "author": "Intecca",
