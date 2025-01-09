@@ -11,9 +11,9 @@ const Schema = mongoose.Schema;
  * @description Schema Mongoose para las APKs.
  * 
  * @typedef {Object} apkSchema
- * @property {string} [_id] - Identificador único de la APK. Debe ser único.
- * @property {string} [name] - Nombre de la APK. Debe ser único.
- * @property {string} [package] - Nombre del package de la APK.
+ * @property {string} _id - Identificador único de la APK. Debe ser único.
+ * @property {string} name - Nombre de la APK. Debe ser único.
+ * @property {string} package - Nombre del package de la APK.
  * @property {string} [category] - Categoría de la APK.
  * @property {boolean} [adSupported] - ¿La APK tiene soporte para anuncios?
  * @property {boolean} [containsAds] - ¿La APK tiene contiene anuncios?
@@ -27,7 +27,7 @@ const Schema = mongoose.Schema;
  * @property {boolean} [free] - ¿Es la aplicación gratuita?
  * @property {string} [genre] - Representación textual del género de la APK.
  * @property {string} [genreId] - Identificador técnico del género de la APK.
- * @property {string} [googlePlayUrl] - URL de la APK en Google Play Store. Debe ser único.
+ * @property {string} googlePlayUrl - URL de la APK en Google Play Store. Debe ser único.
  * @property {string} [headerImageUrl] - URL de la imagen de encabezado de la APK en Google Play Store.
  * @property {number[]} [histogram] - Array con las valoraciones de la APK realizadas por los usuarios. 
  * @property {string} [iconUrl] - URL del icon de la APK.
@@ -85,9 +85,9 @@ const apkSchema  = new Schema(
  * @description Schema Mongoose para las TPLs.
  * 
  * @typedef {Object} tplSchema
- * @property {string} [_id] - Identificador único de la TPL. Debe ser único.
- * @property {string} [name] - Nombre de la TPL. 
- * @property {string} [package] - Nombre del package de la TPL. Debe ser único.
+ * @property {string} _id - Identificador único de la TPL. Debe ser único.
+ * @property {string} name - Nombre de la TPL. 
+ * @property {string} package - Nombre del package de la TPL. Debe ser único.
  * @property {string} [continuousIntegrationUrl] - URL al panel de flujos de trabajo del repositorio.
  * @property {string} [description] - Descripción de la TPL que proporciona el desarrollador.
  * @property {string} [issueTrackerUrl] - URL al sistema de seguimiento de problemas del repositorio.
@@ -119,13 +119,25 @@ const tplSchema  = new Schema(
 	}, { collection: 'tpls' }
 );
 
+/**
+ * @description Schema Mongoose para las versions.
+ * 
+ * @typedef {Object} versionSchema
+ * @property {string} _id - Identificador único de la version. Debe ser único.
+ * @property {string} parentId - Identificador único del padre de la version.
+ * @property {string} type - Tipo del padre: apk | tpl.
+ * @property {string} versionCode - Código de la version de la release.
+ * @property {string} [downloadUrl] - Dirección de descarga de la version. Exclusivo de versions de TPLs.
+ * @property {string} [releaseDate] - Fecha de lanzamiento de la version en formato "MMM DD, YYYY". Exclusivo de versions de APKs.
+ */
 const versionSchema  = new Schema(
 	{
 		_id: { $oid: String, required: true, unique: true },
 		parentId: { $oid: String, required: true },
 		type: { type: String, required: true },
 		versionCode: { type: String, required: true },
-		downloadUrl: { type: String, required: true },
+		downloadUrl: String,
+		releaseDate: String
 	}, { collection: 'versions' }
 );
 
