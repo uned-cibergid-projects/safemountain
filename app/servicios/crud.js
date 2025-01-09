@@ -1,8 +1,14 @@
+/** 
+ * @module servicios/crud
+ * 
+ * @description Funciones CRUD para interactuar con diferentes modelos y colecciones en la base de datos.
+ */
+
 'use strict'
 const debug = require('debug')('gcono:crud');
 debug('CRUD Versión: 3.0.1')
 
-const {tablas} = require('./modelos/appCollector.model')
+const {colecciones} = require('./modelos/appCollector.model')
 
 module.exports = {
     contar: contar, 
@@ -21,18 +27,27 @@ module.exports = {
     grabarLog:grabarLog
 }
 
-function contar(buscar={}, tabla){
+/**
+ * @description Cuenta documentos en la colección especificada basándose en criterios de búsqueda.
+ * 
+ * @function contar
+ * @param {Object} [filtro={}] - Criterios de búsqueda para contar documentos.
+ * @param {string} coleccion - Nombre de la colección en la que se realizará la operación.
+ * @returns {Promise<Object>} Una promesa que resuelve con el número de documentos contados y el estado de la operación.
+ * @throws {Error} Si ocurre un error durante la operación, lanza un error con detalles del contexto.
+ */
+function contar(filtro={}, coleccion){
     let promesa = (resolve,reject) =>{
 
-        const MODELO = tablas[tabla].modelo;
+        const MODELO = colecciones[coleccion].modelo;
 
-        MODELO.countDocuments(buscar)
+        MODELO.countDocuments(filtro)
             .then(cuenta => {
-                resolve({ok:true, mensaje:tabla, datos:cuenta})
+                resolve({ok:true, mensaje:coleccion, datos:cuenta})
             })
             .catch(err => {
                 err.ok= true;
-                err.coleccion = tabla;
+                err.coleccion = coleccion;
                 err.accion = 'contar';
                 reject(err)
             });
@@ -41,21 +56,29 @@ function contar(buscar={}, tabla){
     return new Promise(promesa)
 }
 
-function leerId(id, tabla){
+/**
+ * @description Recupera un documento por su ID único.
+ * 
+ * @function leerId
+ * @param {string} id - El identificador único del documento a recuperar.
+ * @param {string} coleccion - Nombre de la colección en la que se realizará la búsqueda.
+ * @returns {Promise<Object>} Una promesa que resuelve con el documento recuperado y el estado de la operación.
+ * @throws {Error} Si ocurre un error durante la operación o el documento no se encuentra, lanza un error con detalles del contexto.
+ */
+function leerId(id, coleccion){
     let promesa = (resolve,reject) =>{
-        const MODELO = tablas[tabla].modelo;
+        const MODELO = colecciones[coleccion].modelo;
         MODELO.findById(id).lean()
             .then(registro =>{
-                //if (!registro) resolve({ok:false, mensaje:'Colección: '+tabla+'. No existe el registro id='+id,datos:''})
                 if (!registro){
-                    resolve({ok:false, mensaje:'Colección: '+tabla+'. No existe el registro id='+id,datos:''})
+                    resolve({ok:false, mensaje:'Colección: '+coleccion+'. No existe el registro id='+id,datos:''})
                 }else{
-                    resolve({ok:true, mensaje:tabla, datos:registro})
+                    resolve({ok:true, mensaje:coleccion, datos:registro})
                 }
             })
             .catch(err => {
                 err.ok= true;
-                err.coleccion = tabla;
+                err.coleccion = coleccion;
                 err.accion = 'leerId';
                 reject(err)
             });
@@ -63,43 +86,57 @@ function leerId(id, tabla){
     return new Promise(promesa)
 }
 
-function leerCampo(opciones, tabla){
+/**
+ * @description Recupera documentos basándose en criterios específicos.
+ * 
+ * @function leerCampo
+ * @param {Object} opciones - Opciones para la consulta, incluyendo criterios de búsqueda, ordenamiento, campos seleccionados, límite y paginación.
+ * @param {Object} [opciones.filtro] - Criterios de búsqueda como pares clave-valor.
+ * @param {Object} [opciones.orden] - Especificación del orden de los resultados.
+ * @param {Object} [opciones.campos] - Campos a seleccionar en los documentos.
+ * @param {number} [opciones.limite] - Número máximo de documentos a recuperar.
+ * @param {number} [opciones.skip] - Número de documentos a omitir para paginación.
+ * @param {string} coleccion - Nombre de la colección en la que se realizará la consulta.
+ * @returns {Promise<Object>} Una promesa que resuelve con los documentos recuperados y el estado de la operación.
+ * @throws {Error} Si ocurre un error durante la operación, lanza un error con detalles del contexto.
+ */
+function leerCampo(opciones, coleccion){
     let promesa = (resolve,reject) =>{
-        let buscar = {};
+        let filtro = {};
         let campos = {};
         let orden = {};
         let limite = 0;
         let skip = 0;
 
-        if(opciones.hasOwnProperty('buscar') && opciones.buscar != null && opciones.buscar !='') buscar = opciones.buscar;
+        if(opciones.hasOwnProperty('filtro') && opciones.filtro != null && opciones.filtro !='') filtro = opciones.filtro;
         if(opciones.hasOwnProperty('orden') && opciones.orden != null && opciones.orden !='') orden = opciones.orden;
         if(opciones.hasOwnProperty('campos') && opciones.campos != null && opciones.campos !='') campos = opciones.campos;
         if(opciones.hasOwnProperty('limite') && opciones.limite != null && opciones.limite !='') limite = opciones.limite;
         if(opciones.hasOwnProperty('skip') && opciones.skip != null && opciones.skip !='') skip = opciones.skip;
-        const MODELO = tablas[tabla].modelo;
+        const MODELO = colecciones[coleccion].modelo;
         if(limite== 1){
-            MODELO.findOne(buscar).lean()
+            MODELO.findOne(filtro).lean()
                 .sort(orden)
                 .select(campos)
                 .then(registro => {
                     if (!registro) {
                         resolve({
                             ok:false, 
-                            mensaje:`${tabla} Lectura: No encontrado búsqueda= ${JSON.stringify(opciones.buscar).replace(/\"/g,"")}`, 
+                            mensaje:`${coleccion} Lectura: No encontrado búsqueda= ${JSON.stringify(opciones.filtro).replace(/\"/g,"")}`, 
                             datos:[]
                         });
                     }else{
-                        resolve({ok:true, mensaje:tabla, datos:registro})
+                        resolve({ok:true, mensaje:coleccion, datos:registro})
                     }
                 })
                 .catch(err => {
                     err.ok= true;
-                    err.coleccion = tabla;
+                    err.coleccion = coleccion;
                     err.accion = 'leerCampo';
                     reject(err)
                 });
         }else{
-            MODELO.find(buscar).lean()
+            MODELO.find(filtro).lean()
                 .sort(orden)
                 .limit(limite)
                 .skip(skip)
@@ -108,16 +145,16 @@ function leerCampo(opciones, tabla){
                     if (registros.length<1) {
                         resolve({
                             ok:false, 
-                            mensaje:`${tabla} Lectura: No encontrado búsqueda= ${JSON.stringify(opciones.buscar).replace(/\"/g,"")}`,
+                            mensaje:`${coleccion} Lectura: No encontrado búsqueda= ${JSON.stringify(opciones.filtro).replace(/\"/g,"")}`,
                             datos:[]
                         })
                     }else {
-                        resolve({ok:true, mensaje:tabla, contar:registros.length, datos:registros})
+                        resolve({ok:true, mensaje:coleccion, contar:registros.length, datos:registros})
                     }
                 })
                 .catch(err => {
                     err.ok= true;
-                    err.coleccion = tabla;
+                    err.coleccion = coleccion;
                     err.accion = 'leerCampo';
                     reject(err)
                 });
@@ -126,30 +163,43 @@ function leerCampo(opciones, tabla){
     return new Promise(promesa)
 }
 
-function nuevo(reg, tabla, idGcono=0,  {tipo='log', mensaje='', accion='nuevo'}= {}){    
+/**
+ * @description Inserta un nuevo documento en la colección especificada.
+ * 
+ * @function nuevo
+ * @param {Object} reg - Datos del nuevo documento a insertar.
+ * @param {string} coleccion - Nombre de la colección en la que se realizará la operación.
+ * @param {Object} [opciones] - Opciones adicionales como tipo, mensaje y acción.
+ * @param {string} [opciones.tipo="log"] - Tipo de operación.
+ * @param {string} [opciones.mensaje=""] - Mensaje adicional para el log.
+ * @param {string} [opciones.accion="nuevo"] - Acción realizada.
+ * @returns {Promise<Object>} Una promesa que resuelve con el documento insertado y el estado de la operación.
+ * @throws {Error} Si ocurre un error durante la operación, lanza un error con detalles del contexto.
+ */
+function nuevo(reg, coleccion, {tipo="log", mensaje="", accion="nuevo"}= {}){    
     let promesa = async (resolve,reject) =>{
         try{
-            const MODELO = tablas[tabla].modelo;
+            const MODELO = colecciones[coleccion].modelo;
             const nuevoRegistro = await MODELO.create(reg)
 
             if (!nuevoRegistro){
                 const err = new Error('Error no se pudo crear el nuevo Registro');
                 err.ok= true;
-                err.coleccion = tabla;
+                err.coleccion = coleccion;
                 err.accion = accion;
                 err.mensaje = `No se pudo crear el nuevo Registro`;
                 reject(err)
             }else{
                 resolve({
                     ok:true, 
-                    // mensaje: tabla + '. Nuevo nuevoRegistro creado. id= '+ nuevoreg._id,
-                    mensaje: tabla + '. Nuevo Registro creado',
+                    // mensaje: coleccion + '. Nuevo nuevoRegistro creado. id= '+ nuevoreg._id,
+                    mensaje: coleccion + '. Nuevo Registro creado',
                     datos: nuevoRegistro.toObject()
                 });
-                if(tabla != 'Log') {
+                if(coleccion != 'Log') {
                     let log ={
                         idgcono: idGcono,
-                        coleccion: tabla,
+                        coleccion: coleccion,
                         accion: accion,
                         ok: 201,
                         id_: nuevoRegistro._id.toString()
@@ -158,7 +208,7 @@ function nuevo(reg, tabla, idGcono=0,  {tipo='log', mensaje='', accion='nuevo'}=
                 };
             } 
         }catch(err){
-            err.coleccion = tabla;
+            err.coleccion = coleccion;
             err.accion = accion;
             reject(err)
         }; 
@@ -166,13 +216,25 @@ function nuevo(reg, tabla, idGcono=0,  {tipo='log', mensaje='', accion='nuevo'}=
     return new Promise(promesa)
 }
 
-function modificarId(id, reg, tabla, idGcono=0,  {tipo='log', mensaje='', accion='modificar'}= {}){
-// function modificarId(id, reg, tabla, idGcono=0,  {tipo='log', mensaje='', accion='modificar', notimestamp=false}={}){
+/**
+ * @description Modifica un documento en la colección especificada por su ID.
+ * 
+ * @function modificarId
+ * @param {string} id - Identificador único del documento a modificar.
+ * @param {Object} reg - Nuevos datos para actualizar el documento.
+ * @param {string} coleccion - Nombre de la colección en la que se realizará la operación.
+ * @param {Object} [options] - Opciones adicionales como tipo, mensaje y acción.
+ * @param {string} [options.tipo="log"] - Tipo de operación.
+ * @param {string} [options.mensaje=""] - Mensaje adicional para el log.
+ * @param {string} [options.accion="modificar"] - Acción realizada.
+ * @returns {Promise<Object>} Una promesa que resuelve con el documento modificado y el estado de la operación.
+ * @throws {Error} Si ocurre un error durante la operación, lanza un error con detalles del contexto.
+ */
+function modificarId(id, reg, coleccion, {tipo="log", mensaje="", accion="modificar"}= {}){
     let promesa = async (resolve,reject) =>{
         try{
-            const MODELO = tablas[tabla].modelo;
+            const MODELO = colecciones[coleccion].modelo;
             delete reg._id;
-            // borro f_modificacion para que actualize la fecha de modificación, pues no lo hace automáticamente, aunque está así configurado en el esquema
             delete reg.f_modificacion;
 
             const registro = await MODELO.findOneAndUpdate({_id:id}, reg, {new:true})
@@ -180,19 +242,19 @@ function modificarId(id, reg, tabla, idGcono=0,  {tipo='log', mensaje='', accion
             if (!registro){
                 const err = new Error('Error no existe el registro id= '+id);
                 err.ok= true;
-                err.coleccion = tabla;
+                err.coleccion = coleccion;
                 err.accion = accion;
                 err.mensaje = `No existe el registro id= ${id}`;
                 reject(err)
             }else {
                 // debug(registro.toObject())
                 const salida = registro.toObject()
-                resolve({ok:true, mensaje:tabla+'. Modificado registro id='+id, datos:registro.toObject()});
+                resolve({ok:true, mensaje:coleccion+'. Modificado registro id='+id, datos:registro.toObject()});
 
-                if(tabla != 'Log') {
+                if(coleccion != 'Log') {
                     let log ={
                         idgcono: idGcono,
-                        coleccion: tabla,
+                        coleccion: coleccion,
                         accion: accion ,
                         ok: 200,
                         id_: id.toString(),
@@ -203,7 +265,7 @@ function modificarId(id, reg, tabla, idGcono=0,  {tipo='log', mensaje='', accion
             }            
  
         }catch(err){
-            err.coleccion = tabla;
+            err.coleccion = coleccion;
             err.accion = accion;
             reject(err)
         }; 
@@ -211,31 +273,43 @@ function modificarId(id, reg, tabla, idGcono=0,  {tipo='log', mensaje='', accion
     return new Promise(promesa)
 }
 
-function modificarUno(buscar, reg, tabla, idGcono=0,  {tipo='log', mensaje='', accion='modificar'}= {}){
+/**
+ * @description Modifica un documento en la colección especificada basado en criterios de búsqueda.
+ * 
+ * @function modificarUno
+ * @param {Object} filtro - Criterios para identificar el documento a modificar.
+ * @param {Object} reg - Nuevos datos para actualizar el documento.
+ * @param {string} coleccion - Nombre de la colección en la que se realizará la operación.
+ * @param {Object} [options] - Opciones adicionales como tipo, mensaje y acción.
+ * @param {string} [options.tipo="log"] - Tipo de operación.
+ * @param {string} [options.mensaje=""] - Mensaje adicional para el log.
+ * @param {string} [options.accion="modificar"] - Acción realizada.
+ * @returns {Promise<Object>} Una promesa que resuelve con el documento modificado y el estado de la operación.
+ * @throws {Error} Si ocurre un error durante la operación, lanza un error con detalles del contexto.
+ */
+function modificarUno(filtro, reg, coleccion, {tipo="log", mensaje="", accion="modificar"}= {}){
     let promesa = async (resolve,reject) =>{
         try{
-            const MODELO = tablas[tabla].modelo;
+            const MODELO = colecciones[coleccion].modelo;
             delete reg._id;
-            // borro f_modificacion para que actualize la fecha de modificación, pues no lo hace automáticamente, aunque está así configurado en el esquema
             delete reg.f_modificacion;
             
-            const registro = await MODELO.findOneAndUpdate(buscar, reg, {new:true}).lean()
+            const registro = await MODELO.findOneAndUpdate(filtro, reg, {new:true}).lean()
             
             if (!registro){
-                reject({ok:false, message: tabla + '. Modificar: No se encuentran registros en la búsqueda'+ JSON.stringify(buscar).replace(/\"/g,""), coleccion: tabla, accion:'modificar'})
+                reject({ok:false, message: coleccion + '. Modificar: No se encuentran registros en la búsqueda'+ JSON.stringify(filtro).replace(/\"/g,""), coleccion: coleccion, accion:'modificar'})
             }else{
                 
-                // resolve({ok:true, mensaje:tabla+'. Modificado en búsqueda= '+buscar, datos:registro.toObject()})
-                resolve({ok:true, mensaje:`${tabla}. Modificado en búsqueda: ${JSON.stringify(buscar).replace(/\"/g,"")}`, datos:registro})
+                resolve({ok:true, mensaje:`${coleccion}. Modificado en búsqueda: ${JSON.stringify(filtro).replace(/\"/g,"")}`, datos:registro})
                 
-                if(tabla != 'Log') {
+                if(coleccion != 'Log') {
                     let log ={
                         idgcono: idGcono,
-                        coleccion: tabla,
+                        coleccion: coleccion,
                         accion: 'modificar',
                         ok: 200,
                         id_: registro._id.toString(),
-                        mensaje: JSON.stringify(buscar).replace(/\"/g,""),
+                        mensaje: JSON.stringify(filtro).replace(/\"/g,""),
                         tipo: tipo
                     }; 
                     grabarLog(log)
@@ -243,7 +317,7 @@ function modificarUno(buscar, reg, tabla, idGcono=0,  {tipo='log', mensaje='', a
             }
      
         }catch(err){
-            err.coleccion = tabla;
+            err.coleccion = coleccion;
             err.accion = 'modificar';
             reject(err)
         };   
@@ -251,22 +325,35 @@ function modificarUno(buscar, reg, tabla, idGcono=0,  {tipo='log', mensaje='', a
     return new Promise(promesa)
 }
 
-function borrar(id, tabla, idGcono=0,  {tipo='log', mensaje='', accion='borrar'}= {}){
+/**
+ * @description Elimina un documento de la colección especificada por su ID.
+ * 
+ * @function borrar
+ * @param {string} id - Identificador único del documento a eliminar.
+ * @param {string} coleccion - Nombre de la colección en la que se realizará la operación.
+ * @param {Object} [options] - Opciones adicionales como tipo, mensaje y acción.
+ * @param {string} [options.tipo="log"] - Tipo de operación.
+ * @param {string} [options.mensaje=""] - Mensaje adicional para el log.
+ * @param {string} [options.accion="borrar"] - Acción realizada.
+ * @returns {Promise<Object>} Una promesa que resuelve con el resultado de la operación de eliminación.
+ * @throws {Error} Si ocurre un error durante la operación, lanza un error con detalles del contexto.
+ */
+function borrar(id, coleccion, {tipo="log", mensaje="", accion="borrar"}= {}){
     let promesa = async (resolve,reject) =>{
         try{
-            const MODELO = tablas[tabla].modelo;
+            const MODELO = colecciones[coleccion].modelo;
             const resultado = await MODELO.deleteOne({_id:id})
             
             if(resultado.deletedCount < 1){
-                resolve({ok:false, mensaje: `Borrado ${tabla}. No encontrado id: ${id}`, datos:resultado})
+                resolve({ok:false, mensaje: `Borrado ${coleccion}. No encontrado id: ${id}`, datos:resultado})
             }else {
-                resolve({ok:true, mensaje: `Borrado ${tabla}. id: ${id}`, datos:resultado});
+                resolve({ok:true, mensaje: `Borrado ${coleccion}. id: ${id}`, datos:resultado});
 
-                if(tabla != 'Log') {
+                if(coleccion != 'Log') {
                 // no creo log de las operaciones realizadas sobre la colección Log. 
                     let log ={
                         idgcono: idGcono,
-                        coleccion: tabla,
+                        coleccion: coleccion,
                         accion: 'borrar',
                         ok: 200,
                         id_: id.toString(),
@@ -277,7 +364,7 @@ function borrar(id, tabla, idGcono=0,  {tipo='log', mensaje='', accion='borrar'}
                 }
             }            
         }catch(err){
-            err.coleccion = tabla;
+            err.coleccion = coleccion;
             err.accion = accion;
             reject(err)
         };  
@@ -285,32 +372,45 @@ function borrar(id, tabla, idGcono=0,  {tipo='log', mensaje='', accion='borrar'}
     return new Promise(promesa)
 }
 
-function borrarVarios(buscar, tabla, idGcono=0, {tipo='log', mensaje='', accion='borrarVarios'}= {}){
+/**
+ * @description Elimina múltiples documentos de la colección especificada basándose en criterios de búsqueda.
+ * 
+ * @function borrarVarios
+ * @param {Object} filtro - Criterios para identificar los documentos a eliminar.
+ * @param {string} coleccion - Nombre de la colección en la que se realizará la operación.
+ * @param {Object} [options] - Opciones adicionales como tipo, mensaje y acción.
+ * @param {string} [options.tipo="log"] - Tipo de operación.
+ * @param {string} [options.mensaje=""] - Mensaje adicional para el log.
+ * @param {string} [options.accion="borrarVarios"] - Acción realizada.
+ * @returns {Promise<Object>} Una promesa que resuelve con el resultado de la operación de eliminación.
+ * @throws {Error} Si ocurre un error durante la operación, lanza un error con detalles del contexto.
+ */
+function borrarVarios(filtro, coleccion, {tipo="log", mensaje="", accion="borrarVarios"}= {}){
     let promesa = async (resolve,reject) =>{
         try{
-            const MODELO = tablas[tabla].modelo;
-            const resultado = await MODELO.deleteMany(buscar)
+            const MODELO = colecciones[coleccion].modelo;
+            const resultado = await MODELO.deleteMany(filtro)
 
             if(resultado.deletedCount < 1){
-                resolve({ok:false, mensaje: `Borrar ${tabla} => No encontrado en búsqueda: ${JSON.stringify(buscar).replace(/\"/g,"")}`, datos:resultado})
+                resolve({ok:false, mensaje: `Borrar ${coleccion} => No encontrado en búsqueda: ${JSON.stringify(filtro).replace(/\"/g,"")}`, datos:resultado})
             }else {
-                resolve({ok:true, mensaje: `Borrados ${resultado.deletedCount} ${tabla} de búsqueda: ${JSON.stringify(buscar).replace(/\"/g,"")}`, datos:resultado})
+                resolve({ok:true, mensaje: `Borrados ${resultado.deletedCount} ${coleccion} de búsqueda: ${JSON.stringify(filtro).replace(/\"/g,"")}`, datos:resultado})
 
-                if(tabla != 'Log') {
+                if(coleccion != 'Log') {
                     let log ={
                         idgcono: idGcono,
-                        coleccion: tabla,
+                        coleccion: coleccion,
                         accion: 'borrar',
                         ok: 200,
                         id_:'0',                    
-                        mensaje: `Borrados: ${resultado.deletedCount} en búsqueda: ${JSON.stringify(buscar).replace(/\"/g,"")}`,
+                        mensaje: `Borrados: ${resultado.deletedCount} en búsqueda: ${JSON.stringify(filtro).replace(/\"/g,"")}`,
                         tipo: tipo
                     };
                     grabarLog(log);
                 }
             }            
         }catch(err){
-            err.coleccion = tabla;
+            err.coleccion = coleccion;
             err.accion = accion;
             reject(err)
         };              
@@ -318,28 +418,42 @@ function borrarVarios(buscar, tabla, idGcono=0, {tipo='log', mensaje='', accion=
     return new Promise(promesa)
 }
 
-function modificarVarios(buscar, modificar, tabla, idGcono=0, {tipo='log', mensaje='', accion='modificarVarios'}= {}){
+/**
+ * @description Modifica múltiples documentos en la colección especificada basándose en criterios de búsqueda.
+ * 
+ * @function modificarVarios
+ * @param {Object} buscar - Criterios para identificar los documentos a modificar.
+ * @param {Object} actualizacion - Datos que se usarán para actualizar los documentos encontrados.
+ * @param {string} coleccion - Nombre de la colección en la que se realizará la operación.
+ * @param {Object} [options] - Opciones adicionales como tipo, mensaje y acción.
+ * @param {string} [options.tipo="log"] - Tipo de operación.
+ * @param {string} [options.mensaje=""] - Mensaje adicional para el log.
+ * @param {string} [options.accion="modificarVarios"] - Acción realizada.
+ * @returns {Promise<Object>} Una promesa que resuelve con el resultado de la operación de modificación.
+ * @throws {Error} Si ocurre un error durante la operación, lanza un error con detalles del contexto.
+ */
+function modificarVarios(filtro, actualizacion, coleccion, {tipo="log", mensaje="", accion="modificarVarios"}= {}){
     let promesa = async (resolve,reject) =>{
         try{
-            const MODELO = tablas[tabla].modelo;
-            const resultado = await MODELO.updateMany(buscar, modificar)
+            const MODELO = colecciones[coleccion].modelo;
+            const resultado = await MODELO.updateMany(filtro, actualizacion)
                 if (resultado.n==0) {
-                    resolve({ok:false, mensaje: tabla +'. Modificar: No se encuentran registros en la búsqueda= '+ JSON.stringify(buscar).replace(/\"/g,""), datos:''});
-                } else resolve({ok:true, mensaje:tabla+'. Modificados (' + resultado.n + ' registros)', datos:resultado});
-                if(tabla != 'Log') {
+                    resolve({ok:false, mensaje: coleccion +'. Modificar: No se encuentran registros en la búsqueda= '+ JSON.stringify(filtro).replace(/\"/g,""), datos:''});
+                } else resolve({ok:true, mensaje:coleccion+'. Modificados (' + resultado.n + ' registros)', datos:resultado});
+                if(coleccion != 'Log') {
                     let log ={
                         idgcono: idGcono,
-                        coleccion: tabla,
+                        coleccion: coleccion,
                         accion: 'modificarVarios',
                         ok: 201,
                         id_:"0",
-                        mensaje: `Modificados: ${resultado.length} en búsqueda: ${JSON.stringify(buscar).replace(/\"/g,"")}`,
+                        mensaje: `Modificados: ${resultado.length} en búsqueda: ${JSON.stringify(filtro).replace(/\"/g,"")}`,
                         tipo: tipo
                     }; 
                     grabarLog(log);
                 }
         }catch(err){
-            err.coleccion = tabla;
+            err.coleccion = coleccion;
             err.accion = accion;
             reject(err)
         }; 
@@ -347,22 +461,34 @@ function modificarVarios(buscar, modificar, tabla, idGcono=0, {tipo='log', mensa
     return new Promise(promesa)
 }
 
-function insertarVarios(registros, tabla, idGcono=0,  {tipo='log', mensaje='', accion='insertarVarios'}= {}){
+/**
+ * @description Inserta múltiples documentos en la colección especificada.
+ * 
+ * @function insertarVarios
+ * @param {Array<Object>} registros - Array de documentos a insertar.
+ * @param {string} coleccion - Nombre de la colección en la que se realizará la operación.
+ * @param {Object} [options] - Opciones adicionales como tipo, mensaje y acción.
+ * @param {string} [options.tipo="log"] - Tipo de operación.
+ * @param {string} [options.mensaje=""] - Mensaje adicional para el log.
+ * @param {string} [options.accion="insertarVarios"] - Acción realizada.
+ * @returns {Promise<Object>} Una promesa que resuelve con el resultado de la operación de inserción.
+ * @throws {Error} Si ocurre un error durante la operación, lanza un error con detalles del contexto.
+ */
+function insertarVarios(registros, coleccion, {tipo="log", mensaje="", accion="insertarVarios"}= {}){
     let promesa = async (resolve, reject)=>{
         try{
-            const MODELO = tablas[tabla].modelo;
-            // Inserta varios registros, leídos de un array
+            const MODELO = colecciones[coleccion].modelo;
             const docs = await MODELO.insertMany(registros)
             resolve({
                 ok:true,
-                mensaje: tabla+'. Insertar: '+registros.length+' registros',
+                mensaje: coleccion+'. Insertar: '+registros.length+' registros',
                 datos: docs.map(reg=> (reg.toObject()))
             })
                 
-            if(tabla != 'Log') {
+            if(coleccion != 'Log') {
                 let log ={
                     idgcono: idGcono,
-                    coleccion: tabla,
+                    coleccion: coleccion,
                     accion: 'insertarVarios',
                     ok: 201,
                     id_:'0',
@@ -372,7 +498,7 @@ function insertarVarios(registros, tabla, idGcono=0,  {tipo='log', mensaje='', a
                 grabarLog(log);
             }
         }catch(err){
-            err.coleccion = tabla;
+            err.coleccion = coleccion;
             err.accion = accion;
             reject(err)
         }; 
@@ -380,10 +506,23 @@ function insertarVarios(registros, tabla, idGcono=0,  {tipo='log', mensaje='', a
     return new Promise(promesa);
 };
 
-function modificarArray(array, tabla, idGcono=0,  {tipo='log', mensaje='', accion='modificar'}= {}){
+/**
+ * @description Modifica múltiples documentos en la colección basándose en un array de registros.
+ * 
+ * @function modificarArray
+ * @param {Array<Object>} array - Array de registros a modificar.
+ * @param {string} coleccion - Nombre de la colección en la que se realizará la operación.
+ * @param {Object} [options] - Opciones adicionales como tipo, mensaje y acción.
+ * @param {string} [options.tipo="log"] - Tipo de operación.
+ * @param {string} [options.mensaje=""] - Mensaje adicional para el log.
+ * @param {string} [options.accion="modificarArray"] - Acción realizada.
+ * @returns {Promise<Object>} Una promesa que resuelve con el resultado de la operación de modificación.
+ * @throws {Error} Si ocurre un error durante la operación, lanza un error con detalles del contexto.
+ */
+function modificarArray(array, coleccion, {tipo="log", mensaje="", accion="modificar"}= {}){
     let promesa = (resolve,reject) =>{
         let promiseArray = array.map(item => () =>{
-            modificarId(item._id, item, tabla, idGcono)
+            modificarId(item._id, item, coleccion, idGcono)
         })
         Promise.all(promiseArray.map(f => f()))
             .then(modificado => {
@@ -392,10 +531,10 @@ function modificarArray(array, tabla, idGcono=0,  {tipo='log', mensaje='', accio
                     mensaje: 'modificado',
                     datos: ''
                 })
-                if(tabla != 'Log') {
+                if(coleccion != 'Log') {
                     let log ={
                         idgcono: idGcono,
-                        coleccion: tabla,
+                        coleccion: coleccion,
                         accion: 'modificarArray',
                         ok: 201,
                         id_:'0',
@@ -407,7 +546,7 @@ function modificarArray(array, tabla, idGcono=0,  {tipo='log', mensaje='', accio
             })
             .catch(err => {
                 err.ok= true;
-                err.coleccion = tabla;
+                err.coleccion = coleccion;
                 err.accion = 'modificarArray';
                 reject(err)
             })
@@ -415,10 +554,23 @@ function modificarArray(array, tabla, idGcono=0,  {tipo='log', mensaje='', accio
     return new Promise(promesa)
 }
 
-function borrarArray(array, tabla, idGcono=0,  {tipo='log', mensaje='', accion='borrar'}= {}){
+/**
+ * @description Elimina múltiples documentos en la colección basándose en un array de IDs.
+ * 
+ * @function borrarArray
+ * @param {Array<Object>} array - Array de documentos a eliminar.
+ * @param {string} coleccion - Nombre de la colección en la que se realizará la operación.
+ * @param {Object} [options] - Opciones adicionales como tipo, mensaje y acción.
+ * @param {string} [options.tipo="log"] - Tipo de operación.
+ * @param {string} [options.mensaje=""] - Mensaje adicional para el log.
+ * @param {string} [options.accion="borrarArray"] - Acción realizada.
+ * @returns {Promise<Object>} Una promesa que resuelve con el resultado de la operación de eliminación.
+ * @throws {Error} Si ocurre un error durante la operación, lanza un error con detalles del contexto.
+ */
+function borrarArray(array, coleccion, {tipo="log", mensaje="", accion="borrar"}= {}){
     let promesa = (resolve,reject) =>{
         let promiseArray = array.map(item => () =>{
-        borrar(item._id, tabla, idGcono)
+        borrar(item._id, coleccion, idGcono)
     })
         Promise.all(promiseArray.map(f => f()))
             .then(borrados => {
@@ -427,10 +579,10 @@ function borrarArray(array, tabla, idGcono=0,  {tipo='log', mensaje='', accion='
                     mensaje: 'borrado',
                     datos: ''
                 })
-                if(tabla != 'Log') {
+                if(coleccion != 'Log') {
                     let log ={
                         idgcono: idGcono,
-                        coleccion: tabla,
+                        coleccion: coleccion,
                         accion: 'borrarArray',
                         ok: 201,
                         id_:'0',
@@ -442,7 +594,7 @@ function borrarArray(array, tabla, idGcono=0,  {tipo='log', mensaje='', accion='
             })
             .catch(err => {
                 err.ok= true;
-                err.coleccion = tabla;
+                err.coleccion = coleccion;
                 err.accion = 'borrarArray';
                 reject(err)
             })
@@ -450,10 +602,23 @@ function borrarArray(array, tabla, idGcono=0,  {tipo='log', mensaje='', accion='
     return new Promise(promesa)
 }
 
-function nuevoArray(array, tabla, idGcono=0,  {tipo='log', mensaje='', accion='nuevo'}= {}){
+/**
+ * @description Inserta múltiples documentos en la colección basándose en un array de registros.
+ * 
+ * @function nuevoArray
+ * @param {Array<Object>} array - Array de documentos a insertar.
+ * @param {string} coleccion - Nombre de la colección en la que se realizará la operación.
+ * @param {Object} [options] - Opciones adicionales como tipo, mensaje y acción.
+ * @param {string} [options.tipo="log"] - Tipo de operación.
+ * @param {string} [options.mensaje=""] - Mensaje adicional para el log.
+ * @param {string} [options.accion="nuevoArray"] - Acción realizada.
+ * @returns {Promise<Object>} Una promesa que resuelve con el resultado de la operación de inserción.
+ * @throws {Error} Si ocurre un error durante la operación, lanza un error con detalles del contexto.
+ */
+function nuevoArray(array, coleccion, {tipo='log', mensaje='', accion="nuevo"}= {}){
     let promesa = (resolve,reject) =>{
         let promiseArray = array.map(item => () =>{
-        nuevo(item, tabla, idGcono)
+        nuevo(item, coleccion, idGcono)
     })
         Promise.all(promiseArray.map(f => f()))
             .then(nuevos => {
@@ -462,10 +627,10 @@ function nuevoArray(array, tabla, idGcono=0,  {tipo='log', mensaje='', accion='n
                     mensaje: 'nuevo',
                     datos: ''
                 })
-                if(tabla != 'Log') {
+                if(coleccion != 'Log') {
                     let log ={
                         idgcono: idGcono,
-                        coleccion: tabla,
+                        coleccion: coleccion,
                         accion: 'nuevoArray',
                         ok: 201,
                         id_:'0',
@@ -477,7 +642,7 @@ function nuevoArray(array, tabla, idGcono=0,  {tipo='log', mensaje='', accion='n
             })
             .catch(err => {
                 err.ok= true;
-                err.coleccion = tabla;
+                err.coleccion = coleccion;
                 err.accion = 'nuevoArray';
                 reject(err)
             })
@@ -485,9 +650,17 @@ function nuevoArray(array, tabla, idGcono=0,  {tipo='log', mensaje='', accion='n
     return new Promise(promesa)
 }
 
+/**
+ * @description Registra un log de operación en la colección correspondiente.
+ * 
+ * @function grabarLog
+ * @param {Object} log - Objeto con los detalles del log.
+ * @returns {Promise<void>} Una promesa que se resuelve cuando el log es registrado exitosamente.
+ * @throws {Error} Si ocurre un error durante la operación, lanza un error con detalles del contexto.
+ */
 async function grabarLog(log){
     try{
-        const MODELO = tablas['Log'].modelo;
+        const MODELO = colecciones['Log'].modelo;
         const nuevoReg = await MODELO.create(log)
         return
     }catch(err){
