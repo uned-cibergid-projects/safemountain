@@ -7,7 +7,7 @@
  * @see pruebas_api
  * */
 'use strict'
-const TABLA = 'versions';
+const COLECCION = 'versions';
 const CRUD = require('../servicios/crud');
 
 module.exports = {
@@ -31,7 +31,7 @@ module.exports = {
 * */
 function leerId(id){
     let promesa = (resolve,reject) =>{
-        CRUD.leerId(id, TABLA)
+        CRUD.leerId(id, COLECCION)
             .then(result => resolve(result))
             .catch(err => reject(err)
         )
@@ -52,7 +52,7 @@ function leerId(id){
 * */
 function leerCampo(opciones){
     let promesa = (resolve,reject) =>{
-        CRUD.leerCampo(opciones, TABLA)
+        CRUD.leerCampo(opciones, COLECCION)
             .then(result => resolve(result))
             .catch(err => reject(err)
         )
@@ -70,7 +70,7 @@ function leerCampo(opciones){
 * */
 function nuevo(reg, idGcono){
     let promesa = (resolve,reject) =>{
-        CRUD.nuevo(reg, TABLA, idGcono)
+        CRUD.nuevo(reg, COLECCION, idGcono)
             .then(result => resolve(result)  )
             .catch(err => reject(err)
         )   
@@ -89,7 +89,7 @@ function nuevo(reg, idGcono){
 * */
 function modificar(id, reg, idGcono){
     let promesa = (resolve,reject) =>{
-        CRUD.modificarId(id, reg, TABLA, idGcono)
+        CRUD.modificarId(id, reg, COLECCION, idGcono)
             .then(result => resolve(result)  )
             .catch(err => reject(err)
         )   
@@ -107,7 +107,7 @@ function modificar(id, reg, idGcono){
 * */
 function borrar(id, idGcono){
     let promesa = (resolve,reject) =>{
-        CRUD.borrar(id, TABLA, idGcono)
+        CRUD.borrar(id, COLECCION, idGcono)
             .then(result => resolve(result)  )
             .catch(err => reject(err)
         )    

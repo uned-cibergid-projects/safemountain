@@ -32,7 +32,7 @@ module.exports = (app, ruta) => {
     app.route(ruta)
         .get((req, res, next) => {
             let opciones = {
-                buscar: {},
+                filtro: {},
                 campos: {},
                 limite: 0,
                 orden: {}
@@ -72,7 +72,7 @@ module.exports = (app, ruta) => {
     app.route(`${ruta}/name/:name`)
         .get((req, res, next) => {
             let opciones = {
-                buscar: { 
+                filtro: { 
                     name: req.params.name 
                 },
                 orden: {},
@@ -91,7 +91,7 @@ module.exports = (app, ruta) => {
      * @authentication Esta ruta requiere autenticación HTTP.
      * @description Permite al cliente enviar un objeto de opciones para filtrar, ordenar, seleccionar campos específicos, limitar resultados y omitir registros en la consulta de APKs.
      * @param {Object} opciones - Objeto que contiene las opciones de consulta.
-     * @param {Object} [opciones.buscar] - Criterios de búsqueda como pares clave-valor.
+     * @param {Object} [opciones.filtro] - Criterios de búsqueda como pares clave-valor.
      * @param {Object} [opciones.orden] - Ordenamiento de los resultados.
      * @param {Object} [opciones.campos] - Campos a seleccionar de los documentos APK.
      * @param {number} [opciones.limite] - Número máximo de registros APK a recuperar.

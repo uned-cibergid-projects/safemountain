@@ -7,7 +7,7 @@
  * @see tpls_api
  * */
 'use strict'
-const TABLA = 'tpls';
+const COLECCION = 'tpls';
 const CRUD = require('../servicios/crud');
 
 module.exports = {
@@ -26,7 +26,7 @@ module.exports = {
  */
 function leerId(id){
     let promesa = (resolve,reject) =>{
-        CRUD.leerId(id, TABLA)
+        CRUD.leerId(id, COLECCION)
             .then(result => resolve(result))
             .catch(err => reject(err)
         )
@@ -50,7 +50,7 @@ function leerId(id){
  */
 function leerCampo(opciones){
     let promesa = (resolve,reject) =>{
-        CRUD.leerCampo(opciones, TABLA)
+        CRUD.leerCampo(opciones, COLECCION)
             .then(result => resolve(result))
             .catch(err => reject(err)
         )

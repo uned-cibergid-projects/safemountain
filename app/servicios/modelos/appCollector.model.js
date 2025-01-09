@@ -11,7 +11,6 @@ const Schema = mongoose.Schema;
  * @description Schema Mongoose para las APKs.
  * 
  * @typedef {Object} apkSchema
- * @property {string} _id - Identificador único de la APK. Debe ser único.
  * @property {string} name - Nombre de la APK. Debe ser único.
  * @property {string} package - Nombre del package de la APK.
  * @property {string} [category] - Categoría de la APK.
@@ -46,7 +45,6 @@ const Schema = mongoose.Schema;
  */
 const apkSchema  = new Schema(
 	{
-		_id: { $oid: String, required: true, unique: true },
 		name: { type: String, required: true, unique: true },
 		package: { type: String, required: true },
 		category: String,
@@ -85,7 +83,6 @@ const apkSchema  = new Schema(
  * @description Schema Mongoose para las TPLs.
  * 
  * @typedef {Object} tplSchema
- * @property {string} _id - Identificador único de la TPL. Debe ser único.
  * @property {string} name - Nombre de la TPL. 
  * @property {string} package - Nombre del package de la TPL. Debe ser único.
  * @property {string} [continuousIntegrationUrl] - URL al panel de flujos de trabajo del repositorio.
@@ -102,7 +99,6 @@ const apkSchema  = new Schema(
  */
 const tplSchema  = new Schema(
 	{
-		_id: { $oid: String, required: true, unique: true },
 		name: { type: String, required: true},
 		package: { type: String, required: true, unique: true },
 		continuousIntegrationUrl: String,
@@ -123,7 +119,6 @@ const tplSchema  = new Schema(
  * @description Schema Mongoose para las versions.
  * 
  * @typedef {Object} versionSchema
- * @property {string} _id - Identificador único de la version. Debe ser único.
  * @property {string} parentId - Identificador único del padre de la version.
  * @property {string} type - Tipo del padre: apk | tpl.
  * @property {string} versionCode - Código de la version de la release.
@@ -132,8 +127,7 @@ const tplSchema  = new Schema(
  */
 const versionSchema  = new Schema(
 	{
-		_id: { $oid: String, required: true, unique: true },
-		parentId: { $oid: String, required: true },
+		parentId: { type: String, required: true },
 		type: { type: String, required: true },
 		versionCode: { type: String, required: true },
 		downloadUrl: String,
@@ -145,7 +139,7 @@ const apks = mongoose.model('apks', apkSchema)
 const tpls = mongoose.model('tpls', tplSchema)
 const versions = mongoose.model('versions', versionSchema); 
 
-const tablas = {
+const colecciones = {
 	apks: {
 		modelo: apks
 	},
@@ -157,4 +151,4 @@ const tablas = {
 	}
 };
 
-module.exports = { tablas };
+module.exports = { colecciones };

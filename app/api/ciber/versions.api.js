@@ -51,7 +51,7 @@ module.exports = (app, ruta) => {
     app.route(`${ruta}/parent/:id`)
         .get((req, res, next) => {
             let opciones = {
-                buscar: { 
+                filtro: { 
                     parentId: new ObjectId(req.params.id) 
                 },
                 orden: {},
@@ -70,7 +70,7 @@ module.exports = (app, ruta) => {
      * @authentication Esta ruta requiere autenticación HTTP.
      * @description Permite al cliente enviar un objeto de opciones para filtrar, ordenar, seleccionar campos específicos, limitar resultados y omitir registros en la consulta de versions.
      * @param {Object} opciones - Objeto que contiene las opciones de consulta.
-     * @param {Object} [opciones.buscar] - Criterios de búsqueda como pares clave-valor.
+     * @param {Object} [opciones.filtro] - Criterios de búsqueda como pares clave-valor.
      * @param {Object} [opciones.orden] - Ordenamiento de los resultados.
      * @param {Object} [opciones.campos] - Campos a seleccionar de los documentos versions.
      * @param {number} [opciones.limite] - Número máximo de registros version a recuperar.

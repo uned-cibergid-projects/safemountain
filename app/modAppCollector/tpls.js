@@ -7,7 +7,7 @@
  */
 
 'use strict'
-const TABLA = 'tpls';
+const COLECCION = 'tpls';
 const CRUD = require('../servicios/crud');
 
 module.exports = {
@@ -25,7 +25,7 @@ module.exports = {
  */
 function leerId(id){
     let promesa = (resolve,reject) =>{
-        CRUD.leerId(id, TABLA)
+        CRUD.leerId(id, COLECCION)
             .then(result => resolve(result))
             .catch(err => reject(err)
         )
@@ -38,8 +38,8 @@ function leerId(id){
  *
  * @function leerCampo
  * @param {Object} opciones - Las opciones para la consulta de TPLs.
- * @param {Object} [opciones.buscar] - Criterios de búsqueda como pares clave-valor.
- * @param {Object} [opciones.orden] - Ordenamiento de los resultados.
+ * @param {Object} [opciones.filtro] - Criterios de búsqueda como pares clave-valor.
+ * @param {Object} [opciones.orden] - Especificación del orden de los resultados.
  * @param {Object} [opciones.campos] - Campos a seleccionar de los documentos TPL.
  * @param {number} [opciones.limite] - Número máximo de registros TPL a recuperar.
  * @param {number} [opciones.skip] - Número de registros TPL a omitir para paginación.
@@ -48,7 +48,7 @@ function leerId(id){
  */
 function leerCampo(opciones){
     let promesa = (resolve,reject) =>{
-        CRUD.leerCampo(opciones, TABLA)
+        CRUD.leerCampo(opciones, COLECCION)
             .then(result => resolve(result))
             .catch(err => reject(err)
         )

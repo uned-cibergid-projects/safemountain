@@ -23,7 +23,7 @@ module.exports = (app, ruta) => {
      app.route(ruta)
         .get((req, res, next) => {
             let opciones = {
-                buscar:{},
+                filtro:{},
                 campos:{},
                 limite: 0,
                 orden: {}
@@ -112,13 +112,13 @@ module.exports = (app, ruta) => {
     //     .post((req, res, next) => {
     //         let opciones = {
     //             coleccion: '',
-    //             buscar : {},
+    //             filtro : {},
     //             campos : {},
     //             limite : 0,
     //             skip: 0,
     //             orden : {'f_creacion':'desc'}
     //         };
-    //         if(req.body.buscar) opciones.buscar = req.body.buscar;
+    //         if(req.body.filtro) opciones.filtro = req.body.filtro;
     //         if(req.body.limite) opciones.limite = req.body.limite;
     //         if(req.body.skip) opciones.skip = req.body.skip;
     //         if(req.body.campos) opciones.campos = req.body.campos;

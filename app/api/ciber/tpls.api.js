@@ -50,7 +50,7 @@ module.exports = (app, ruta) => {
     app.route(`${ruta}/package/:package`)
         .get((req, res, next) => {
             let opciones = {
-                buscar: { 
+                filtro: { 
                     package: req.params.package 
                 },
                 orden: {},

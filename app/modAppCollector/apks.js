@@ -7,7 +7,7 @@
  */
 
 'use strict';
-const TABLA = 'apks';
+const COLECCION = 'apks';
 const CRUD = require('../servicios/crud');
 
 module.exports = {
@@ -25,7 +25,7 @@ module.exports = {
  */
 function leerId(id){
     let promesa = (resolve, reject) =>{
-        CRUD.leerId(id, TABLA)
+        CRUD.leerId(id, COLECCION)
             .then(result => resolve(result))
             .catch(err => reject(err));
     }
@@ -37,8 +37,8 @@ function leerId(id){
  *
  * @function leerCampo
  * @param {Object} opciones - Las opciones para la consulta de APKs.
- * @param {Object} [opciones.buscar] - Criterios de búsqueda como pares clave-valor.
- * @param {Object} [opciones.orden] - Ordenamiento de los resultados.
+ * @param {Object} [opciones.filtro] - Criterios de búsqueda como pares clave-valor.
+ * @param {Object} [opciones.orden] - Especificación del orden de los resultados.
  * @param {Object} [opciones.campos] - Campos a seleccionar de los documentos APK.
  * @param {number} [opciones.limite] - Número máximo de registros APK a recuperar.
  * @param {number} [opciones.skip] - Número de registros APK a omitir para paginación.
@@ -47,7 +47,7 @@ function leerId(id){
  */
 function leerCampo(opciones){
     let promesa = (resolve, reject) =>{
-        CRUD.leerCampo(opciones, TABLA)
+        CRUD.leerCampo(opciones, COLECCION)
             .then(result => resolve(result))
             .catch(err => reject(err));
     }
