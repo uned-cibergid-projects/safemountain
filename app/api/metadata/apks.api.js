@@ -85,6 +85,31 @@ module.exports = (app, ruta) => {
         });
 
     /**
+     * @description Define la ruta para obtener una APK específica por su package.
+     *
+     * @param {string} ruta - La ruta base para los endpoints de APKs ('/api/apks').
+     * @param {string} package - Package de la APK a buscar.
+     * @authentication Esta ruta requiere autenticación HTTP.
+     * @description Devuelve una APK específica basada en el package proporcionado.
+     * @returns {Object} Respuesta JSON con el estado de la operación y los datos de la APK.
+     * 
+     */
+    app.route(`${ruta}/package/:package`)
+        .get((req, res, next) => {
+            let opciones = {
+                filtro: { 
+                    package: req.params.package 
+                },
+                orden: {},
+                campos: {},
+                limite: 1
+            };
+            APKS.leerCampo(opciones)
+                .then(result => res.status(200).json(result))
+                .catch(err => next(err));
+        });
+
+    /**
      * @description Define la ruta para realizar consultas personalizadas sobre las APKs.
      *
      * @route {POST} /api/apks/search
