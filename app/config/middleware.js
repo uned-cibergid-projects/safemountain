@@ -50,7 +50,7 @@ module.exports = (app) => {
 	// rutas sin autenticar
 
 	require('../api/metadata/metadata.rutas')(app)
-	//require('../api/analisis/analisis.rutas')(app)
+	require('../api/analisis/analisis.rutas')(app)
 	
 	require('../api/error.rutas')(app)
 	

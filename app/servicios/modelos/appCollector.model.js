@@ -1,5 +1,5 @@
 /** 
- * @module modelos/appCollector
+ * @module app/servicios/modelos/appCollector
  * 
  * @description Schemas y modelos de APKs, TPLs y versions.
  */

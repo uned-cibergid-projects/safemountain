@@ -1,0 +1,57 @@
+/**
+ * @module scripts/install/privado
+ * 
+ * @description Módulo para verificar e instalar la herramienta Privado CLI.
+ */
+
+'use strict';
+
+const { execSync } = require('child_process');
+
+/**
+ * @description Verifica si la herramienta Privado CLI está instalada en el sistema.
+ *
+ * @function comprobarPrivadoCLI
+ * @returns {boolean} Devuelve true si Privado CLI está instalado y false en caso contrario.
+ * @throws {Error} Si ocurre un error inesperado al intentar ejecutar el comando.
+ */
+function comprobarPrivadoCLI() {
+    try {
+        execSync('privado version', { stdio: 'ignore' });
+        console.log('Privado CLI ya está instalado.');
+        return true;
+    } catch (error) {
+        console.log('Privado CLI no está instalado. Procediendo a la instalación...');
+        return false;
+    }
+}
+
+/**
+ * @description Instala la herramienta Privado CLI descargando y ejecutando el script de instalación.
+ *
+ * @function instalarPrivadoCLI
+ * @throws {Error} Si la instalación falla, muestra un mensaje de error y detiene la ejecución del programa.
+ */
+function instalarPrivadoCLI() {
+    try {
+        execSync('curl -o- https://raw.githubusercontent.com/Privado-Inc/privado-cli/main/install.sh | bash', { stdio: 'inherit' });
+        console.log('Privado CLI instalado exitosamente.');
+    } catch (error) {
+        console.error('Error durante la instalación de Privado CLI:', error.message);
+        process.exit(1);
+    }
+}
+
+/**
+ * @description Función principal que verifica e instala Privado CLI si es necesario.
+ *
+ * @function main
+ */
+function main() {
+    if (!comprobarPrivadoCLI()) {
+        instalarPrivadoCLI();
+    }
+}
+
+main();
+
