@@ -26,7 +26,6 @@ module.exports = (app, ruta) => {
      * @param {string} ruta - La ruta base para los endpoints de TPLs ('/api/tpls').
      * @param {string} id - Identificador único de la TPL a recuperar.
      * @authentication Esta ruta requiere autenticación HTTP.
-     * @description Devuelve una TPL específica basada en el ID proporcionado.
      * @returns {Object} Respuesta JSON con el estado de la operación y los datos de la TPL.
      * 
      */
@@ -43,7 +42,6 @@ module.exports = (app, ruta) => {
      * @param {string} ruta - La ruta base para los endpoints de TPLs ('/api/tpls').
      * @param {string} package - Nombre del package de la TPL a buscar.
      * @authentication Esta ruta requiere autenticación HTTP.
-     * @description Devuelve una TPL específica basada en el nombre de paquete proporcionado.
      * @returns {Object} Respuesta JSON con el estado de la operación y los datos de la TPL.
      * 
      */
