@@ -12,7 +12,7 @@ const Schema = mongoose.Schema;
  * 
  * @typedef {Object} apkSchema
  * @property {string} name - Nombre de la APK. Debe ser único.
- * @property {string} package - Nombre del package de la APK.
+ * @property {string} package - Nombre del package de la APK. Debe ser único.
  * @property {string} [category] - Categoría de la APK.
  * @property {boolean} [adSupported] - ¿La APK tiene soporte para anuncios?
  * @property {boolean} [containsAds] - ¿La APK tiene contiene anuncios?
@@ -46,7 +46,7 @@ const Schema = mongoose.Schema;
 const apkSchema  = new Schema(
 	{
 		name: { type: String, required: true, unique: true },
-		package: { type: String, required: true },
+		package: { type: String, required: true, unique: true },
 		category: String,
 		adSupported: Boolean,
 		containsAds: Boolean,
