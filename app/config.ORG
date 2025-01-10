@@ -19,7 +19,7 @@ module.exports = {
         APP: APP,
         PORT: 8020,
         MONGO: {
-            db: 'pruebas',
+            db: 'appcollector',
             host: '10.201.54.162',
             user: '',
             pass: '',
