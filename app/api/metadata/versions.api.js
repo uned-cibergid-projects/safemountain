@@ -1,10 +1,10 @@
 /**
- * @module metadata/versions_api
+ * @module app/api/metadata/versions_api
  * 
  * @description Este módulo define las rutas de la API CRUD para gestionar versions dentro de la aplicación modAppCollector.
  * Proporciona endpoints para crear, leer, actualizar y eliminar versions, facilitando la interacción con la base de datos a través de operaciones definidas en el módulo versions.
  * 
- * @requires modAppCollector/versions
+ * @requires app/modAppCollector/versions
  */
 
 'use strict';
@@ -27,7 +27,6 @@ module.exports = (app, ruta) => {
      * @param {string} ruta - La ruta base para los endpoints de versions ('/api/versions').
      * @param {string} id - Identificador único de la version a recuperar.
      * @authentication Esta ruta requiere autenticación HTTP.
-     * @description Devuelve una version específica basada en el ID proporcionado.
      * @returns {Object} Respuesta JSON con el estado de la operación y los datos de la version.
      * 
      */
@@ -43,7 +42,6 @@ module.exports = (app, ruta) => {
      *
      * @route {POST} /api/versions/search
      * @authentication Esta ruta requiere autenticación HTTP.
-     * @description Permite al cliente enviar un objeto de opciones para filtrar, ordenar, seleccionar campos específicos, limitar resultados y omitir registros en la consulta de versions.
      * @param {Object} opciones - Objeto que contiene las opciones de consulta.
      * @param {Object} [opciones.filtro] - Criterios de búsqueda como pares clave-valor.
      * @param {Object} [opciones.orden] - Ordenamiento de los resultados.

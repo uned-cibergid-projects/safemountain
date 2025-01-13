@@ -6,6 +6,7 @@ SafeMountain es una herramienta diseñada con el objetivo de detectar y evaluar 
 
 Antes de instalar y ejecutar la API, tu entorno debe cumplir con los siguientes requisitos:
 
+- Este proyecto está diseñado para ejecutarse en un entorno Linux o en Windows utilizando WSL (Windows Subsystem for Linux).
 - Node.js: Versión 22.3.0 o superior.
 - npm: Versión 10.8.1 o superior.
 

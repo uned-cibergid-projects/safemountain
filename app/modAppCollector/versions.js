@@ -1,5 +1,5 @@
 /** 
- * @module modAppCollector/versions
+ * @module app/modAppCollector/versions
  * 
  * @description Funciones para gestionar versions en el módulo modAppCollector.
  * 

@@ -1,10 +1,10 @@
 /**
- * @module metadata/apks_api
+ * @module app/api/metadata/apks_api
  * 
  * @description Este módulo define las rutas de la API CRUD para gestionar APKs dentro de la aplicación modAppCollector.
  * Proporciona endpoints para crear, leer, actualizar y eliminar APKs, facilitando la interacción con la base de datos a través de operaciones definidas en el módulo apks.
  * 
- * @requires modAppCollector/apks
+ * @requires app/modAppCollector/apks
  */
 
 'use strict';
@@ -25,7 +25,6 @@ module.exports = (app, ruta) => {
      *
      * @param {string} ruta - La ruta base para los endpoints de APKs ('/api/apks').
      * @authentication Esta ruta requiere autenticación HTTP.
-     * @description Devuelve todas las APKs disponibles en la base de datos.
      * @returns {Object} Respuesta JSON con el estado de la operación y los datos de las APKs.
      *
      */
@@ -48,7 +47,6 @@ module.exports = (app, ruta) => {
      * @param {string} ruta - La ruta base para los endpoints de APKs ('/api/apks').
      * @param {string} id - Identificador único de la APK a recuperar.
      * @authentication Esta ruta requiere autenticación HTTP.
-     * @description Devuelve una APK específica basada en el ID proporcionado.
      * @returns {Object} Respuesta JSON con el estado de la operación y los datos de la APK.
      * 
      */
@@ -65,7 +63,6 @@ module.exports = (app, ruta) => {
      * @param {string} ruta - La ruta base para los endpoints de APKs ('/api/apks').
      * @param {string} name - Nombre de la APK a buscar.
      * @authentication Esta ruta requiere autenticación HTTP.
-     * @description Devuelve una APK específica basada en el nombre proporcionado.
      * @returns {Object} Respuesta JSON con el estado de la operación y los datos de la APK.
      * 
      */
@@ -85,11 +82,34 @@ module.exports = (app, ruta) => {
         });
 
     /**
+     * @description Define la ruta para obtener una APK específica por su package.
+     *
+     * @param {string} ruta - La ruta base para los endpoints de APKs ('/api/apks').
+     * @param {string} package - Package de la APK a buscar.
+     * @authentication Esta ruta requiere autenticación HTTP.
+     * @returns {Object} Respuesta JSON con el estado de la operación y los datos de la APK.
+     * 
+     */
+    app.route(`${ruta}/package/:package`)
+        .get((req, res, next) => {
+            let opciones = {
+                filtro: { 
+                    package: req.params.package 
+                },
+                orden: {},
+                campos: {},
+                limite: 1
+            };
+            APKS.leerCampo(opciones)
+                .then(result => res.status(200).json(result))
+                .catch(err => next(err));
+        });
+
+    /**
      * @description Define la ruta para realizar consultas personalizadas sobre las APKs.
      *
      * @route {POST} /api/apks/search
      * @authentication Esta ruta requiere autenticación HTTP.
-     * @description Permite al cliente enviar un objeto de opciones para filtrar, ordenar, seleccionar campos específicos, limitar resultados y omitir registros en la consulta de APKs.
      * @param {Object} opciones - Objeto que contiene las opciones de consulta.
      * @param {Object} [opciones.filtro] - Criterios de búsqueda como pares clave-valor.
      * @param {Object} [opciones.orden] - Ordenamiento de los resultados.
