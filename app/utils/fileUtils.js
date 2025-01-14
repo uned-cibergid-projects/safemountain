@@ -9,9 +9,6 @@ const fs = require('fs');
 const path = require('path');
 
 const BASE_DIRECTORY = '/home/dblancoaza/SafeMountain/nfs/incibePro/analisisAplicaciones/datasets/hostApks/social';
-const DOWNLOAD_DIR = path.resolve(__dirname, '../downloads');
-const JADX_BIN = path.join(DOWNLOAD_DIR, 'jadx/jadx/bin/jadx');
-const JAVA_BIN = path.join(DOWNLOAD_DIR, 'java/jdk-17.0.8.1+1/bin/java');
 
 /**
  * @description Busca un archivo .apk en el directorio especificado.
@@ -45,57 +42,28 @@ function buscarApk(paquete) {
  * @returns {void} Los archivos descompilados se guardarán en un directorio "decompiled" junto al archivo original, sobrescribiendo cualquier contenido existente.
  */
 function descompilarApk(apkPath) {
+  const jadxBin = path.join(__dirname, '../../tools/jadx/bin/jadx');
+  const apkDir = path.dirname(apkPath);
+  const outputDir = path.join(apkDir, 'decompiled');
 
-    const apkDir = path.dirname(apkPath);
-    const outputDir = path.join(apkDir, 'decompiled');
-  
-    cconsole.log(`Decompilando archivo: ${apkPath}`);
-    console.log(`Archivos descompilados se guardarán en: ${outputDir}`);
-  
-    if (fs.existsSync(outputDir)) {
+  console.log(`Decompilando archivo: ${apkPath}`);
+  console.log(`Archivos descompilados se guardarán en: ${outputDir}`);
+
+  if (fs.existsSync(outputDir)) {
       console.log(`Eliminando directorio existente: ${outputDir}`);
       fs.rmSync(outputDir, { recursive: true, force: true });
-    }
-  
-    const command = `${JAVA_BIN} -jar ${JADX_BIN}.jar -d ${outputDir} ${apkPath}`;
-  
-    exec(command, (error, stdout, stderr) => {
-      if (error) {
-        console.error(`Error ejecutando JADX: ${error.message}`);
-        return;
-      }
-      if (stderr) {
-        console.error(`Error: ${stderr}`);
-        return;
-      }
-      console.log(`Decompilación completada. Archivos generados en: ${outputDir}`);
-    });
   }
 
-/**
- * @description Descarga un archivo desde una URL utilizando curl.
- * 
- * @function descargarArchivo
- * @param {string} comando - Comando curl completo para ejecutar.
- * @param {Object} [opciones] - Opciones adicionales para la ejecución.
- * @param {string|string[]} [opciones.stdio] - Configuración de stdio (por defecto: 'inherit').
- * @returns {void}
- */
-function descargarArchivo(comando, opciones = {}) {
-    const { stdio = 'inherit' } = opciones;
-
-    try {
-        console.log(`Descargando: ${comando}`);
-        execSync(comando, { stdio });
-        console.log(`Descarga completada: ${comando}`);
-    } catch (error) {
-        throw new Error(`Error durante la descarga con curl: ${error.message}`);
-    }
+  try {
+      const command = `${jadxBin} -d ${outputDir} ${apkPath}`;
+      execSync(command, { stdio: 'inherit' });
+      console.log(`Decompilación completada. Archivos generados en: ${outputDir}`);
+  } catch (error) {
+      console.error(`Error durante la descompilación: ${error.message}`);
+  }
 }
   
-
 module.exports = {
     buscarApk,
     descompilarApk,
-    descargarArchivo,
 };
