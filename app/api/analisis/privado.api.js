@@ -1,5 +1,5 @@
 /**
- * @module app/api/analisis/privado_api
+ * @module api/analisis/privado_api
  * 
  * @description Este módulo define las rutas de la API para gestionar análisis de código usando Privado.
  * Proporciona endpoints para ejecutar un análisis, obtener resultados y almacenarlos en MongoDB.
