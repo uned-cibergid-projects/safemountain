@@ -7,8 +7,6 @@
 'use strict';
 
 const { execSync } = require('child_process');
-const { descargarArchivo } = require('../../app/utils/fileUtils'); // Importa tu función genérica
-
 
 /**
  * @description Verifica si la herramienta Privado CLI está instalada en el sistema.
@@ -34,8 +32,14 @@ function comprobarPrivadoCLI() {
  * @function main
  */
 function main() {
-    if (!comprobarPrivadoCLI()) {
-        descargarArchivo(comando);
+    try {
+        if (!comprobarPrivadoCLI()) {
+            console.log(`Descargando e instalando Privado CLI:`);
+            execSync("curl -o- https://raw.githubusercontent.com/Privado-Inc/privado-cli/main/install.sh | bash");
+            console.log(`Descarga e instalación completada.`);
+        }
+    } catch (error) {
+        throw new Error(`Error durante la descarga e instalación de Privado: ${error.message}`);
     }
 }
 

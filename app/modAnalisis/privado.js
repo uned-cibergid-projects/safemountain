@@ -39,7 +39,6 @@ function analizar(paquete) {
                     });
                 }
 
-                // Leer el archivo de resultados generado
                 const resultPath = path.join(path.dirname(apkPath), '.privado', 'privado.json');
                 fs.readFile(resultPath, 'utf8', (err, data) => {
                     if (err) {
@@ -52,7 +51,6 @@ function analizar(paquete) {
 
                     const result = JSON.parse(data);
 
-                    // Guardar los resultados en la base de datos
                     CRUD.crear({ data: result, timestamp: new Date() }, COLECCION)
                         .then(savedResult => resolve({
                             ok: true,
