@@ -1,5 +1,5 @@
 /** 
- * @module app/modAppCollector/tpls
+ * @module modAppCollector/tpls
  * 
  * @description Funciones para gestionar TPLs en el módulo modAppCollector.
  * 

@@ -1,5 +1,5 @@
 /**
- * @module app/modAnalisis/privado
+ * @module modAnalisis/privado
  * 
  * @description Funciones para gestionar análisis de código utilizando Privado y almacenar resultados en MongoDB.
  */

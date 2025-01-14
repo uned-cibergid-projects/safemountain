@@ -1,5 +1,5 @@
 /**
- * @module app/utils/fileUtils
+ * @module utils/fileUtils
  *
  * @description Utilidades para la gestión de archivos, como búsqueda y validación.
  */

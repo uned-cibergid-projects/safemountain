@@ -1,5 +1,5 @@
 /** 
- * @module app/modAppCollector/apks
+ * @module modAppCollector/apks
  * 
  * @description Funciones para gestionar APKs en el módulo modAppCollector.
  * 

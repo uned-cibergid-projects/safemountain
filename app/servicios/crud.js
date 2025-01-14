@@ -1,5 +1,5 @@
 /** 
- * @module app/servicios/crud
+ * @module servicios/crud
  * 
  * @description Funciones CRUD para interactuar con diferentes modelos y colecciones en la base de datos.
  */
