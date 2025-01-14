@@ -1,7 +1,7 @@
-/**
- * @module scripts/instalar/descompilador
+/** 
+ * @module scripts/instalar/jadx
  * 
- * @description Módulo para verificar e instalar el descompilador.
+ * @description Módulo para descargar, descomprimir e instalar el descompilador JADX.
  */
 
 const { execSync } = require('child_process');
@@ -45,7 +45,11 @@ function verificarJava() {
 }
 
 /**
- * @description Descarga e instala JADX si no está ya instalado.
+ * @description Descarga y descomprime JADX, asegurando una instalación limpia en el directorio especificado.
+ *
+ * @function instalarJADX
+ * @throws {Error} Si ocurre un error durante la descarga, descompresión o instalación.
+ * @returns {void} No retorna ningún valor. Configura el entorno con JADX instalado.
  */
 function instalarJADX() {
     const jadxUrl = 'https://github.com/skylot/jadx/releases/download/v1.5.1/jadx-1.5.1.zip';
