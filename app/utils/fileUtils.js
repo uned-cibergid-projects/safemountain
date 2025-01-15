@@ -5,8 +5,11 @@
  */
 
 'use strict';
-const fs = require('fs');
+const { exec } = require('child_process');
+const fs = require('fs/promises');
+const util = require('util');
 const path = require('path');
+const execAsync = util.promisify(exec);
 
 const BASE_DIRECTORY = '/home/dblancoaza/SafeMountain/nfs/incibePro/analisisAplicaciones/datasets/hostApks/social';
 
@@ -18,19 +21,27 @@ const BASE_DIRECTORY = '/home/dblancoaza/SafeMountain/nfs/incibePro/analisisApli
  * @returns {string} La ruta completa al archivo .apk encontrado.
  * @throws {Error} Si el directorio no existe, no es válido o no contiene un archivo .apk.
  */
-function buscarApk(paquete) {
-    const packageDir = path.join(BASE_DIRECTORY, paquete);
+async function buscarApk(paquete) {
+  const BASE_DIRECTORY = '/home/dblancoaza/SafeMountain/nfs/incibePro/analisisAplicaciones/datasets/hostApks/social';
+  const packageDir = path.join(BASE_DIRECTORY, paquete);
 
-    if (!fs.existsSync(packageDir) || !fs.statSync(packageDir).isDirectory()) {
-        throw new Error(`No se encontró el directorio para el paquete: ${paquete}`);
-    }
+  try {
+      const stats = await fs.stat(packageDir);
+      if (!stats.isDirectory()) {
+          throw new Error(`No se encontró el directorio para el paquete: ${paquete}`);
+      }
 
-    const apkFile = fs.readdirSync(packageDir).find(file => file.endsWith('.apk'));
-    if (!apkFile) {
-        throw new Error(`No se encontró ningún archivo .apk en el directorio: ${packageDir}`);
-    }
+      const files = await fs.readdir(packageDir);
+      const apkFile = files.find(file => file.endsWith('.apk'));
 
-    return path.join(packageDir, apkFile);
+      if (!apkFile) {
+          throw new Error(`No se encontró ningún archivo .apk en el directorio: ${packageDir}`);
+      }
+
+      return path.join(packageDir, apkFile);
+  } catch (error) {
+      throw new Error(`Error al buscar el archivo APK: ${error.message}`);
+  }
 }
 
 /**
@@ -41,29 +52,50 @@ function buscarApk(paquete) {
  * @throws {Error} Si no se proporciona una ruta válida al archivo APK.
  * @returns {void} Los archivos descompilados se guardarán en un directorio "decompiled" junto al archivo original, sobrescribiendo cualquier contenido existente.
  */
-function descompilarApk(apkPath) {
+async function descompilarApk(apkPath) {
   const jadxBin = path.join(__dirname, '../../tools/jadx/bin/jadx');
   const apkDir = path.dirname(apkPath);
   const outputDir = path.join(apkDir, 'decompiled');
 
-  console.log(`Decompilando archivo: ${apkPath}`);
+  console.log(`Descompilando archivo: ${apkPath}`);
   console.log(`Archivos descompilados se guardarán en: ${outputDir}`);
 
-  if (fs.existsSync(outputDir)) {
-      console.log(`Eliminando directorio existente: ${outputDir}`);
-      fs.rmSync(outputDir, { recursive: true, force: true });
-  }
-
   try {
-      const command = `${jadxBin} -d ${outputDir} ${apkPath}`;
-      execSync(command, { stdio: 'inherit' });
-      console.log(`Decompilación completada. Archivos generados en: ${outputDir}`);
+      const exists = await fs.stat(outputDir).catch(() => false);
+      if (exists) {
+          console.log(`Eliminando directorio existente: ${outputDir}`);
+          await fs.rm(outputDir, { recursive: true, force: true });
+      }
+
+      const command = `${jadxBin} ${apkPath} ${outputDir}`;
+      await execAsync(command);
+
+      console.log(`Descompilación completada. Archivos generados en: ${outputDir}`);
   } catch (error) {
       console.error(`Error durante la descompilación: ${error.message}`);
+      throw error;
   }
+}
+
+/**
+ * Copia un directorio a una ubicación local temporal.
+ * @param {string} directorioOriginal - El directorio original..
+ * @returns {Promise<string>} - La ruta del directorio temporal.
+ */
+async function copiarEnDirectorioTemporal(directorioOriginal) {
+  const directorioTemporal = path.join('/tmp', `privado_temp_${Date.now()}`);
+  console.log(`Copiando directorio ${directorioOriginal} a ${directorioTemporal}...`);
+  await fs.mkdir(directorioTemporal, { recursive: true });
+
+  const copyCommand = `cp -r ${directorioOriginal}/* ${directorioTemporal}`;
+  await execAsync(copyCommand);
+
+  console.log(`Copia completada: ${directorioTemporal}`);
+  return directorioTemporal;
 }
   
 module.exports = {
     buscarApk,
     descompilarApk,
+    copiarEnDirectorioTemporal,
 };
