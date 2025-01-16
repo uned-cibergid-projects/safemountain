@@ -36,6 +36,7 @@ function main() {
         if (!comprobarPrivadoCLI()) {
             console.log(`Descargando e instalando Privado CLI:`);
             execSync("curl -o- https://raw.githubusercontent.com/Privado-Inc/privado-cli/main/install.sh | bash");
+            execSync("privado update")
             console.log(`Descarga e instalación completada.`);
         }
     } catch (error) {
