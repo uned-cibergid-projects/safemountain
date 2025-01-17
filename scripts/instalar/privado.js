@@ -31,7 +31,7 @@ function comprobarPrivadoCLI() {
  *
  * @function main
  */
-function main() {
+function prepararEntornoPrivado() {
     try {
         if (!comprobarPrivadoCLI()) {
             console.log(`Descargando e instalando Privado CLI:`);
@@ -44,5 +44,5 @@ function main() {
     }
 }
 
-main();
+prepararEntornoPrivado();
 
