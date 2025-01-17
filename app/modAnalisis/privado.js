@@ -1,3 +1,10 @@
+/** 
+ * @module modAnalisis/privado
+ * 
+ * @description Funciones para descompilar y analizar APKs con Privado CLI.
+ * @see privado_api
+ */
+
 const fs = require('fs').promises;
 const path = require('path');
 const { spawn } = require('child_process');
