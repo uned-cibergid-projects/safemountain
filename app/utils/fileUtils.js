@@ -11,8 +11,6 @@ const util = require('util');
 const path = require('path');
 const execAsync = util.promisify(exec);
 
-const BASE_DIRECTORY = '/home/dblancoaza/SafeMountain/nfs/incibePro/analisisAplicaciones/datasets/hostApks/social';
-
 /**
  * @description Busca un archivo .apk en el directorio especificado.
  *
