@@ -75,25 +75,7 @@ async function descompilarApk(apkPath) {
   }
 }
 
-/**
- * Copia un directorio a una ubicación local temporal.
- * @param {string} directorioOriginal - El directorio original..
- * @returns {Promise<string>} - La ruta del directorio temporal.
- */
-async function copiarEnDirectorioTemporal(directorioOriginal) {
-  const directorioTemporal = path.join('/tmp', `privado_temp_${Date.now()}`);
-  console.log(`Copiando directorio ${directorioOriginal} a ${directorioTemporal}...`);
-  await fs.mkdir(directorioTemporal, { recursive: true });
-
-  const copyCommand = `cp -r ${directorioOriginal}/* ${directorioTemporal}`;
-  await execAsync(copyCommand);
-
-  console.log(`Copia completada: ${directorioTemporal}`);
-  return directorioTemporal;
-}
-  
 module.exports = {
     buscarApk,
     descompilarApk,
-    copiarEnDirectorioTemporal,
 };
