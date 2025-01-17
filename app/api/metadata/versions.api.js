@@ -9,7 +9,6 @@
 
 'use strict';
 const VERSIONS = require('../../modAppCollector/versions.js');
-const ObjectId = require('mongodb').ObjectId;
 
 module.exports = (app, ruta) => {
     
