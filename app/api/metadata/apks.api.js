@@ -1,32 +1,30 @@
-/**
- * @module api/metadata/apks_api
- * 
- * @description Este módulo define las rutas de la API CRUD para gestionar APKs dentro de la aplicación modAppCollector.
- * Proporciona endpoints para crear, leer, actualizar y eliminar APKs, facilitando la interacción con la base de datos a través de operaciones definidas en el módulo apks.
- * 
- * @requires modAppCollector/apks
- */
-
 'use strict';
 const APKS = require('../../modAppCollector/apks.js');
 
 module.exports = (app, ruta) => {
     
     /**
-     * @description Configura las rutas de la API CRUD para APKs.
-     *
-     * @param {Object} app - La instancia de la aplicación Express.
-     * @param {string} ruta - La ruta base para los endpoints de APKs ('/api/apks').
-     * 
+     * @swagger
+     * tags:
+     *   name: Metadata APK
+     *   description: Rutas para gestionar la metadata de las APKs.
      */
-    
+
     /**
-     * @description Define la ruta para obtener todas las APKs.
-     *
-     * @param {string} ruta - La ruta base para los endpoints de APKs ('/api/apks').
-     * @authentication Esta ruta requiere autenticación HTTP.
-     * @returns {Object} Respuesta JSON con el estado de la operación y los datos de las APKs.
-     *
+     * @swagger
+     * /api/apks:
+     *   get:
+     *     summary: Define la ruta para obtener todas las APKs.
+     *     tags: [Metadata APK]
+     *     responses:
+     *       200:
+     *         description: La lista con todas las APKs.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: array
+     *               items:
+     *                 $ref: '#/components/schemas/Apk'
      */
     app.route(ruta)
         .get((req, res, next) => {
@@ -41,14 +39,29 @@ module.exports = (app, ruta) => {
                 .catch(err => next(err));
         });
 
+
     /**
-     * @description Define la ruta para obtener una APK específica por su identificador único.
-     *
-     * @param {string} ruta - La ruta base para los endpoints de APKs ('/api/apks').
-     * @param {string} id - Identificador único de la APK a recuperar.
-     * @authentication Esta ruta requiere autenticación HTTP.
-     * @returns {Object} Respuesta JSON con el estado de la operación y los datos de la APK.
-     * 
+     * @swagger
+     * tags:
+     *   name: Metadata APK
+     *   description: Rutas para gestionar la metadata de las APKs.
+     */
+
+    /**
+     * @swagger
+     * /api/apks/:id:
+     *   get:
+     *     summary: Define la ruta para obtener una APK por ID.
+     *     tags: [Metadata APK]
+     *     responses:
+     *       200:
+     *         description: Los detalles de una APK buscada por id.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: array
+     *               items:
+     *                 $ref: '#/components/schemas/Apk'
      */
     app.route(`${ruta}/:id`)
         .get((req, res, next) => {
@@ -58,13 +71,27 @@ module.exports = (app, ruta) => {
         });
 
     /**
-     * @description Define la ruta para obtener una APK específica por su nombre.
-     *
-     * @param {string} ruta - La ruta base para los endpoints de APKs ('/api/apks').
-     * @param {string} name - Nombre de la APK a buscar.
-     * @authentication Esta ruta requiere autenticación HTTP.
-     * @returns {Object} Respuesta JSON con el estado de la operación y los datos de la APK.
-     * 
+     * @swagger
+     * tags:
+     *   name: Metadata APK
+     *   description: Rutas para gestionar la metadata de las APKs.
+     */
+
+    /**
+     * @swagger
+     * /api/apks/name/:name:
+     *   get:
+     *     summary: Define la ruta para obtener una APK por name.
+     *     tags: [Metadata APK]
+     *     responses:
+     *       200:
+     *         description: Los detalles de una APK buscada por name.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: array
+     *               items:
+     *                 $ref: '#/components/schemas/Apk'
      */
     app.route(`${ruta}/name/:name`)
         .get((req, res, next) => {
@@ -82,13 +109,27 @@ module.exports = (app, ruta) => {
         });
 
     /**
-     * @description Define la ruta para obtener una APK específica por su package.
-     *
-     * @param {string} ruta - La ruta base para los endpoints de APKs ('/api/apks').
-     * @param {string} package - Package de la APK a buscar.
-     * @authentication Esta ruta requiere autenticación HTTP.
-     * @returns {Object} Respuesta JSON con el estado de la operación y los datos de la APK.
-     * 
+     * @swagger
+     * tags:
+     *   name: Metadata APK
+     *   description: Rutas para gestionar la metadata de las APKs.
+     */
+
+    /**
+     * @swagger
+     * /api/apks/package/:package:
+     *   get:
+     *     summary: Define la ruta para obtener una APK por package.
+     *     tags: [Metadata APK]
+     *     responses:
+     *       200:
+     *         description: Los detalles de una APK buscada por package.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: array
+     *               items:
+     *                 $ref: '#/components/schemas/Apk'
      */
     app.route(`${ruta}/package/:package`)
         .get((req, res, next) => {
@@ -106,18 +147,27 @@ module.exports = (app, ruta) => {
         });
 
     /**
-     * @description Define la ruta para realizar consultas personalizadas sobre las APKs.
-     *
-     * @route {POST} /api/apks/search
-     * @authentication Esta ruta requiere autenticación HTTP.
-     * @param {Object} opciones - Objeto que contiene las opciones de consulta.
-     * @param {Object} [opciones.filtro] - Criterios de búsqueda como pares clave-valor.
-     * @param {Object} [opciones.orden] - Ordenamiento de los resultados.
-     * @param {Object} [opciones.campos] - Campos a seleccionar de los documentos APK.
-     * @param {number} [opciones.limite] - Número máximo de registros APK a recuperar.
-     * @param {number} [opciones.skip] - Número de registros APK a omitir para paginación.
-     * @returns {Object} Respuesta JSON con el estado de la operación y los datos de las APKs que cumplen con las opciones proporcionadas.
-     * 
+     * @swagger
+     * tags:
+     *   name: Metadata APK
+     *   description: Rutas para gestionar la metadata de las APKs.
+     */
+
+    /**
+     * @swagger
+     * /api/apks/search:
+     *   post:
+     *     summary: Define la ruta para buscar una APK con opciones de búsqueda detalladas.
+     *     tags: [Metadata APK]
+     *     responses:
+     *       200:
+     *         description: Los detalles de la/s APK/s buscadas.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: array
+     *               items:
+     *                 $ref: '#/components/schemas/Apk'
      */
     app.route(`${ruta}/search`)
     .post((req, res, next) => {

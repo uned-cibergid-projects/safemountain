@@ -11,6 +11,8 @@ const express = require('express');
 // const CRON = require('./cron');
 
 const {grabarLog} = require('../servicios/crud');
+const swaggerUI = require('swagger-ui-express');
+const specs = require('./swagger');
 
 module.exports = (app) => {
 	var app = express();
@@ -43,6 +45,9 @@ module.exports = (app) => {
 
 	// backup
 	app.use("/backup", express.static(`${process.cwd()}/public/backup`), serveIndex('app/public/backup', { 'icons': true }));
+
+	// Swagger
+	app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 
 	// .................................................. 

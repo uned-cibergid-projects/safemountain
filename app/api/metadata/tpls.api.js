@@ -1,33 +1,30 @@
-/**
- * @module api/metadata/tpls_api
- * 
- * @description Este módulo define las rutas de la API CRUD para gestionar TPLs dentro de la aplicación modAppCollector.
- * Proporciona endpoints para crear, leer, actualizar y eliminar TPLs, facilitando la interacción con la base de datos a través de operaciones definidas en el módulo tpls.
- * 
- * @requires modAppCollector/tpls
- */
-
 'use strict';
 const TPLS = require('../../modAppCollector/tpls.js');
 
 module.exports = (app, ruta) => {
     
     /**
-     * @description Configura las rutas de la API CRUD para TPLs.
-     *
-     * @param {Object} app - La instancia de la aplicación Express.
-     * @param {string} ruta - La ruta base para los endpoints de TPLs ('/api/tpls').
-     * 
+     * @swagger
+     * tags:
+     *   name: Metadata TPL
+     *   description: Rutas para gestionar la metadata de las TPLs.
      */
 
     /**
-     * @description Define la ruta para obtener una TPL específica por su identificador único.
-     *
-     * @param {string} ruta - La ruta base para los endpoints de TPLs ('/api/tpls').
-     * @param {string} id - Identificador único de la TPL a recuperar.
-     * @authentication Esta ruta requiere autenticación HTTP.
-     * @returns {Object} Respuesta JSON con el estado de la operación y los datos de la TPL.
-     * 
+     * @swagger
+     * /api/tpls/:id:
+     *   get:
+     *     summary: Define la ruta para obtener una TPL por ID.
+     *     tags: [Metadata TPL]
+     *     responses:
+     *       200:
+     *         description: Los detalles de una TPL buscada por id.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: array
+     *               items:
+     *                 $ref: '#/components/schemas/Tpl'
      */
     app.route(`${ruta}/:id`)
         .get((req, res, next) => {
@@ -37,13 +34,27 @@ module.exports = (app, ruta) => {
         });
 
     /**
-     * @description Define la ruta para obtener una TPL específica por su nombre de paquete.
-     *
-     * @param {string} ruta - La ruta base para los endpoints de TPLs ('/api/tpls').
-     * @param {string} package - Nombre del package de la TPL a buscar.
-     * @authentication Esta ruta requiere autenticación HTTP.
-     * @returns {Object} Respuesta JSON con el estado de la operación y los datos de la TPL.
-     * 
+     * @swagger
+     * tags:
+     *   name: Metadata APK
+     *   description: Rutas para gestionar la metadata de las TPLs.
+     */
+
+    /**
+     * @swagger
+     * /api/tpls/package/:package:
+     *   get:
+     *     summary: Define la ruta para obtener una TPL por package.
+     *     tags: [Metadata TPL]
+     *     responses:
+     *       200:
+     *         description: Los detalles de una TPL buscada por package.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: array
+     *               items:
+     *                 $ref: '#/components/schemas/Tpl'
      */
     app.route(`${ruta}/package/:package`)
         .get((req, res, next) => {

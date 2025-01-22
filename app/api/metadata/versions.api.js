@@ -1,33 +1,30 @@
-/**
- * @module api/metadata/versions_api
- * 
- * @description Este módulo define las rutas de la API CRUD para gestionar versions dentro de la aplicación modAppCollector.
- * Proporciona endpoints para crear, leer, actualizar y eliminar versions, facilitando la interacción con la base de datos a través de operaciones definidas en el módulo versions.
- * 
- * @requires modAppCollector/versions
- */
-
 'use strict';
 const VERSIONS = require('../../modAppCollector/versions.js');
 
 module.exports = (app, ruta) => {
     
     /**
-     * @description Configura las rutas de la API CRUD para versions.
-     *
-     * @param {Object} app - La instancia de la aplicación Express.
-     * @param {string} ruta - La ruta base para los endpoints de versions ('/api/versions').
-     * 
+     * @swagger
+     * tags:
+     *   name: Metadata Versions
+     *   description: Rutas para gestionar la metadata de las Versions.
      */
 
     /**
-     * @description Define la ruta para obtener una version específica por su identificador único.
-     *
-     * @param {string} ruta - La ruta base para los endpoints de versions ('/api/versions').
-     * @param {string} id - Identificador único de la version a recuperar.
-     * @authentication Esta ruta requiere autenticación HTTP.
-     * @returns {Object} Respuesta JSON con el estado de la operación y los datos de la version.
-     * 
+     * @swagger
+     * /api/versions/:id:
+     *   get:
+     *     summary: Define la ruta para obtener una version por ID.
+     *     tags: [Metadata Versions]
+     *     responses:
+     *       200:
+     *         description: Los detalles de una version buscada por id.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: array
+     *               items:
+     *                 $ref: '#/components/schemas/Version'
      */
     app.route(`${ruta}/:id`)
         .get((req, res, next) => {
@@ -37,18 +34,27 @@ module.exports = (app, ruta) => {
         });
 
     /**
-     * @description Define la ruta para realizar consultas personalizadas sobre las versions.
-     *
-     * @route {POST} /api/versions/search
-     * @authentication Esta ruta requiere autenticación HTTP.
-     * @param {Object} opciones - Objeto que contiene las opciones de consulta.
-     * @param {Object} [opciones.filtro] - Criterios de búsqueda como pares clave-valor.
-     * @param {Object} [opciones.orden] - Ordenamiento de los resultados.
-     * @param {Object} [opciones.campos] - Campos a seleccionar de los documentos versions.
-     * @param {number} [opciones.limite] - Número máximo de registros version a recuperar.
-     * @param {number} [opciones.skip] - Número de registros version a omitir para paginación.
-     * @returns {Object} Respuesta JSON con el estado de la operación y los datos de las versions que cumplen con las opciones proporcionadas.
-     * 
+     * @swagger
+     * tags:
+     *   name: Metadata Versions
+     *   description: Rutas para gestionar la metadata de las Versions.
+     */
+
+    /**
+     * @swagger
+     * /api/versions/search:
+     *   post:
+     *     summary: Define la ruta para buscar una version con opciones de búsqueda detalladas.
+     *     tags: [Metadata Versions]
+     *     responses:
+     *       200:
+     *         description: Los detalles de la/s Version/s buscadas.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: array
+     *               items:
+     *                 $ref: '#/components/schemas/Version'
      */
     app.route(`${ruta}/search`)
     .post((req, res, next) => {
