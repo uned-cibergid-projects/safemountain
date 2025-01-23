@@ -162,3 +162,5 @@ Módulo: `metadata/versions_api`
 ## 📄 Documentación de la API.
 La documentación generada automáticamente se encuentra en la carpeta `docs`. 
 Para poder acceder a ella, se debe abrir cualquiera de sus archivos `.html` en un navegador. 
+
+La documentación Swagger-JSDoc de las rutas se encuentra en `/api-docs/`.
