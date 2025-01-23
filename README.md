@@ -129,6 +129,10 @@ Módulo: `metadata/apks_api`
   - **Descripción**: Devuelve una APK específica según su nombre (`name`).  
   - **Respuesta**: JSON con los datos de la APK solicitada.  
 
+**`GET /api/apks/package/:package`**  
+  - **Descripción**: Devuelve una APK específica según su package (`package`).  
+  - **Respuesta**: JSON con los datos de la APK solicitada.  
+
 **`POST /api/apks/search`**  
   - **Descripción**: Permite realizar consultas personalizadas sobre las APKs mediante un objeto de opciones.  
   - **Body**: JSON con las opciones de consulta (`filtro`, `orden`, `campos`, `limite`, `skip`).  
