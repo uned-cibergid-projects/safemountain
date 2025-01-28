@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "nodemon ./app/bin/www",
     "start": "node ./app/bin/www",
-    "docs": "node_modules/.bin/jsdoc --configure jsdoc.json --verbose",
+    "docs": "node_modules/.bin/jsdoc --configure jsdoc.json --verbose && node ./app/utils/doc.js && redocly build-docs ./docs/swagger/swagger.json -o ./docs/swagger/index.html",
     "install:privado": "node ./scripts/instalar/privado.js",
     "install:descompilador": "node ./scripts/instalar/descompilador.js"
   },

@@ -4,7 +4,7 @@
       "exclude": ["node_modules"]
     },
     "opts": {
-      "destination": "./docs",           
+      "destination": "./docs/jsdoc",           
       "recurse": true,
       "template": "node_modules/clean-jsdoc-theme"                                
     },
