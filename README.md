@@ -27,7 +27,7 @@ A continuación, se detallan todas las dependencias utilizadas en este proyecto,
 Estas son las bibliotecas necesarias para el correcto funcionamiento de la API:
 
 - **[@ctrl/tinycolor](https://www.npmjs.com/package/@ctrl/tinycolor)**: Manipulación y conversión de colores en formato hexadecimal, RGB, HSL, etc.
-- **[@redocly/cli](https://www.npmjs.com/package/redocly-cli)**: Herramienta de línea de comandos para generar documentación estática a partir de especificaciones OpenAPI. Es utilizada para convertir el archivo `swagger.json` en una página web interactiva en HTML.
+- **[@redocly/cli](https://www.npmjs.com/package/redocly-cli)**: Herramienta de línea de comandos para generar documentación estática a partir de especificaciones OpenAPI.
 - **[axios](https://www.npmjs.com/package/axios)**: Cliente HTTP para realizar solicitudes a APIs externas o servidores remotos.
 - **[bcryptjs](https://www.npmjs.com/package/bcryptjs)**: Permite el hashing y comparación de contraseñas para la autenticación de usuarios.
 - **[child_process](https://www.npmjs.com/package/child_process)**: Ejecuta comandos del sistema operativo desde Node.js (ejecución de procesos en segundo plano).
