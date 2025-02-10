@@ -8,10 +8,7 @@ module.exports = (app, ruta) => {
      * tags:
      *   name: Metadata APK
      *   description: Rutas para gestionar la metadata de las APKs.
-     */
-
-    /**
-     * @swagger
+     *
      * /api/apks:
      *   get:
      *     summary: Define la ruta para obtener todas las APKs.
@@ -45,10 +42,7 @@ module.exports = (app, ruta) => {
      * tags:
      *   name: Metadata APK
      *   description: Rutas para gestionar la metadata de las APKs.
-     */
-
-    /**
-     * @swagger
+     *
      * /api/apks/:id:
      *   get:
      *     summary: Define la ruta para obtener una APK por ID.
@@ -75,10 +69,7 @@ module.exports = (app, ruta) => {
      * tags:
      *   name: Metadata APK
      *   description: Rutas para gestionar la metadata de las APKs.
-     */
-
-    /**
-     * @swagger
+     *
      * /api/apks/name/:name:
      *   get:
      *     summary: Define la ruta para obtener una APK por name.
@@ -113,10 +104,7 @@ module.exports = (app, ruta) => {
      * tags:
      *   name: Metadata APK
      *   description: Rutas para gestionar la metadata de las APKs.
-     */
-
-    /**
-     * @swagger
+     *
      * /api/apks/package/:package:
      *   get:
      *     summary: Define la ruta para obtener una APK por package.
@@ -151,10 +139,7 @@ module.exports = (app, ruta) => {
      * tags:
      *   name: Metadata APK
      *   description: Rutas para gestionar la metadata de las APKs.
-     */
-
-    /**
-     * @swagger
+     *
      * /api/apks/search:
      *   post:
      *     summary: Define la ruta para buscar una APK con opciones de búsqueda detalladas.

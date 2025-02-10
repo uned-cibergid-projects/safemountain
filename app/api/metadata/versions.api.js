@@ -8,10 +8,7 @@ module.exports = (app, ruta) => {
      * tags:
      *   name: Metadata Versions
      *   description: Rutas para gestionar la metadata de las Versions.
-     */
-
-    /**
-     * @swagger
+     *
      * /api/versions/:id:
      *   get:
      *     summary: Define la ruta para obtener una version por ID.
@@ -38,10 +35,7 @@ module.exports = (app, ruta) => {
      * tags:
      *   name: Metadata Versions
      *   description: Rutas para gestionar la metadata de las Versions.
-     */
-
-    /**
-     * @swagger
+     *
      * /api/versions/search:
      *   post:
      *     summary: Define la ruta para buscar una version con opciones de búsqueda detalladas.

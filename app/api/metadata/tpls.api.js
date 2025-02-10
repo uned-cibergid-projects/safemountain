@@ -8,10 +8,7 @@ module.exports = (app, ruta) => {
      * tags:
      *   name: Metadata TPL
      *   description: Rutas para gestionar la metadata de las TPLs.
-     */
-
-    /**
-     * @swagger
+     *
      * /api/tpls/:id:
      *   get:
      *     summary: Define la ruta para obtener una TPL por ID.
@@ -38,10 +35,7 @@ module.exports = (app, ruta) => {
      * tags:
      *   name: Metadata APK
      *   description: Rutas para gestionar la metadata de las TPLs.
-     */
-
-    /**
-     * @swagger
+     *
      * /api/tpls/package/:package:
      *   get:
      *     summary: Define la ruta para obtener una TPL por package.
