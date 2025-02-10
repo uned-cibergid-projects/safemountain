@@ -43,6 +43,7 @@
     "xmlbuilder2": "2.1.2"
   },
   "devDependencies": {
+    "jsdoc": "^4.0.4",
     "nodemon": "^2.0.7"
   }
 }
