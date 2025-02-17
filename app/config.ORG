@@ -18,8 +18,15 @@ module.exports = {
         VERSION: VERSION,
         APP: APP,
         PORT: 8020,
-        MONGO: {
+        MONGO_METADATA: {
             db: 'metadata',
+            host: '10.201.54.162',
+            user: '',
+            pass: '',
+            port: 49016
+        },
+        MONGO_ANALISIS: {
+            db: 'analisis',
             host: '10.201.54.162',
             user: '',
             pass: '',
