@@ -28,35 +28,20 @@ const tamañoMaximoArchivo = 50 * 1024 * 1024;
 /**
  * @description Configuración de almacenamiento de Multer para gestionar la carga de archivos.
  *
- * Por ahora, si el archivo es un .apk, se almacenará en una ubicación específica. Si no es un .apk, se rechazará la carga.
+ * Guarda en una carpeta temporal el archivo con el nombre original.
  *
  * @constant {object}
  */
 const uploadStorage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const ext = path.extname(file.originalname).toLowerCase();
-    let uploadPath;
-    switch(ext){
-        case '.apk':
-            uploadPath = path.join(__dirname, '../../uploads');
-            break;
-        default:
-            throw new Error(`Extensión de archivo no permitida.`);
-    }
+    const uploadPath = path.join(__dirname, '../../temp');
     if (!fsSync.existsSync(uploadPath)) {
       fsSync.mkdirSync(uploadPath, { recursive: true });
     }
     cb(null, uploadPath);
   },
   filename: function (req, file, cb) {
-    const ext = path.extname(file.originalname).toLowerCase();
-    switch(ext){
-        case '.apk':
-            cb(null, file.originalname);
-            break;
-        default:
-            throw new Error(`Extensión de archivo no permitida.`);
-    }
+    cb(null, file.originalname); 
   }
 });
 
@@ -64,7 +49,6 @@ const uploadStorage = multer.diskStorage({
  * @description Filtro de archivos para Multer.
  *
  * Solo permite archivos con extensiones especificadas en `extensionesPermitidas`.
- * Si se trata de un .apk y ya existe en la carpeta destino, se rechaza la carga.
  *
  * @function fileFilter
  * @param {object} req - Objeto de solicitud Express.
@@ -75,14 +59,6 @@ const fileFilter = (req, file, cb) => {
   const ext = path.extname(file.originalname).toLowerCase();
   if (!extensionesPermitidas.includes(ext)) {
     return cb(new Error('Tipo de archivo no permitido'), false);
-  }
-  if (ext === '.apk') {
-    const targetDir =  path.join(__dirname, '../../uploads');
-    const targetPath = path.join(targetDir, file.originalname);
-    if (fsSync.existsSync(targetPath)) {
-      req.existingFilePath = targetPath;
-      return cb(null, false);
-    }
   }
   cb(null, true);
 };
@@ -163,39 +139,31 @@ async function descompilarApk(apkPath) {
 }
 
 /**
- * @description Sube un archivo utilizando Multer.
+ * @description Maneja la carga de un archivo utilizando Multer.
+ * 
+ * Almacena el archivo en una carpeta temporal y devuelve su ruta. Si ya existe un archivo con el mismo nombre, lo sobrescribe.
  *
- * Si ya existe un archivo con el mismo nombre, se devuelve su ruta.
- *
- * @function subirArchivo
+ * @function subirArchivoTemporal
  * @param {object} req - Objeto de solicitud Express.
  * @param {object} res - Objeto de respuesta Express.
- * @returns {Promise<Object>} Promesa que resuelve con un objeto JSON conteniendo la ruta del archivo.
- * @throws {Error} Si ocurre un error durante la carga o no se proporciona archivo.
+ * @returns {Promise<Object>} Promesa que resuelve con un objeto JSON conteniendo la ruta del archivo subido.
+ * @throws {Error} Si ocurre un error durante la carga o si no se proporciona un archivo válido.
  */
-function subirArchivo(req, res) {
+function subirArchivoTemporal(req, res) {
   return new Promise((resolve, reject) => {
     upload(req, res, (err) => {
       if (err) {
         return reject(err);
       }
 
-      if (req.existingFilePath) {
-        return resolve({
-          ok: true,
-          mensaje: "El archivo ya existía. Se devuelve el filePath del archivo existente.",
-          datos: {
-            filePath: req.existingFilePath
-          }
-        });
-      }
       if (!req.file) {
         return reject(new Error("No se ha proporcionado ningún archivo."));
       }
+
       const filePath = req.file.path;
       resolve({
         ok: true,
-        mensaje: "Archivo subido correctamente.",
+        mensaje: "Archivo subido correctamente a carpeta temporal.",
         datos: {
           filePath: filePath
         }
@@ -207,5 +175,5 @@ function subirArchivo(req, res) {
 module.exports = {
     buscarApk,
     descompilarApk,
-    subirArchivo,
+    subirArchivoTemporal,
 };

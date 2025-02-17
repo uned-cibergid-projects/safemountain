@@ -4,17 +4,27 @@ const util = require('util');
 const execAsync = util.promisify(exec);
 const path = require('path');
 const fs = require('fs');
+const { subirArchivoTemporal } = require('../utils/fileUtils');
 
 /**
- * @description Ejecuta el análisis de un archivo APK utilizando MobSF. Este método invoca la herramienta MobSF, la cual debe estar clonada y configurada
- * en la carpeta `mobsf` en el directorio tools/ del proyecto.
- *
- * @param {string} filePath - Ruta absoluta del archivo APK a analizar.
- * @returns {Promise<Object>} Promesa que resuelve con un objeto JSON con el resultado del análisis.
- * @throws {Error} Si ocurre un error durante la ejecución del análisis.
+ * @description Procesa y analiza un archivo APK utilizando MobSF. 
+ * Sube primero el APK a carpeta temporal, lo analiza y, una vez finalizado el proceso,
+ * elimina siempre el archivo temporal para evitar basura.
+ * 
+ * @param {Object} req - Objeto de solicitud HTTP, que contiene el archivo APK a analizar.
+ * @param {Object} res - Objeto de respuesta HTTP utilizado para la subida del archivo.
+ * @returns {Promise<Object>} Promesa que resuelve con un objeto que contiene los resultados del análisis.
+ * @throws {Error} Si ocurre un error durante la ejecución del análisis, lectura del archivo de resultados o almacenamiento del APK.
  */
-async function analizar(filePath) {
+
+async function analizar(req, res) {
+  
+  let filePath;
+
   try {
+    const uploadResult = await subirArchivoTemporal(req, res);
+    filePath = uploadResult.datos.filePath;
+
     const mobSFDir = path.join(__dirname, '../../tools/mobsf');
     const resultDir = path.join(mobSFDir, 'results');
 
@@ -40,7 +50,22 @@ async function analizar(filePath) {
       const fileContent = await fs.promises.readFile(jsonFile, 'utf8');
       analisisData = JSON.parse(fileContent);
     } catch (readError) {
-      throw new Error(`No se obtuvo salida del análisis: ${readError}`);
+      throw new Error(`No se pudo realizar un análisis de forma correcta: ${readError}`);
+    }
+
+    const baseDir = '/home/dblancoaza/SafeMountain/nfs/incibePro/analisisAplicaciones/datasets/hostApks/social';
+    const finalDir = path.join(baseDir, analisisData.package_name);
+    const finalPath = path.join(finalDir, analisisData.file_name);
+
+    if (!fs.existsSync(finalDir)) {
+      fs.mkdirSync(finalDir, { recursive: true });
+    }
+
+    if (fs.existsSync(finalPath)) {
+      console.log(`La APK ya estaba guardada previamente en ${finalPath}.`);
+    } else {
+      fs.renameSync(filePath, finalPath);
+      console.log(`La APK se ha guardado con éxito en ${finalPath}.`);
     }
 
     return {
@@ -52,6 +77,16 @@ async function analizar(filePath) {
     };
   } catch (error) {
     throw new Error(`Error al analizar el archivo con MobSF: ${error.message}`);
+
+  } finally {
+    if (filePath && fs.existsSync(filePath)) {
+      try {
+        fs.unlinkSync(filePath);
+        console.log(`Archivo temporal ${filePath} eliminado.`);
+      } catch (err) {
+        console.error(`Error eliminando archivo temporal: ${err.message}`);
+      }
+    }
   }
 }
 
