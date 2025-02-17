@@ -44,13 +44,22 @@ TOOLS.comprobarCarpetaYCrear(CONFIG)
 
 debug('process.cwd()',process.cwd())
 
-debug(`Entorno: ${[process.env.NODE_ENV]}\n
-VERSION: ${CONFIG.VERSION}\n
-MONGO_HOST:${CONFIG.MONGO.host}\n
-MONGO_DB:${CONFIG.MONGO.db}\n
-MONGO_PORT:${CONFIG.MONGO.port}\n
-APP_LISTEN_PORT:${CONFIG.PORT}\n
-`);
+debug(`
+  Entorno: ${process.env.NODE_ENV}
+  VERSION: ${CONFIG.VERSION}
+  
+  --- METADATA ---
+  MONGO_HOST_METADATA: ${CONFIG.MONGO_METADATA.host}
+  MONGO_DB_METADATA:   ${CONFIG.MONGO_METADATA.db}
+  MONGO_PORT_METADATA: ${CONFIG.MONGO_METADATA.port}
+  
+  --- ANALISIS ---
+  MONGO_HOST_ANALISIS: ${CONFIG.MONGO_ANALISIS.host}
+  MONGO_DB_ANALISIS:   ${CONFIG.MONGO_ANALISIS.db}
+  MONGO_PORT_ANALISIS: ${CONFIG.MONGO_ANALISIS.port}
+  
+  APP_LISTEN_PORT: ${CONFIG.PORT}
+  `);
 
 
 // versiones básicas instaladas

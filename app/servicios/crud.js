@@ -8,7 +8,7 @@
 const debug = require('debug')('gcono:crud');
 debug('CRUD Versión: 3.0.1')
 
-const {colecciones} = require('./modelos/appCollector.model')
+const {colecciones} = require('./modelos/metadata.model')
 
 module.exports = {
     contar: contar, 
