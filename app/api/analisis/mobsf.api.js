@@ -13,11 +13,8 @@ module.exports = (app, ruta) => {
      */
     app.route(`${ruta}/analizar`)
         .post(async (req, res, next) => {
-            try {
-                const uploadResult = await subirArchivo(req, res);
-                const filePath = uploadResult.datos.filePath;
-                
-                const result = await MOBSF.analizar(filePath);
+            try {              
+                const result = await MOBSF.analizar(req, res);
                 res.status(200).json(result);
             } catch (err) {
                 next(err);
