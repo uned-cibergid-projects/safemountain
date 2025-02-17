@@ -1,3 +1,10 @@
+/** 
+ * @module modAnalisis/mobsf
+ * 
+ * @description Funciones para analizar APKs con MobSF.
+ * @see mobsf_api
+ */
+
 'use strict';
 const { exec } = require('child_process');
 const util = require('util');
