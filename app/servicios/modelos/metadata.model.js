@@ -6,6 +6,7 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const { metadataConnection } = require('../mongoose');
 
 /**
  * @swagger
@@ -375,20 +376,8 @@ const versionSchema  = new Schema(
 	}, { collection: 'versions' }
 );
 
-const apks = mongoose.model('apks', apkSchema)
-const tpls = mongoose.model('tpls', tplSchema)
-const versions = mongoose.model('versions', versionSchema); 
+const apks = metadataConnection().model('apks', apkSchema)
+const tpls = metadataConnection().model('tpls', tplSchema)
+const versions = metadataConnection().model('versions', versionSchema); 
 
-const colecciones = {
-	apks: {
-		modelo: apks
-	},
-	tpls: {
-		modelo: tpls
-	},
-	versions: {
-	  	modelo: versions
-	}
-};
-
-module.exports = { colecciones };
+module.exports = { apks, tpls, versions };

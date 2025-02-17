@@ -8,8 +8,6 @@
 const debug = require('debug')('gcono:crud');
 debug('CRUD Versión: 3.0.1')
 
-const {colecciones} = require('./modelos/metadata.model')
-
 module.exports = {
     contar: contar, 
     leerId:leerId,
@@ -32,14 +30,14 @@ module.exports = {
  * 
  * @function contar
  * @param {Object} [filtro={}] - Criterios de búsqueda para contar documentos.
- * @param {string} coleccion - Nombre de la colección en la que se realizará la operación.
+ * @param {string} coleccion - Modelo Mongoose correspondiente a la colección.
  * @returns {Promise<Object>} Una promesa que resuelve con el número de documentos contados y el estado de la operación.
  * @throws {Error} Si ocurre un error durante la operación, lanza un error con detalles del contexto.
  */
 function contar(filtro={}, coleccion){
     let promesa = (resolve,reject) =>{
 
-        const MODELO = colecciones[coleccion].modelo;
+        const MODELO = coleccion;
 
         MODELO.countDocuments(filtro)
             .then(cuenta => {
@@ -61,13 +59,13 @@ function contar(filtro={}, coleccion){
  * 
  * @function leerId
  * @param {string} id - El identificador único del documento a recuperar.
- * @param {string} coleccion - Nombre de la colección en la que se realizará la búsqueda.
+ * @param {string} coleccion - Modelo Mongoose correspondiente a la colección.
  * @returns {Promise<Object>} Una promesa que resuelve con el documento recuperado y el estado de la operación.
  * @throws {Error} Si ocurre un error durante la operación o el documento no se encuentra, lanza un error con detalles del contexto.
  */
 function leerId(id, coleccion){
     let promesa = (resolve,reject) =>{
-        const MODELO = colecciones[coleccion].modelo;
+        const MODELO = coleccion;
         MODELO.findById(id).lean()
             .then(registro =>{
                 if (!registro){
@@ -96,7 +94,7 @@ function leerId(id, coleccion){
  * @param {Object} [opciones.campos] - Campos a seleccionar en los documentos.
  * @param {number} [opciones.limite] - Número máximo de documentos a recuperar.
  * @param {number} [opciones.skip] - Número de documentos a omitir para paginación.
- * @param {string} coleccion - Nombre de la colección en la que se realizará la consulta.
+ * @param {string} coleccion - Modelo Mongoose correspondiente a la colección.
  * @returns {Promise<Object>} Una promesa que resuelve con los documentos recuperados y el estado de la operación.
  * @throws {Error} Si ocurre un error durante la operación, lanza un error con detalles del contexto.
  */
@@ -113,7 +111,7 @@ function leerCampo(opciones, coleccion){
         if(opciones.hasOwnProperty('campos') && opciones.campos != null && opciones.campos !='') campos = opciones.campos;
         if(opciones.hasOwnProperty('limite') && opciones.limite != null && opciones.limite !='') limite = opciones.limite;
         if(opciones.hasOwnProperty('skip') && opciones.skip != null && opciones.skip !='') skip = opciones.skip;
-        const MODELO = colecciones[coleccion].modelo;
+        const MODELO = coleccion;
         if(limite== 1){
             MODELO.findOne(filtro).lean()
                 .sort(orden)
@@ -168,7 +166,7 @@ function leerCampo(opciones, coleccion){
  * 
  * @function nuevo
  * @param {Object} reg - Datos del nuevo documento a insertar.
- * @param {string} coleccion - Nombre de la colección en la que se realizará la operación.
+ * @param {string} coleccion - Modelo Mongoose correspondiente a la colección.
  * @param {Object} [opciones] - Opciones adicionales como tipo, mensaje y acción.
  * @param {string} [opciones.tipo="log"] - Tipo de operación.
  * @param {string} [opciones.mensaje=""] - Mensaje adicional para el log.
@@ -179,7 +177,7 @@ function leerCampo(opciones, coleccion){
 function nuevo(reg, coleccion, {tipo="log", mensaje="", accion="nuevo"}= {}){    
     let promesa = async (resolve,reject) =>{
         try{
-            const MODELO = colecciones[coleccion].modelo;
+            const MODELO = coleccion;
             const nuevoRegistro = await MODELO.create(reg)
 
             if (!nuevoRegistro){
@@ -222,7 +220,7 @@ function nuevo(reg, coleccion, {tipo="log", mensaje="", accion="nuevo"}= {}){
  * @function modificarId
  * @param {string} id - Identificador único del documento a modificar.
  * @param {Object} reg - Nuevos datos para actualizar el documento.
- * @param {string} coleccion - Nombre de la colección en la que se realizará la operación.
+ * @param {string} coleccion - Modelo Mongoose correspondiente a la colección.
  * @param {Object} [options] - Opciones adicionales como tipo, mensaje y acción.
  * @param {string} [options.tipo="log"] - Tipo de operación.
  * @param {string} [options.mensaje=""] - Mensaje adicional para el log.
@@ -233,7 +231,7 @@ function nuevo(reg, coleccion, {tipo="log", mensaje="", accion="nuevo"}= {}){
 function modificarId(id, reg, coleccion, {tipo="log", mensaje="", accion="modificar"}= {}){
     let promesa = async (resolve,reject) =>{
         try{
-            const MODELO = colecciones[coleccion].modelo;
+            const MODELO = coleccion;
             delete reg._id;
             delete reg.f_modificacion;
 
@@ -279,7 +277,7 @@ function modificarId(id, reg, coleccion, {tipo="log", mensaje="", accion="modifi
  * @function modificarUno
  * @param {Object} filtro - Criterios para identificar el documento a modificar.
  * @param {Object} reg - Nuevos datos para actualizar el documento.
- * @param {string} coleccion - Nombre de la colección en la que se realizará la operación.
+ * @param {string} coleccion - Modelo Mongoose correspondiente a la colección.
  * @param {Object} [options] - Opciones adicionales como tipo, mensaje y acción.
  * @param {string} [options.tipo="log"] - Tipo de operación.
  * @param {string} [options.mensaje=""] - Mensaje adicional para el log.
@@ -290,7 +288,7 @@ function modificarId(id, reg, coleccion, {tipo="log", mensaje="", accion="modifi
 function modificarUno(filtro, reg, coleccion, {tipo="log", mensaje="", accion="modificar"}= {}){
     let promesa = async (resolve,reject) =>{
         try{
-            const MODELO = colecciones[coleccion].modelo;
+            const MODELO = coleccion;
             delete reg._id;
             delete reg.f_modificacion;
             
@@ -330,7 +328,7 @@ function modificarUno(filtro, reg, coleccion, {tipo="log", mensaje="", accion="m
  * 
  * @function borrar
  * @param {string} id - Identificador único del documento a eliminar.
- * @param {string} coleccion - Nombre de la colección en la que se realizará la operación.
+ * @param {string} coleccion - Modelo Mongoose correspondiente a la colección.
  * @param {Object} [options] - Opciones adicionales como tipo, mensaje y acción.
  * @param {string} [options.tipo="log"] - Tipo de operación.
  * @param {string} [options.mensaje=""] - Mensaje adicional para el log.
@@ -341,7 +339,7 @@ function modificarUno(filtro, reg, coleccion, {tipo="log", mensaje="", accion="m
 function borrar(id, coleccion, {tipo="log", mensaje="", accion="borrar"}= {}){
     let promesa = async (resolve,reject) =>{
         try{
-            const MODELO = colecciones[coleccion].modelo;
+            const MODELO = coleccion;
             const resultado = await MODELO.deleteOne({_id:id})
             
             if(resultado.deletedCount < 1){
@@ -377,7 +375,7 @@ function borrar(id, coleccion, {tipo="log", mensaje="", accion="borrar"}= {}){
  * 
  * @function borrarVarios
  * @param {Object} filtro - Criterios para identificar los documentos a eliminar.
- * @param {string} coleccion - Nombre de la colección en la que se realizará la operación.
+ * @param {string} coleccion - Modelo Mongoose correspondiente a la colección.
  * @param {Object} [options] - Opciones adicionales como tipo, mensaje y acción.
  * @param {string} [options.tipo="log"] - Tipo de operación.
  * @param {string} [options.mensaje=""] - Mensaje adicional para el log.
@@ -388,7 +386,7 @@ function borrar(id, coleccion, {tipo="log", mensaje="", accion="borrar"}= {}){
 function borrarVarios(filtro, coleccion, {tipo="log", mensaje="", accion="borrarVarios"}= {}){
     let promesa = async (resolve,reject) =>{
         try{
-            const MODELO = colecciones[coleccion].modelo;
+            const MODELO = coleccion;
             const resultado = await MODELO.deleteMany(filtro)
 
             if(resultado.deletedCount < 1){
@@ -424,7 +422,7 @@ function borrarVarios(filtro, coleccion, {tipo="log", mensaje="", accion="borrar
  * @function modificarVarios
  * @param {Object} buscar - Criterios para identificar los documentos a modificar.
  * @param {Object} actualizacion - Datos que se usarán para actualizar los documentos encontrados.
- * @param {string} coleccion - Nombre de la colección en la que se realizará la operación.
+ * @param {string} coleccion - Modelo Mongoose correspondiente a la colección.
  * @param {Object} [options] - Opciones adicionales como tipo, mensaje y acción.
  * @param {string} [options.tipo="log"] - Tipo de operación.
  * @param {string} [options.mensaje=""] - Mensaje adicional para el log.
@@ -435,7 +433,7 @@ function borrarVarios(filtro, coleccion, {tipo="log", mensaje="", accion="borrar
 function modificarVarios(filtro, actualizacion, coleccion, {tipo="log", mensaje="", accion="modificarVarios"}= {}){
     let promesa = async (resolve,reject) =>{
         try{
-            const MODELO = colecciones[coleccion].modelo;
+            const MODELO = coleccion;
             const resultado = await MODELO.updateMany(filtro, actualizacion)
                 if (resultado.n==0) {
                     resolve({ok:false, mensaje: coleccion +'. Modificar: No se encuentran registros en la búsqueda= '+ JSON.stringify(filtro).replace(/\"/g,""), datos:''});
@@ -466,7 +464,7 @@ function modificarVarios(filtro, actualizacion, coleccion, {tipo="log", mensaje=
  * 
  * @function insertarVarios
  * @param {Array<Object>} registros - Array de documentos a insertar.
- * @param {string} coleccion - Nombre de la colección en la que se realizará la operación.
+ * @param {string} coleccion - Modelo Mongoose correspondiente a la colección.
  * @param {Object} [options] - Opciones adicionales como tipo, mensaje y acción.
  * @param {string} [options.tipo="log"] - Tipo de operación.
  * @param {string} [options.mensaje=""] - Mensaje adicional para el log.
@@ -477,7 +475,7 @@ function modificarVarios(filtro, actualizacion, coleccion, {tipo="log", mensaje=
 function insertarVarios(registros, coleccion, {tipo="log", mensaje="", accion="insertarVarios"}= {}){
     let promesa = async (resolve, reject)=>{
         try{
-            const MODELO = colecciones[coleccion].modelo;
+            const MODELO = coleccion;
             const docs = await MODELO.insertMany(registros)
             resolve({
                 ok:true,
@@ -658,9 +656,9 @@ function nuevoArray(array, coleccion, {tipo='log', mensaje='', accion="nuevo"}= 
  * @returns {Promise<void>} Una promesa que se resuelve cuando el log es registrado exitosamente.
  * @throws {Error} Si ocurre un error durante la operación, lanza un error con detalles del contexto.
  */
-async function grabarLog(log){
+async function grabarLog(log, coleccion){
     try{
-        const MODELO = colecciones['Log'].modelo;
+        const MODELO = coleccion;
         const nuevoReg = await MODELO.create(log)
         return
     }catch(err){

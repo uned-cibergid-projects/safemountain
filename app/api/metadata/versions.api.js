@@ -1,5 +1,5 @@
 'use strict';
-const VERSIONS = require('../../modAppCollector/versions.js');
+const VERSIONS = require('../../modMetadata/versions.js');
 
 module.exports = (app, ruta) => {
     
