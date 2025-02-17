@@ -1,26 +1,26 @@
 /** 
- * @module modAppCollector/tpls
+ * @module modMetadata/versions
  * 
- * @description Funciones para gestionar TPLs en el módulo modAppCollector.
+ * @description Funciones para gestionar versions en el módulo modMetadata.
  * 
- * @see tpls_api
+ * @see versions_api
  */
 
 'use strict'
-const COLECCION = 'tpls';
+const COLECCION = require('../servicios/modelos/metadata.model').versions
 const CRUD = require('../servicios/crud');
 
 module.exports = {
     leerId:leerId,
-    leerCampo:leerCampo,
+    leerCampo:leerCampo
 }
 
 /**
- * @description Lee una TPL por su identificador único.
+ * @description Lee una version por su identificador único.
  *
  * @function leerId
- * @param {string} id - El identificador único de la TPL que se desea recuperar.
- * @returns {Promise<Object>} Una promesa que resuelve con el objeto TPL correspondiente al ID especificado.
+ * @param {string} id - El identificador único de la version que se desea recuperar.
+ * @returns {Promise<Object>} Una promesa que resuelve con el objeto version correspondiente al ID especificado.
  * @throws {Error} Si la operación falla, se lanza un error.
  */
 function leerId(id){
@@ -34,15 +34,15 @@ function leerId(id){
 }
 
 /**
- * @description Recupera múltiples TPLs basándose en criterios de búsqueda específicos.
+ * @description Recupera múltiples versions basándose en criterios de búsqueda específicos.
  *
  * @function leerCampo
- * @param {Object} opciones - Las opciones para la consulta de TPLs.
+ * @param {Object} opciones - Las opciones para la consulta de versions.
  * @param {Object} [opciones.filtro] - Criterios de búsqueda como pares clave-valor.
  * @param {Object} [opciones.orden] - Especificación del orden de los resultados.
- * @param {Object} [opciones.campos] - Campos a seleccionar de los documentos TPL.
- * @param {number} [opciones.limite] - Número máximo de registros TPL a recuperar.
- * @param {number} [opciones.skip] - Número de registros TPL a omitir para paginación.
+ * @param {Object} [opciones.campos] - Campos a seleccionar de los documentos version.
+ * @param {number} [opciones.limite] - Número máximo de registros version a recuperar.
+ * @param {number} [opciones.skip] - Número de registros version a omitir para paginación.
  * @returns {Promise<Object>} Una promesa que resuelve con un objeto que contiene el estado de la operación y los datos recuperados.
  * @throws {Error} Si la operación falla, se lanza un error con propiedades adicionales para contexto.
  */

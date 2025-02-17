@@ -7,6 +7,7 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const { analisisConnection } = require('../mongoose');
 
 /**
  * @swagger
@@ -330,7 +331,7 @@ const analysisSchema = new Schema(
   }
 );
 
-const analysis = mongoose.model('analysis', analysisSchema);
+const analysis = analisisConnection().model('analysis', analysisSchema);
 
 
 module.exports = {

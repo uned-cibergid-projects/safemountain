@@ -1,5 +1,5 @@
 'use strict';
-const APKS = require('../../modAppCollector/apks.js');
+const APKS = require('../../modMetadata/apks.js');
 
 module.exports = (app, ruta) => {
     

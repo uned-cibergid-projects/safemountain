@@ -1,14 +1,14 @@
 /** 
- * @module modAppCollector/apks
+ * @module modMetadata/apks
  * 
- * @description Funciones para gestionar APKs en el módulo modAppCollector.
+ * @description Funciones para gestionar APKs en el módulo modMetadata.
  * 
  * @see apks_api
  */
 
 'use strict';
-const COLECCION = 'apks';
 const CRUD = require('../servicios/crud');
+const COLECCION = require('../servicios/modelos/metadata.model').apks
 
 module.exports = {
     leerId: leerId,

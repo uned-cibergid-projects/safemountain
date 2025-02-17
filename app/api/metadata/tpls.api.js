@@ -1,5 +1,5 @@
 'use strict';
-const TPLS = require('../../modAppCollector/tpls.js');
+const TPLS = require('../../modMetadata/tpls.js');
 
 module.exports = (app, ruta) => {
     
