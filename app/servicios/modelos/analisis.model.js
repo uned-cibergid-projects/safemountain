@@ -239,7 +239,7 @@ const { analisisConnection } = require('../mongoose');
 
 /**
  * @description Modelo Mongoose para los análisis (Analysis).
- * @typedef {Object} analysis
+ * @typedef {Object} analysisSchema
  * @property {string} file_name - Nombre del archivo APK o TPL.
  * @property {string} app_name - Nombre de la aplicación.
  * @property {string} app_type - Tipo de la aplicación (apk o tpl).
