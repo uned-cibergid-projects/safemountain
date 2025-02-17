@@ -1,0 +1,12 @@
+# Elementos a ignorar
+*.log
+ProcessLog.txt
+Process.txt
+mobsf_env/*
+!mobsf_env/
+.pycache/
+process/input/*
+process/output/*
+.venv
+.idea
+.cadence

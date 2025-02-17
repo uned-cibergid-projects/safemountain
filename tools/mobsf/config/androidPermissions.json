@@ -1,0 +1,58 @@
+{
+    "groups" : {
+        "CAMERA": "Allows access to the device's camera for capturing photos or videos.",
+        "MICROPHONE": "Grants access to the device's microphone for recording audio.",
+        "PHONE_CALL": "Allows managing and making phone calls, including accessing call logs.",
+        "SENSOR": "Provides access to device sensors like accelerometer, gyroscope, or heart rate monitor.",
+        "SMS": "Allows sending, receiving, and reading SMS messages.",
+        "CALENDAR": "Grants access to the user's calendar events and event creation.",
+        "CONTACTS": "Allows access to read and modify the user's contact list.",
+        "LOCATION": "Provides access to the device's location, including GPS data.",
+        "STORAGE": "Allows reading and writing data to the device's storage, such as files and media.",
+        "PERSISTENTID": "Grants access to unique device identifiers, such as serial numbers or hardware IDs."
+    },
+    "permissions":{
+          "CALENDAR": {
+            "READ_CALENDAR": "Allows the application to access and read calendar events, including details such as event descriptions and attendee information.",
+            "WRITE_CALENDAR": "Enables the application to create, update, or delete events in the user's calendar."
+          },
+          "CAMERA": {
+            "CAMERA": "Grants the application the ability to capture photos and record videos using the device's camera."
+          },
+          "CONTACTS": {
+            "READ_CONTACTS": "Allows the application to access and read the user's contact information, including names, phone numbers, and email addresses.",
+            "WRITE_CONTACTS": "Permits the application to add or modify contacts in the user's address book.",
+            "GET_ACCOUNTS": "Authorizes the application to access a list of accounts available on the device, such as email or social media accounts."
+          },
+          "LOCATION": {
+            "ACCESS_FINE_LOCATION": "Allows the application to determine the user's precise location using GPS or other location sources.",
+            "ACCESS_COARSE_LOCATION": "Permits the application to access the user's approximate location, typically derived from network-based sources."
+          },
+          "MICROPHONE": {
+            "RECORD_AUDIO": "Allows the application to capture audio from the device's microphone for recording or streaming purposes."
+          },
+          "PHONE": {
+            "READ_PHONE_STATE":"Grants the application access to information about the device's current state, including phone number, network details, and active calls.",
+            "CALL_PHONE": "Enables the application to initiate outgoing phone calls without user intervention.",
+            "READ_CALL_LOG": "Allows the application to access and read the call history, including details of incoming, outgoing, and missed calls.",
+            "WRITE_CALL_LOG": "Permits the application to modify entries in the call history, such as deleting or editing call records.",
+            "ADD_VOICEMAIL": "Enables the application to create and store voicemail messages in the system.",
+            "USE_SIP": "Authorizes the application to make Internet-based (VoIP) calls using the SIP protocol.",
+            "ANSWER_PHONE_CALLS": "Allows the application to answer incoming phone calls programmatically."
+          },
+          "SENSORS": {
+            "BODY_SENSORS": "Grants the application access to data from body-worn sensors, such as heart rate monitors and activity trackers."
+          },
+          "SMS": {
+            "SEND_SMS": "Allows the application to send SMS messages from the device.",
+            "RECEIVE_SMS": "Permits the application to receive SMS messages and notify the user.",
+            "READ_SMS": "Authorizes the application to read incoming and stored SMS messages.",
+            "RECEIVE_WAP_PUSH": "Allows the application to receive WAP push messages for additional functionality, such as service notifications.",
+            "RECEIVE_MMS": "Enables the application to monitor and handle incoming multimedia messages (MMS)."
+          },
+          "STORAGE": {
+            "READ_EXTERNAL_STORAGE": "Grants the application access to read data stored on the device's external storage, such as photos and documents.",
+            "WRITE_EXTERNAL_STORAGE": "Enables the application to save or modify data on the device's external storage."
+          }
+    }
+}

@@ -1,0 +1,33 @@
+{
+    "environment": {
+        "realPath": "",
+        "inputPath": "process/input",
+        "outputPath": "process/output",
+        ".pycache": ".pycache",
+        "configPath": "config",
+        "tools": "tools"
+    },
+    "storage": {
+        "nfs": "/mnt/nfs/analisisAplicaciones/datasets/corpusNLP/"
+
+    },
+    "defaults": {
+        "model": ""
+
+    },
+    "mongo": {
+        "MONGO_CONNECT": "mongodb://10.201.54.162:49016/",
+        "MONGO_ANALISIS_DB": "analisis",
+        "MONGO_STATIC_COL": "estatico",
+        "MONGO_METADATA_DB": "metadata",
+        "MONGO_APK_COL": "apks",
+        "limitOlder": 5,
+        "limitBatch": 30
+    },
+    "settings": {
+        "NIAP_ENABLED": 1,
+        "SAST_TIMEOUT": 50,
+        "EFR_01": 1
+
+    }
+}

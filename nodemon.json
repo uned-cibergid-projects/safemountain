@@ -1,0 +1,9 @@
+{
+  "ignore": [
+    "tools/mobsf/**",
+    "uploads/**",
+    "*.log",
+    "*.tmp",
+    "tools/mobsf/results/**/*.json"
+  ]
+}
