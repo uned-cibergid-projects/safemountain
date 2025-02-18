@@ -60,8 +60,9 @@ async function analizar(req, res) {
       throw new Error(`No se pudo realizar un análisis de forma correcta: ${readError}`);
     }
 
-    const baseDir = '/home/dblancoaza/SafeMountain/nfs/incibePro/analisisAplicaciones/datasets/hostApks/social';
-    const finalDir = path.join(baseDir, analisisData.package_name);
+    const baseDir = '/home/dblancoaza/SafeMountain/nfs/incibePro/analisisAplicaciones/datasets/hostApks';
+    const categoryDir = path.join(baseDir, analisisData.playstore_details.genre.toLowerCase());
+    const finalDir = path.join(categoryDir, analisisData.package_name);
     const finalPath = path.join(finalDir, analisisData.file_name);
 
     if (!fs.existsSync(finalDir)) {
@@ -79,7 +80,9 @@ async function analizar(req, res) {
       ok: true,
       mensaje: "Archivo analizado correctamente",
       datos: {
-        analisis: analisisData
+        category: analisisData.playstore_details.genre.toLowerCase(),
+        package: analisisData.package_name,
+        name: analisisData.file_name,
       }
     };
   } catch (error) {
