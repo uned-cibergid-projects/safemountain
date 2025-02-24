@@ -12,6 +12,10 @@ const execAsync = util.promisify(exec);
 const path = require('path');
 const fs = require('fs');
 const { subirArchivoTemporal } = require('../utils/fileUtils');
+const APKS = require('../modMetadata/apks');
+const CRUD = require('../servicios/crud');
+const COLECCION = require('../servicios/modelos/analisis.model').estatico
+
 
 /**
  * @description Procesa y analiza un archivo APK utilizando MobSF. 
@@ -56,6 +60,7 @@ async function analizar(req, res) {
     try {
       const fileContent = await fs.promises.readFile(jsonFile, 'utf8');
       analisisData = JSON.parse(fileContent);
+      analisisData.name = path.parse(analisisData.file_name).name;
     } catch (readError) {
       throw new Error(`No se pudo realizar un análisis de forma correcta: ${readError}`);
     }
@@ -74,6 +79,37 @@ async function analizar(req, res) {
     } else {
       fs.renameSync(filePath, finalPath);
       console.log(`La APK se ha guardado con éxito en ${finalPath}.`);
+    }
+
+    
+    const { ok: okApk, datos: datosApk } = await APKS.leerCampo(
+      {
+      filtro: { name: analisisData.name },
+      limite: 1
+      }
+    );
+
+    if (!okApk || !datosApk) {
+      await APKS.guardarMetadata(analisisData);
+    }
+    
+    const { ok: okCrud, datos: datosCrud } = await CRUD.leerCampo(
+      {
+        filtro: { package_name: analisisData.package_name },
+        limite: 1
+      },
+      COLECCION
+    );
+
+    if (!okCrud || !datosCrud) {
+      const { ok: okNuevo, datos: docInsertado } = await CRUD.nuevo(analisisData, COLECCION);
+      if (!okNuevo) {
+        console.log('No se pudo insertar el documento en la colección Apks.');
+      } else {
+        console.log('Documento insertado correctamente en la colección Apks:');
+      }
+    } else {
+      console.log('Ya existe un documento con el mismo package_name en la BD. No se inserta.');
     }
 
     return {

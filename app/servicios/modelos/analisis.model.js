@@ -1,5 +1,5 @@
 /**
- * @module servicios/modelos/analysis
+ * @module servicios/modelos/analisis
  *
  * @description Schema y modelo para almacenar el resultado del análisis de una APK o TPL,
  *              incluyendo certificados, permisos, análisis de malware, binario, manifest, etc.
@@ -13,7 +13,7 @@ const { analisisConnection } = require('../mongoose');
  * @swagger
  * components:
  *   schemas:
- *     Analysis:
+ *     Estatico:
  *       type: object
  *       required:
  *         - file_name
@@ -238,8 +238,8 @@ const { analisisConnection } = require('../mongoose');
  */
 
 /**
- * @description Modelo Mongoose para los análisis (Analysis).
- * @typedef {Object} analysisSchema
+ * @description Modelo Mongoose para los análisis estático (Estatico).
+ * @typedef {Object} estaticoSchema
  * @property {string} file_name - Nombre del archivo APK o TPL.
  * @property {string} app_name - Nombre de la aplicación.
  * @property {string} app_type - Tipo de la aplicación (apk o tpl).
@@ -282,7 +282,7 @@ const { analisisConnection } = require('../mongoose');
  * @property {string[]} [secrets] - Llaves/tokens hallados.
  * @property {Mixed} [sbom] - Software Bill of Materials.
  */
-const analysisSchema = new Schema(
+const estaticoSchema = new Schema(
   {
     file_name: { type: String, required: true },
     app_name: { type: String, required: true },
@@ -327,13 +327,13 @@ const analysisSchema = new Schema(
     sbom: { type: Schema.Types.Mixed },
   },
   {
-    collection: 'analysis',
+    collection: 'estatico',
   }
 );
 
-const analysis = analisisConnection().model('analysis', analysisSchema);
+const estatico = analisisConnection().model('estatico', estaticoSchema);
 
 
 module.exports = {
-  analysis,
+  estatico,
 };
