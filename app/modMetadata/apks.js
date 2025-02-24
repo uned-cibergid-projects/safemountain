@@ -9,10 +9,13 @@
 'use strict';
 const CRUD = require('../servicios/crud');
 const COLECCION = require('../servicios/modelos/metadata.model').apks
+const { exec } = require('child_process');
+const path = require('path');
 
 module.exports = {
     leerId: leerId,
     leerCampo: leerCampo,
+    guardarMetadata: guardarMetadata
 };
 
 /**
@@ -52,4 +55,42 @@ function leerCampo(opciones){
             .catch(err => reject(err));
     }
     return new Promise(promesa);
+}
+
+
+async function guardarMetadata(data){
+    try {
+        const appCollectorDir = path.join(__dirname, '../../tools/appcollector');
+        const pythonEnv = path.join(appCollectorDir, 'appcollector_env', 'bin', 'python3');
+        const pythonScriptPath = path.join(appCollectorDir, 'sources', 'dataCollectors', 'getHostAppsMetadata.py');
+
+        const dataBasica = {
+            "name": data.name,
+            "package": data.package_name,
+            "category": data.playstore_details.genre.toLowerCase()
+        }
+
+        const dataBasicaJson = JSON.stringify(dataBasica);
+
+        const cmd = `"${pythonEnv}" "${pythonScriptPath}" '${dataBasicaJson}'`;
+
+        console.log(`Ejecutando comando: ${cmd}`);
+
+        await new Promise((resolve, reject) => {
+            exec(cmd, (error, stdout, stderr) => {
+              if (error) {
+                return reject(new Error(`Error ejecutando script: ${error.message}\nStderr: ${stderr}`));
+              }
+              console.log('Salida estándar (stdout):', stdout);
+              console.log('Errores (stderr):', stderr);
+              resolve();
+            });
+          });
+
+          console.log('Metadata guardada correctamente en MongoDB');
+
+    } catch (error) {
+        throw new Error(`Error al guardar metadata en MongoDB de la APK ${data.package_name}: ${error.message}`);
+    }
+
 }

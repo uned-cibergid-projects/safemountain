@@ -6,6 +6,10 @@
 import os
 import shutil
 import json
+import sys
+
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+sys.path.append(BASE_DIR)
 
 from sources.common.common import logger, processControl, log_
 from sources.common.paramsManager import getConfigs
