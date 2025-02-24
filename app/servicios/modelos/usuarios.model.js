@@ -143,8 +143,16 @@ const usuarioSchema = new Schema(
     username: { type: String, unique: true, required: true },
     email: { type: String, unique: true, required: true },
     passwordHash: { type: String, required: true },
-    rol: { type: String, enum: ['basico', 'administrador', 'investigador'], required: true },
-    estado: { type: String, enum: ['activo', 'suspendido', 'eliminado'], default: 'activo' },
+    rol: { 
+      type: String, 
+      enum: ['basico', 'administrador', 'investigador'], 
+      required: true 
+    },
+    estado: { 
+      type: String, 
+      enum: ['activo', 'suspendido', 'eliminado'], 
+      default: 'activo' 
+    },
     fechaRegistro: { type: Date, default: Date.now },
     ultimaActividad: { type: Date, default: null },
     telefono: { type: String, default: null },
@@ -159,6 +167,7 @@ const usuarioSchema = new Schema(
       ultimoLogin: { type: Date, default: null },
       autenticacionDosFactores: { type: Boolean, default: false },
       proveedor: { type: String, enum: ['local', 'google', 'github'], default: 'local' },
+      secret2FA: { type: String, default: null },
     },
     estadisticas: {
       analisisRealizados: { type: Number, default: 0 },
@@ -169,7 +178,6 @@ const usuarioSchema = new Schema(
   { collection: 'usuarios' }
 );
 
-// Crear el modelo de usuario con la conexión adecuada
 const usuarios = usuariosConnection().model('usuarios', usuarioSchema);
 
 module.exports = { usuarios };
