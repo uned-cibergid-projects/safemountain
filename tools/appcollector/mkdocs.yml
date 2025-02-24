@@ -1,0 +1,50 @@
+site_name: AppCollector
+docs_dir: docs
+use_directory_urls: false
+theme:
+  name: 'material'
+  palette:
+    scheme: slate  # Modo oscuro por defecto
+    primary: 'indigo'
+    accent: 'indigo'
+    toggle:
+      icon: material/light-dark
+      name: Switch between Light and Dark mode
+  font:
+    text: 'Roboto'
+    code: 'Roboto Mono'
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - search.share
+    - search.highlight
+nav:
+  - Home: index.md
+  - Data Collectors:
+      - getHostAppsList: dataCollectors/getHostAppsList.md
+      - getHostAppsMetadata: dataCollectors/getHostAppsMetadata.md
+      - getTPLsDirectories: dataCollectors/getTPLsDirectories.md
+      - getTPLsMetadata: dataCollectors/getTPLsMetadata.md
+      - utils: dataCollectors/utils.md
+  - Downloaders:
+      - getHostApks: downloaders/getHostApks.md
+      - getTpls: downloaders/getTpls.md
+      - utils: downloaders/utils.md
+  - File System Utils: fileSystemUtils.md
+  - Logger: logger.md
+markdown_extensions:
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.tasklist
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: sphinx  # Especificar el estilo Sphinx

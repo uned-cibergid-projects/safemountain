@@ -1,0 +1,23 @@
+.idea
+
+# Entorno virtual de Python
+appcollector_env/
+
+# Ignorar archivos en logs, pero permitir la carpeta logs
+logs/*
+
+!logs/
+
+# Ignorar todos los archivos dentro de las carpetas hostApks, hostAppsList y hostTpls, sin ignorar las carpetas en si.
+hostApks/*
+hostAppsList/*
+hostTpls/*
+results/libloom/*
+
+!hostApks/
+!hostAppsList/
+!hostTpls/
+!results/libloom/detection
+!results/libloom/profiles
+!results/libloom/profiles/apks
+!results/libloom/profiles/tpls
