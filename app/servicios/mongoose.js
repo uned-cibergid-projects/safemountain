@@ -25,11 +25,22 @@ if (!config.MONGO_ANALISIS.user && !config.MONGO_ANALISIS.pass) {
     + config.MONGO_ANALISIS.host + ':' + config.MONGO_ANALISIS.port + '/' + config.MONGO_ANALISIS.db;
 }
 
+// Construimos la URL de conexión para la base 'usuarios'
+let db_addr_usuarios;
+if (!config.MONGO_USUARIOS.user && !config.MONGO_USUARIOS.pass) {
+  db_addr_usuarios = 'mongodb://' + config.MONGO_USUARIOS.host + ':' + config.MONGO_USUARIOS.port + '/' + config.MONGO_USUARIOS.db;
+  debug('db_addr_usuarios= ', db_addr_usuarios);
+} else {
+  db_addr_usuarios = 'mongodb://' + config.MONGO_USUARIOS.user + ':' + config.MONGO_USUARIOS.pass + '@'
+    + config.MONGO_USUARIOS.host + ':' + config.MONGO_USUARIOS.port + '/' + config.MONGO_USUARIOS.db;
+}
+
 ////////////////////////////////////////////////////////////////
 // ALMACENAREMOS NUESTRAS CONEXIONES (opcional para reutilizar) 
 ////////////////////////////////////////////////////////////////
 let metadataConnection = null;
 let analisisConnection = null;
+let usuariosConnection = null;
 
 ///////////////////////////////////////////////////////////////
 // Función principal para “cargar” (inicializar) nuestras BDs
@@ -72,6 +83,18 @@ let cargarBd = function() {
     console.error('[ANALISIS] Mongoose connection error:', err);
   });
 
+  // 3) Creamos la conexión para USUARIOS
+  usuariosConnection = mongoose.createConnection(db_addr_usuarios, { authSource: "admin" });
+
+  usuariosConnection.on('connected', () => {
+    console.log('[USUARIOS] Connected Successfully');
+    require('./modelos/usuarios.model'); // Asegúrate de tener el modelo de usuarios
+  });
+
+  usuariosConnection.on('error', (err) => {
+    console.error('[USUARIOS] Mongoose connection error:', err);
+  });
+
 };
 
 ///////////////////////////////////////////////////////////////
@@ -81,5 +104,6 @@ let cargarBd = function() {
 module.exports = {
   cargarBd: cargarBd,
   metadataConnection: () => metadataConnection,
-  analisisConnection: () => analisisConnection
+  analisisConnection: () => analisisConnection,
+  usuariosConnection: () => usuariosConnection
 }
