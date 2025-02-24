@@ -57,7 +57,18 @@ function leerCampo(opciones){
     return new Promise(promesa);
 }
 
-
+/**
+ * @description Guarda la metadata de una APK en la base de datos y ejecuta un script en Python para obtener información adicional.
+ *
+ * @function guardarMetadata
+ * @param {Object} data - Objeto que contiene la información de la APK a almacenar.
+ * @param {string} data.name - Nombre de la APK.
+ * @param {string} data.package_name - Nombre del paquete de la APK.
+ * @param {Object} data.playstore_details - Detalles de la APK obtenidos de la Play Store.
+ * @param {string} data.playstore_details.genre - Categoría de la aplicación en la Play Store.
+ * @returns {Promise<void>} Una promesa que se resuelve cuando la metadata se guarda correctamente o se rechaza si ocurre un error.
+ * @throws {Error} Si ocurre un fallo al ejecutar el script de Python o al guardar la metadata en la base de datos.
+ */
 async function guardarMetadata(data){
     try {
         const appCollectorDir = path.join(__dirname, '../../tools/appcollector');
