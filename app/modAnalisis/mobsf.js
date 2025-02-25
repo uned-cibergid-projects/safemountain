@@ -77,7 +77,8 @@ async function analizar(req, res) {
     if (fs.existsSync(finalPath)) {
       console.log(`La APK ya estaba guardada previamente en ${finalPath}.`);
     } else {
-      fs.renameSync(filePath, finalPath);
+      fs.copyFileSync(filePath, finalPath);
+      fs.unlinkSync(filePath);
       console.log(`La APK se ha guardado con éxito en ${finalPath}.`);
     }
 
