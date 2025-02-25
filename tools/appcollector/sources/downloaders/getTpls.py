@@ -127,7 +127,7 @@ async def main():
     logger = logging.getLogger("logger")
     exceptionLogger = logging.getLogger("exceptionLogger")
 
-    nfsSaveFolder = "/home/dblancoaza/SafeMountain/nfs/incibePro/analisisAplicaciones/datasets/tpls/"
+    nfsSaveFolder = "/home/ciber/projects/SafeMountain/nfs/incibePro/analisisAplicaciones/datasets/tpls/"
     checkFolder(nfsSaveFolder)
 
     semaphore = asyncio.Semaphore(3)
