@@ -10,6 +10,9 @@ package-lock.json
 # No ignorar requirements.txt
 !requirements.txt
 
+tools/mobsf/results/*.json
+!tools/mobsf/results/
+
 # Dependency directories
 node_modules
 jspm_packages
