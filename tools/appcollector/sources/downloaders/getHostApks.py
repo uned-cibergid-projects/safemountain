@@ -119,7 +119,7 @@ def main():
     logger = logging.getLogger("logger")
     exceptionLogger = logging.getLogger("exceptionLogger")
 
-    nfsSaveFolder = "/home/dblancoaza/SafeMountain/nfs/incibePro/analisisAplicaciones/datasets/hostApks/"
+    nfsSaveFolder = "/home/ciber/projects/SafeMountain/nfs/incibePro/analisisAplicaciones/datasets/hostApks/"
     checkFolder(nfsSaveFolder)
 
     batchLimit = 5

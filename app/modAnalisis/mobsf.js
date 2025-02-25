@@ -65,7 +65,7 @@ async function analizar(req, res) {
       throw new Error(`No se pudo realizar un análisis de forma correcta: ${readError}`);
     }
 
-    const baseDir = '/home/dblancoaza/SafeMountain/nfs/incibePro/analisisAplicaciones/datasets/hostApks';
+    const baseDir = '/home/ciber/projects/SafeMountain/nfs/incibePro/analisisAplicaciones/datasets/hostApks';
     const categoryDir = path.join(baseDir, analisisData.playstore_details.genre.toLowerCase());
     const finalDir = path.join(categoryDir, analisisData.package_name);
     const finalPath = path.join(finalDir, analisisData.file_name);
