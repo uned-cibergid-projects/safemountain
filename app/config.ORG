@@ -13,8 +13,8 @@ const EXPORTACION = {
 };
 
 module.exports = {
-    'helena': {
-        ENTORNO: 'helena',
+    'daniel': {
+        ENTORNO: 'daniel',
         VERSION: VERSION,
         APP: APP,
         PORT: 8020,
@@ -32,9 +32,15 @@ module.exports = {
             pass: '',
             port: 49016
         },
-        // AVIP: AVIP,
+        MONGO_USUARIOS: {
+            db: 'usuarios',
+            host: '10.201.54.162',
+            user: '',
+            pass: '',
+            port: 49016
+        },
         CARPETAS: CARPETAS,
         DEBUG: DEBUG,
         EXPORTACION: EXPORTACION
     },
-}
+};
