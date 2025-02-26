@@ -12,6 +12,7 @@ const util = require('util');
 const path = require('path');
 const multer = require('multer');
 const execAsync = util.promisify(exec);
+const CONFIG = require('../config.js')[process.env.NODE_ENV || 'desarrollo'];
 
 /**
  * @description Extensiones de archivo permitidas para la carga.
@@ -83,7 +84,7 @@ const upload = multer({
  * @throws {Error} Si no existe el directorio o no contiene un archivo .apk.
  */
 async function buscarApk(paquete) {
-  const BASE_DIRECTORY = '/home/ciber/projects/SafeMountain/nfs/incibePro/analisisAplicaciones/datasets/hostApks/social';
+  const BASE_DIRECTORY = CONFIG.BASE_DIRECTORY;
   const packageDir = path.join(BASE_DIRECTORY, paquete);
 
   try {

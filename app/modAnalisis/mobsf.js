@@ -15,6 +15,7 @@ const { subirArchivoTemporal } = require('../utils/fileUtils');
 const APKS = require('../modMetadata/apks');
 const CRUD = require('../servicios/crud');
 const COLECCION = require('../servicios/modelos/analisis.model').estatico
+const CONFIG = require('../config.js')[process.env.NODE_ENV || 'desarrollo'];
 
 
 /**
@@ -65,8 +66,8 @@ async function analizar(req, res) {
       throw new Error(`No se pudo realizar un análisis de forma correcta: ${readError}`);
     }
 
-    const baseDir = '/home/ciber/projects/SafeMountain/nfs/incibePro/analisisAplicaciones/datasets/hostApks';
-    const categoryDir = path.join(baseDir, analisisData.playstore_details.genre.toLowerCase());
+    const BASE_DIRECTORY = CONFIG.BASE_DIRECTORY;
+    const categoryDir = path.join(BASE_DIRECTORY, analisisData.playstore_details.genre.toLowerCase());
     const finalDir = path.join(categoryDir, analisisData.package_name);
     const finalPath = path.join(finalDir, analisisData.file_name);
 
