@@ -6,6 +6,7 @@ const serveIndex = require('serve-index');
 const logger = require('morgan');
 const rfs = require('rotating-file-stream');
 const helmet = require('helmet');
+const cors = require('cors');
 
 const express = require('express');
 
@@ -68,6 +69,9 @@ module.exports = (app) => {
 		  preload: true // Requiere inscripción en el preload list de Chrome
 		}
 	  }));
+
+	// Configurar CORS para permitir solicitudes desde cualquier origen
+	app.use(cors());
 
 	app.use(express.urlencoded({ extended: true }))
 	app.use(express.json({limit:'5Mb'}))
