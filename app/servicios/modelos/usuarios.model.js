@@ -34,13 +34,13 @@ const { usuariosConnection } = require('../mongoose');
  *           example: "daniel@example.com"
  *         passwordHash:
  *           type: string
- *           description: "Hash de la contraseña del usuario."
+ *           description: "Hash de la contraseña del usuario. No se expone al cliente."
  *           example: "$2b$10$7s8f9d7g6df87g6d87fg"
  *         rol:
  *           type: string
- *           enum: [admin, analyst, user, guest, api_client]
+ *           enum: [basico, administrador, investigador]
  *           description: "Rol del usuario en la plataforma."
- *           example: "admin"
+ *           example: "administrador"
  *         estado:
  *           type: string
  *           enum: [activo, suspendido, eliminado]
@@ -92,15 +92,11 @@ const { usuariosConnection } = require('../mongoose');
  *               format: date-time
  *               description: "Fecha y hora del último inicio de sesión."
  *               example: "2025-02-24T16:15:00Z"
- *             autenticacionDosFactores:
- *               type: boolean
- *               example: true
- *               description: "Indica si la autenticación en dos pasos está activada."
  *             proveedor:
  *               type: string
  *               enum: [local, google, github]
- *               example: "google"
- *               description: "Proveedor de autenticación del usuario."
+ *               example: "local"
+ *               description: "Proveedor de autenticación del usuario (por ejemplo, para SSO)."
  *         estadisticas:
  *           type: object
  *           properties:
@@ -119,22 +115,22 @@ const { usuariosConnection } = require('../mongoose');
  */
 
 /**
- * @description Schema Mongoose para los usuarios.
+ * @description Schema Mongoose para la colección "usuarios".
  * 
  * @typedef {Object} usuarioSchema
  * @property {string} nombre - Nombre completo del usuario.
  * @property {string} username - Nombre de usuario único.
  * @property {string} email - Correo electrónico único del usuario.
- * @property {string} passwordHash - Hash de la contraseña.
- * @property {string} rol - Rol del usuario en la plataforma (admin, analyst, user, guest, api_client).
+ * @property {string} passwordHash - Hash de la contraseña (no se expone al cliente).
+ * @property {string} rol - Rol del usuario (basico, administrador, investigador).
  * @property {string} estado - Estado de la cuenta (activo, suspendido, eliminado).
  * @property {Date} fechaRegistro - Fecha de registro del usuario.
  * @property {Date} ultimaActividad - Última actividad registrada.
- * @property {string} telefono - Número de teléfono del usuario.
+ * @property {string} telefono - Número de teléfono del usuario (opcional).
  * @property {string} fotoPerfil - URL de la foto de perfil.
  * @property {string} biografia - Biografía o descripción del usuario.
- * @property {Object} configuracion - Configuración de usuario.
- * @property {Object} autenticacion - Información sobre autenticación del usuario.
+ * @property {Object} configuracion - Configuración de usuario (idioma, tema, notificaciones).
+ * @property {Object} autenticacion - Información sobre autenticación (ej: login social).
  * @property {Object} estadisticas - Datos estadísticos sobre el uso del sistema.
  */
 const usuarioSchema = new Schema(
@@ -143,15 +139,15 @@ const usuarioSchema = new Schema(
     username: { type: String, unique: true, required: true },
     email: { type: String, unique: true, required: true },
     passwordHash: { type: String, required: true },
-    rol: { 
-      type: String, 
-      enum: ['basico', 'administrador', 'investigador'], 
-      required: true 
+    rol: {
+      type: String,
+      enum: ['basico', 'administrador', 'investigador'],
+      required: true
     },
-    estado: { 
-      type: String, 
-      enum: ['activo', 'suspendido', 'eliminado'], 
-      default: 'activo' 
+    estado: {
+      type: String,
+      enum: ['activo', 'suspendido', 'eliminado'],
+      default: 'activo'
     },
     fechaRegistro: { type: Date, default: Date.now },
     ultimaActividad: { type: Date, default: null },
@@ -165,9 +161,7 @@ const usuarioSchema = new Schema(
     },
     autenticacion: {
       ultimoLogin: { type: Date, default: null },
-      autenticacionDosFactores: { type: Boolean, default: false },
       proveedor: { type: String, enum: ['local', 'google', 'github'], default: 'local' },
-      secret2FA: { type: String, default: null },
     },
     estadisticas: {
       analisisRealizados: { type: Number, default: 0 },
