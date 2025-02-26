@@ -5,6 +5,7 @@ const debug = require('debug')(`${CONFIG.APP}:middleware`);
 const serveIndex = require('serve-index');
 const logger = require('morgan');
 const rfs = require('rotating-file-stream');
+const helmet = require('helmet');
 
 const express = require('express');
 
@@ -16,6 +17,57 @@ const specs = require('./swagger');
 
 module.exports = (app) => {
 	var app = express();
+
+	app.use(helmet({
+		// Evita que la aplicación sea incrustada en iframes (protección contra Clickjacking)
+		frameguard: { action: 'deny' },
+	  
+		// Deshabilita la detección automática de contenido en navegadores (protección contra MIMETYPE sniffing)
+		noSniff: true,
+	  
+		// Evita que el navegador cargue la página si detecta ataques XSS (útil solo en navegadores antiguos)
+		xssFilter: true,
+	  
+		// Oculta información del servidor eliminando el encabezado X-Powered-By
+		hidePoweredBy: true,
+	  
+		// Implementa una política estricta de Referer para evitar que otras páginas accedan a información de navegación
+		referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+	  
+		// Protección avanzada contra inyección de scripts externos
+		contentSecurityPolicy: {
+		  directives: {
+			defaultSrc: ["'self'"], // Solo permite contenido de la propia web
+			scriptSrc: ["'self'", "'unsafe-inline'"], // Solo scripts internos (ajusta según necesidad)
+			styleSrc: ["'self'", "'unsafe-inline'"], // Permite estilos internos y en línea (útil para frameworks CSS)
+			imgSrc: ["'self'", "data:"], // Permite imágenes internas y datos embebidos (base64)
+			connectSrc: ["'self'", "https://api.mi-dominio.com"], // Permite conexiones a APIs específicas
+			fontSrc: ["'self'", "https://fonts.googleapis.com"], // Permite fuentes externas de confianza
+			objectSrc: ["'none'"], // Bloquea contenido embebido de Flash y otros plugins inseguros
+			upgradeInsecureRequests: [], // Convierte HTTP a HTTPS automáticamente
+		  }
+		},
+	  
+		// Evita que el navegador envíe la página en caché en respuestas sensibles
+		cacheControl: true,
+	  
+		// Configura la política de permisos para APIs del navegador
+		permissionsPolicy: {
+		  features: {
+			geolocation: ["self"], // Solo permitir geolocalización desde la misma web
+			microphone: ["none"], // Bloquear acceso al micrófono
+			camera: ["none"], // Bloquear acceso a la cámara
+			fullscreen: ["self"], // Permitir pantalla completa solo desde la misma web
+		  }
+		},
+	  
+		// Habilita HTTP Strict Transport Security (HSTS) para forzar HTTPS
+		hsts: {
+		  maxAge: 63072000, // 2 años
+		  includeSubDomains: true, // Se aplica a subdominios
+		  preload: true // Requiere inscripción en el preload list de Chrome
+		}
+	  }));
 
 	app.use(express.urlencoded({ extended: true }))
 	app.use(express.json({limit:'5Mb'}))

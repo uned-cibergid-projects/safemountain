@@ -27,6 +27,7 @@
     "extract-zip": "^2.0.1",
     "fs": "^0.0.1-security",
     "fs-extra": "9.0.1",
+    "helmet": "^8.0.0",
     "method-override": "3.0.0",
     "mongodb": "6.3.0",
     "mongoose": "8.3.4",
