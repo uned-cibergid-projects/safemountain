@@ -4,6 +4,8 @@
  * @description Schemas y modelos de usuarios.
  */
 
+'use strict';
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const { usuariosConnection } = require('../mongoose');
@@ -112,6 +114,19 @@ const { usuariosConnection } = require('../mongoose');
  *               type: number
  *               example: 50.3
  *               description: "Tiempo total de uso en horas."
+ *         verificationToken:
+ *           type: string
+ *           description: "Token para verificación de correo. Campo opcional."
+ *           example: "f8ad1d488d214a698816c4092785c819"
+ *         verificationExpires:
+ *           type: string
+ *           format: date-time
+ *           description: "Fecha límite para usar el token de verificación."
+ *           example: "2025-03-01T12:00:00Z"
+ *         verificado:
+ *           type: boolean
+ *           description: "Indica si el usuario ya ha verificado su cuenta."
+ *           example: false
  */
 
 /**
@@ -132,6 +147,9 @@ const { usuariosConnection } = require('../mongoose');
  * @property {Object} configuracion - Configuración de usuario (idioma, tema, notificaciones).
  * @property {Object} autenticacion - Información sobre autenticación (ej: login social).
  * @property {Object} estadisticas - Datos estadísticos sobre el uso del sistema.
+ * @property {string} [verificationToken] - Token para verificar el correo electrónico.
+ * @property {Date} [verificationExpires] - Fecha límite para usar el token de verificación.
+ * @property {boolean} [verificado] - Indica si el usuario ya verificó su cuenta.
  */
 const usuarioSchema = new Schema(
   {
@@ -168,6 +186,10 @@ const usuarioSchema = new Schema(
       apiRequests: { type: Number, default: 0 },
       tiempoTotalUso: { type: Number, default: 0.0 },
     },
+    // Campos para verificación de correo
+    verificationToken: { type: String, default: null },
+    verificationExpires: { type: Date, default: null },
+    verificado: { type: Boolean, default: false },
   },
   { collection: 'usuarios' }
 );

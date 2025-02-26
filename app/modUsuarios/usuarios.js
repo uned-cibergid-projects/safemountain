@@ -149,6 +149,10 @@ async function iniciarSesion(credenciales) {
 
     const usuarioBD = usuariosEncontrados[0].datos;
 
+    if (!usuarioBD.verificado) {
+       throw new Error('Debes verificar tu cuenta antes de iniciar sesión.');
+     }
+
     // Verificar la contraseña
     const esValida = await bcrypt.compare(credenciales.password, usuarioBD.passwordHash);
     if (!esValida) {
