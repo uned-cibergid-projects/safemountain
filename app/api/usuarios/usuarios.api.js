@@ -11,51 +11,253 @@ const EMAIL_PASS = config[ENV].EMAIL_PASS;
 
 module.exports = (app, ruta) => {
     /**
-     * @swagger
-     * tags:
-     *   name: Usuarios
-     *   description: Rutas para gestionar los usuarios en la plataforma.
-     */
+    * @swagger
+    * tags:
+    *   name: Usuarios
+    *   description: Rutas para gestionar los usuarios en la plataforma.
+    */
 
     /**
-     * @swagger
-     * /api/usuarios:
-     *   get:
-     *     summary: Obtiene la lista de usuarios.
-     *     tags: [Usuarios]
-     *     responses:
-     *       200:
-     *         description: Retorna la lista de usuarios sin exponer passwordHash.
-     *
-     *   post:
-     *     summary: Crea un nuevo usuario en la plataforma.
-     *     tags: [Usuarios]
-     *     requestBody:
-     *       required: true
-     *       content:
-     *         application/json:
-     *           schema:
-     *             type: object
-     *             properties:
-     *               nombre:
-     *                 type: string
-     *                 example: "Carlos Díaz"
-     *               username:
-     *                 type: string
-     *                 example: "carlos_diaz"
-     *               email:
-     *                 type: string
-     *                 example: "carlos@example.com"
-     *               password:
-     *                 type: string
-     *                 example: "MiPassw0rd!"
-     *               rol:
-     *                 type: string
-     *                 example: "basico"
-     *     responses:
-     *       200:
-     *         description: Retorna el usuario creado (sin passwordHash).
-     */
+    * @swagger
+    * /api/usuarios:
+    *   get:
+    *     summary: Obtiene la lista de usuarios.
+    *     tags: [Usuarios]
+    *     responses:
+    *       200:
+    *         description: Retorna la lista de usuarios sin exponer passwordHash.
+    *         content:
+    *           application/json:
+    *             schema:
+    *               type: object
+    *               properties:
+    *                 ok:
+    *                   type: boolean
+    *                   example: true
+    *                 contar:
+    *                   type: integer
+    *                   example: 1
+    *                 datos:
+    *                   type: array
+    *                   items:
+    *                     type: object
+    *                     properties:
+    *                       _id:
+    *                         type: string
+    *                         example: "67c05628e89bac271191b1f2"
+    *                       nombre:
+    *                         type: string
+    *                         example: "Daniel Blanco"
+    *                       username:
+    *                         type: string
+    *                         example: "dani.blanco"
+    *                       email:
+    *                         type: string
+    *                         example: "dani.prueba@gmail.com"
+    *                       rol:
+    *                         type: string
+    *                         example: "basico"
+    *                       estado:
+    *                         type: string
+    *                         example: "activo"
+    *                       fechaRegistro:
+    *                         type: string
+    *                         format: date-time
+    *                         example: "2025-02-27T12:10:16.526Z"
+    *                       ultimaActividad:
+    *                         type: string
+    *                         nullable: true
+    *                         example: null
+    *                       telefono:
+    *                         type: string
+    *                         nullable: true
+    *                         example: null
+    *                       fotoPerfil:
+    *                         type: string
+    *                         nullable: true
+    *                         example: null
+    *                       biografia:
+    *                         type: string
+    *                         nullable: true
+    *                         example: null
+    *                       configuracion:
+    *                         type: object
+    *                         properties:
+    *                           idioma:
+    *                             type: string
+    *                             example: "es"
+    *                           tema:
+    *                             type: string
+    *                             example: "sistema"
+    *                           notificaciones:
+    *                             type: boolean
+    *                             example: true
+    *                       autenticacion:
+    *                         type: object
+    *                         properties:
+    *                           ultimoLogin:
+    *                             type: string
+    *                             nullable: true
+    *                             example: null
+    *                           proveedor:
+    *                             type: string
+    *                             example: "local"
+    *                       estadisticas:
+    *                         type: object
+    *                         properties:
+    *                           analisisRealizados:
+    *                             type: integer
+    *                             example: 0
+    *                           apiRequests:
+    *                             type: integer
+    *                             example: 0
+    *                           tiempoTotalUso:
+    *                             type: integer
+    *                             example: 0
+    *                       verificationToken:
+    *                         type: string
+    *                         nullable: true
+    *                         example: null
+    *                       verificationExpires:
+    *                         type: string
+    *                         format: date-time
+    *                         nullable: true
+    *                         example: null
+    *                       verificado:
+    *                         type: boolean
+    *                         example: true
+    *                       __v:
+    *                         type: integer
+    *                         example: 0
+    *
+    *   post:
+    *     summary: Crea un nuevo usuario en la plataforma.
+    *     tags: [Usuarios]
+    *     requestBody:
+    *       required: true
+    *       content:
+    *         application/json:
+    *           schema:
+    *             type: object
+    *             properties:
+    *               nombre:
+    *                 type: string
+    *                 example: "Carlos Díaz"
+    *               username:
+    *                 type: string
+    *                 example: "carlos_diaz"
+    *               email:
+    *                 type: string
+    *                 example: "carlos@example.com"
+    *               password:
+    *                 type: string
+    *                 example: "MiPassw0rd!"
+    *               rol:
+    *                 type: string
+    *                 example: "basico"
+    *     responses:
+    *       200:
+    *         description: Retorna el usuario creado (sin passwordHash).
+    *         content:
+    *           application/json:
+    *             schema:
+    *               type: object
+    *               properties:
+    *                 ok:
+    *                   type: boolean
+    *                   example: true
+    *                 mensaje:
+    *                   type: string
+    *                   example: "Usuario creado correctamente. Falta verificación de cuenta."
+    *                 datos:
+    *                   type: object
+    *                   properties:
+    *                     _id:
+    *                       type: string
+    *                       example: "67c05628e89bac271191b1f2"
+    *                     nombre:
+    *                       type: string
+    *                       example: "Daniel Blanco Aza"
+    *                     username:
+    *                       type: string
+    *                       example: "dani.blanco"
+    *                     email:
+    *                       type: string
+    *                       example: "dani.prueba@gmail.com"
+    *                     rol:
+    *                       type: string
+    *                       example: "basico"
+    *                     estado:
+    *                       type: string
+    *                       example: "activo"
+    *                     fechaRegistro:
+    *                       type: string
+    *                       format: date-time
+    *                       example: "2025-02-27T12:10:16.526Z"
+    *                     ultimaActividad:
+    *                       type: string
+    *                       nullable: true
+    *                       example: null
+    *                     telefono:
+    *                       type: string
+    *                       nullable: true
+    *                       example: null
+    *                     fotoPerfil:
+    *                       type: string
+    *                       nullable: true
+    *                       example: null
+    *                     biografia:
+    *                       type: string
+    *                       nullable: true
+    *                       example: null
+    *                     configuracion:
+    *                       type: object
+    *                       properties:
+    *                         idioma:
+    *                           type: string
+    *                           example: "es"
+    *                         tema:
+    *                           type: string
+    *                           example: "sistema"
+    *                         notificaciones:
+    *                           type: boolean
+    *                           example: true
+    *                     autenticacion:
+    *                       type: object
+    *                       properties:
+    *                         ultimoLogin:
+    *                           type: string
+    *                           nullable: true
+    *                           example: null
+    *                         proveedor:
+    *                           type: string
+    *                           example: "local"
+    *                     estadisticas:
+    *                       type: object
+    *                       properties:
+    *                         analisisRealizados:
+    *                           type: integer
+    *                           example: 0
+    *                         apiRequests:
+    *                           type: integer
+    *                           example: 0
+    *                         tiempoTotalUso:
+    *                           type: integer
+    *                           example: 0
+    *                     verificationToken:
+    *                       type: string
+    *                       example: "c940b238bd05f6fc7aae5a551fe6b0a4a20d8605"
+    *                     verificationExpires:
+    *                       type: string
+    *                       format: date-time
+    *                       example: "2025-02-27T13:10:16.530Z"
+    *                     verificado:
+    *                       type: boolean
+    *                       example: false
+    *                     __v:
+    *                       type: integer
+    *                       example: 0
+    */
     app.route(ruta)
         .get((req, res, next) => {
             const opciones = req.body
@@ -92,24 +294,139 @@ module.exports = (app, ruta) => {
 
 
     /**
-     * @swagger
-     * /api/usuarios/verify/{token}:
-     *   get:
-     *     summary: Verifica el correo del usuario a través de un token único.
-     *     tags: [Usuarios]
-     *     parameters:
-     *       - in: path
-     *         name: token
-     *         schema:
-     *           type: string
-     *         required: true
-     *         description: Token único enviado por correo
-     *     responses:
-     *       200:
-     *         description: Cuenta verificada correctamente.
-     *       400:
-     *         description: Error al verificar la cuenta.
-     */
+    * @swagger
+    * /api/usuarios/verify/{token}:
+    *   get:
+    *     summary: Verifica el correo del usuario a través de un token único.
+    *     tags: [Usuarios]
+    *     parameters:
+    *       - in: path
+    *         name: token
+    *         schema:
+    *           type: string
+    *         required: true
+    *         description: Token único enviado por correo.
+    *     responses:
+    *       200:
+    *         description: Cuenta verificada correctamente.
+    *         content:
+    *           application/json:
+    *             schema:
+    *               type: object
+    *               properties:
+    *                 ok:
+    *                   type: boolean
+    *                   example: true
+    *                 mensaje:
+    *                   type: string
+    *                   example: "Usuario verificado correctamente"
+    *                 datos:
+    *                   type: object
+    *                   properties:
+    *                     _id:
+    *                       type: string
+    *                       example: "67c05bb22ea8e6dea0c040c9"
+    *                     nombre:
+    *                       type: string
+    *                       example: "Daniel Blanco Aza"
+    *                     username:
+    *                       type: string
+    *                       example: "dani.blanco"
+    *                     email:
+    *                       type: string
+    *                       example: "dani.prueba@gmail.com"
+    *                     rol:
+    *                       type: string
+    *                       example: "basico"
+    *                     estado:
+    *                       type: string
+    *                       example: "activo"
+    *                     fechaRegistro:
+    *                       type: string
+    *                       format: date-time
+    *                       example: "2025-02-27T12:33:18.007Z"
+    *                     ultimaActividad:
+    *                       type: string
+    *                       nullable: true
+    *                       example: null
+    *                     telefono:
+    *                       type: string
+    *                       nullable: true
+    *                       example: null
+    *                     fotoPerfil:
+    *                       type: string
+    *                       nullable: true
+    *                       example: null
+    *                     biografia:
+    *                       type: string
+    *                       nullable: true
+    *                       example: null
+    *                     configuracion:
+    *                       type: object
+    *                       properties:
+    *                         idioma:
+    *                           type: string
+    *                           example: "es"
+    *                         tema:
+    *                           type: string
+    *                           example: "sistema"
+    *                         notificaciones:
+    *                           type: boolean
+    *                           example: true
+    *                     autenticacion:
+    *                       type: object
+    *                       properties:
+    *                         ultimoLogin:
+    *                           type: string
+    *                           nullable: true
+    *                           example: null
+    *                         proveedor:
+    *                           type: string
+    *                           example: "local"
+    *                     estadisticas:
+    *                       type: object
+    *                       properties:
+    *                         analisisRealizados:
+    *                           type: integer
+    *                           example: 0
+    *                         apiRequests:
+    *                           type: integer
+    *                           example: 0
+    *                         tiempoTotalUso:
+    *                           type: integer
+    *                           example: 0
+    *                     verificationToken:
+    *                       type: string
+    *                       nullable: true
+    *                       example: null
+    *                     verificationExpires:
+    *                       type: string
+    *                       format: date-time
+    *                       nullable: true
+    *                       example: null
+    *                     verificado:
+    *                       type: boolean
+    *                       example: true
+    *                     __v:
+    *                       type: integer
+    *                       example: 0
+    *       400:
+    *         description: Error al verificar la cuenta.
+    *         content:
+    *           application/json:
+    *             schema:
+    *               type: object
+    *               properties:
+    *                 ok:
+    *                   type: boolean
+    *                   example: false
+    *                 mensaje:
+    *                   type: string
+    *                   example: "Token incorrecto o expirado."
+    *                 datos:
+    *                   type: array
+    *                   example: []
+    */
     app.route(`${ruta}/verify/:token`)
         .get((req, res, next) => {
             const token = req.params.token;
@@ -158,51 +475,133 @@ module.exports = (app, ruta) => {
 
 
     /**
-     * @swagger
-     * /api/usuarios/{id}:
-     *   get:
-     *     summary: Obtiene la información de un usuario por su ID.
-     *     tags: [Usuarios]
-     *     parameters:
-     *       - in: path
-     *         name: id
-     *         required: true
-     *         schema:
-     *           type: string
-     *         description: ID del usuario
-     *     responses:
-     *       200:
-     *         description: Retorna la información del usuario.
-     *   delete:
-     *     summary: Elimina a un usuario por su ID.
-     *     tags: [Usuarios]
-     *     responses:
-     *       200:
-     *         description: Confirma la eliminación del usuario.
-     *   put:
-     *     summary: Modifica campos del usuario por su ID.
-     *     tags: [Usuarios]
-     *     requestBody:
-     *       required: true
-     *       content:
-     *         application/json:
-     *           schema:
-     *             type: object
-     *             properties:
-     *               nombre:
-     *                 type: string
-     *               username:
-     *                 type: string
-     *               email:
-     *                 type: string
-     *               rol:
-     *                 type: string
-     *               estado:
-     *                 type: string
-     *     responses:
-     *       200:
-     *         description: Retorna el usuario modificado (sin passwordHash).
-     */
+    * @swagger
+    * /api/usuarios/{id}:
+    *   get:
+    *     summary: Obtiene la información de un usuario por su ID.
+    *     tags: [Usuarios]
+    *     parameters:
+    *       - in: path
+    *         name: id
+    *         required: true
+    *         schema:
+    *           type: string
+    *         description: ID del usuario a obtener.
+    *     responses:
+    *       200:
+    *         description: Retorna la información del usuario.
+    *         content:
+    *           application/json:
+    *             schema:
+    *               type: object
+    *               properties:
+    *                 ok:
+    *                   type: boolean
+    *                   example: true
+    *                 message:
+    *                   type: string
+    *                   example: "Usuario encontrado correctamente."
+    *                 datos:
+    *                   $ref: '#/components/schemas/Usuario'
+    *       404:
+    *         description: Usuario no encontrado.
+    *         content:
+    *           application/json:
+    *             schema:
+    *               type: object
+    *               properties:
+    *                 error:
+    *                   type: string
+    *                   example: "Usuario no encontrado."
+    *   
+    *   put:
+    *     summary: Modifica campos del usuario por su ID.
+    *     tags: [Usuarios]
+    *     parameters:
+    *       - in: path
+    *         name: id
+    *         required: true
+    *         schema:
+    *           type: string
+    *         description: ID del usuario a modificar.
+    *     requestBody:
+    *       required: true
+    *       content:
+    *         application/json:
+    *           schema:
+    *             type: object
+    *             properties:
+    *               nombre:
+    *                 type: string
+    *                 example: "Daniel Sernandez"
+    *               username:
+    *                 type: string
+    *                 example: "dani.blanco"
+    *               email:
+    *                 type: string
+    *                 example: "dani.prueba@gmail.com"
+    *               rol:
+    *                 type: string
+    *                 example: "basico"
+    *               estado:
+    *                 type: string
+    *                 example: "activo"
+    *     responses:
+    *       200:
+    *         description: Retorna el usuario modificado (sin passwordHash).
+    *         content:
+    *           application/json:
+    *             schema:
+    *               type: object
+    *               properties:
+    *                 ok:
+    *                   type: boolean
+    *                   example: true
+    *                 mensaje:
+    *                   type: string
+    *                   example: "Usuario modificado correctamente."
+    *                 datos:
+    *                   $ref: '#/components/schemas/Usuario'
+    *
+    *   delete:
+    *     summary: Elimina a un usuario por su ID.
+    *     tags: [Usuarios]
+    *     parameters:
+    *       - in: path
+    *         name: id
+    *         required: true
+    *         schema:
+    *           type: string
+    *         description: ID del usuario a eliminar.
+    *     responses:
+    *       200:
+    *         description: Usuario eliminado correctamente.
+    *         content:
+    *           application/json:
+    *             schema:
+    *               type: object
+    *               properties:
+    *                 ok:
+    *                   type: boolean
+    *                   example: true
+    *                 mensaje:
+    *                   type: string
+    *                   example: "Usuario eliminado correctamente."
+    *                 datos:
+    *                   type: object
+    *                   properties:
+    *                     mensaje:
+    *                       type: string
+    *                       example: "Usuario eliminado correctamente."
+    *                     usuarioEliminado:
+    *                       allOf:
+    *                         - $ref: '#/components/schemas/Usuario'
+    *                         - type: object
+    *                           properties:
+    *                             passwordHash:
+    *                               type: string
+    *                               example: "$2b$10$pkdVuUB8xSgTL9/8w453euJ2ag4hQWLgzN9WqVY9LTZtfe800oZXG"
+    */
     app.route(`${ruta}/:id`)
     .get((req, res, next) => {
         const id = req.params.id;
@@ -218,6 +617,7 @@ module.exports = (app, ruta) => {
                 }
                 return res.status(200).json({
                     ok:true,
+                    message:"Usuario encontrado correctamente.",
                     datos:usuario.datos
                 });
             })
@@ -227,6 +627,7 @@ module.exports = (app, ruta) => {
         USUARIOS.eliminarUsuario(req.params.id)
             .then(resultado => res.status(200).json({
                 ok:true,
+                mensaje:"Usuario eliminado correctamente.",
                 datos:resultado
             }))
             .catch(err => next(err));
@@ -235,6 +636,7 @@ module.exports = (app, ruta) => {
         USUARIOS.modificarUsuario(req.params.id, req.body)
             .then(usuarioModificado => res.status(200).json({
                 ok:true,
+                mensaje:"Usuario modificado correctamente.",
                 datos:usuarioModificado
             }))
             .catch(err => next(err));
