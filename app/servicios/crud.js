@@ -235,7 +235,11 @@ function modificarId(id, reg, coleccion, {tipo="log", mensaje="", accion="modifi
             delete reg._id;
             delete reg.f_modificacion;
 
-            const registro = await MODELO.findOneAndUpdate({_id:id}, reg, {new:true})
+            const registro = await MODELO.findOneAndUpdate(
+                { _id: id }, 
+                { $set: reg }, 
+                { new: true }
+            );
             
             if (!registro){
                 const err = new Error('Error no existe el registro id= '+id);
@@ -245,13 +249,11 @@ function modificarId(id, reg, coleccion, {tipo="log", mensaje="", accion="modifi
                 err.mensaje = `No existe el registro id= ${id}`;
                 reject(err)
             }else {
-                // debug(registro.toObject())
                 const salida = registro.toObject()
-                resolve({ok:true, mensaje:coleccion+'. Modificado registro id='+id, datos:registro.toObject()});
+                resolve({ok:true, mensaje:coleccion+'. Modificado registro id='+id, datos:salida});
 
                 if(coleccion != 'Log') {
                     let log ={
-                        idgcono: idGcono,
                         coleccion: coleccion,
                         accion: accion ,
                         ok: 200,

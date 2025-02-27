@@ -188,21 +188,35 @@ async function iniciarSesion(credenciales) {
  */
 async function buscarUsuarios(opciones = {}) {
   try {
-    opciones.limite = opciones.limite || 10;
+    opciones.limite = opciones.limite || 100;
     opciones.skip = opciones.skip || 0;
 
     // Asegurarnos de no incluir passwordHash
     if (!opciones.campos) {
       opciones.campos = {};
     }
-    opciones.campos.passwordHash = 0;
+    
+    // Validar si el cliente está intentando incluir passwordHash
+    if ("passwordHash" in opciones.campos) {
+      throw new Error("No se puede solicitar el campo 'passwordHash'.");
+    }
+
+    // Detectar si hay inclusiones en la proyección
+    const tieneInclusiones = Object.values(opciones.campos).some(valor => valor === 1);
+
+    // Si no hay inclusiones definidas, excluimos passwordHash por defecto
+    if (!tieneInclusiones) {
+      opciones.campos.passwordHash = 0;
+    }
 
     const resultados = await CRUD.leerCampo(opciones, COLECCION);
 
-    return resultados.map((reg) => ({
-      ...reg.datos,
-      passwordHash: undefined
-    }));
+    if (Array.isArray(resultados.datos)) {
+      resultados.datos = resultados.datos.map(({ passwordHash, ...usuario }) => usuario);
+
+    }
+
+    return resultados;
   } catch (error) {
     throw new Error(`Error al buscar usuarios: ${error.message}`);
   }
@@ -228,8 +242,7 @@ async function eliminarUsuario(id) {
     const resultado = await CRUD.borrar(id, COLECCION);
     return {
       mensaje: 'Usuario eliminado correctamente',
-      idEliminado: id,
-      detalles: resultado
+      usuarioEliminado: usuario.datos
     };
   } catch (error) {
     throw new Error(`Error al eliminar usuario: ${error.message}`);

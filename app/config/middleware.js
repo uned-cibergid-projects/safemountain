@@ -112,6 +112,7 @@ module.exports = (app) => {
 
 	require('../api/metadata/metadata.rutas')(app)
 	require('../api/analisis/analisis.rutas')(app)
+	require('../api/usuarios/usuarios.rutas')(app)
 	
 	require('../api/error.rutas')(app)
 	
@@ -173,7 +174,7 @@ function errorHandler (err, req, res, next) {
 	}
 	// res.status(201).json({ok:false, mensaje:err.message, datos:{error:error, err:err}});
 	
-	res.status(201).json({
+	res.status(400).json({
 		ok:false, 
 		mensaje:err.message, 
 		datos:[],
