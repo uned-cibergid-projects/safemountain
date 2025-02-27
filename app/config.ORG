@@ -43,8 +43,8 @@ module.exports = {
         CARPETAS: CARPETAS,
         DEBUG: DEBUG,
         EXPORTACION: EXPORTACION,
-        EMAIL_USER: 'safemountainuned@gmail.com',
-        EMAIL_PASS: 'ciber2025+',
+        EMAIL_USER: '66e640f3a50d84',
+        EMAIL_PASS: 'c263e3fca25962',
     },
     'helena': {
         ENTORNO: 'helena',
@@ -76,7 +76,7 @@ module.exports = {
         CARPETAS: CARPETAS,
         DEBUG: DEBUG,
         EXPORTACION: EXPORTACION,
-        EMAIL_USER: 'safemountainuned@gmail.com',
-        EMAIL_PASS: 'ciber2025+',
+        EMAIL_USER: '66e640f3a50d84',
+        EMAIL_PASS: 'c263e3fca25962',
     },
 };
