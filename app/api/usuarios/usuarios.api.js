@@ -295,7 +295,7 @@ module.exports = (app, ruta) => {
 
     /**
     * @swagger
-    * /api/usuarios/verify/{token}:
+    * /api/usuarios/verify/:token:
     *   get:
     *     summary: Verifica el correo del usuario a través de un token único.
     *     tags: [Usuarios]
@@ -476,7 +476,7 @@ module.exports = (app, ruta) => {
 
     /**
     * @swagger
-    * /api/usuarios/{id}:
+    * /api/usuarios/:id:
     *   get:
     *     summary: Obtiene la información de un usuario por su ID.
     *     tags: [Usuarios]
