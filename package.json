@@ -15,8 +15,8 @@
   "dependencies": {
     "@ctrl/tinycolor": "^4.0.3",
     "@redocly/cli": "^1.27.2",
-    "argon2": "^0.41.1",
     "axios": "^1.5.1",
+    "bcrypt": "^5.1.1",
     "clean-jsdoc-theme": "^4.3.0",
     "cors": "^2.8.5",
     "cron": "1.8.2",
