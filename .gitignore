@@ -5,7 +5,6 @@
 app/public/logs
 app/public/procesos
 app/config.js
-package-lock.json
 *.txt
 # No ignorar requirements.txt
 !requirements.txt
