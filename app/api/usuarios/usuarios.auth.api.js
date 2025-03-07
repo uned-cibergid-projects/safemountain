@@ -357,4 +357,154 @@ module.exports = (app, ruta) => {
                     });
                 });
         });
+
+    /**
+    * @swagger
+    * /api/auth/login:
+    *   post:
+    *     summary: Inicia sesión con email o username y devuelve un token JWT.
+    *     tags: [Usuarios]
+    *     requestBody:
+    *       required: true
+    *       content:
+    *         application/json:
+    *           schema:
+    *             type: object
+    *             properties:
+    *               emailOrUsername:
+    *                 type: string
+    *                 example: "dani.blanco"
+    *                 description: "Correo electrónico o nombre de usuario registrado."
+    *               password:
+    *                 type: string
+    *                 example: "MiPassw0rd!"
+    *                 description: "Contraseña en texto plano."
+    *               captchaToken:
+    *                 type: string
+    *                 example: "03AGdBq27..."
+    *                 description: "Token generado por Google reCAPTCHA o hCaptcha."
+    *     responses:
+    *       200:
+    *         description: Inicio de sesión exitoso, retorna JWT y datos básicos del usuario.
+    *         content:
+    *           application/json:
+    *             schema:
+    *               type: object
+    *               properties:
+    *                 ok:
+    *                   type: boolean
+    *                   example: true
+    *                 mensaje:
+    *                   type: string
+    *                   example: "Inicio de sesión exitoso."
+    *                 datos:
+    *                   type: object
+    *                   properties:
+    *                     _id:
+    *                       type: string
+    *                       example: "67c05bb22ea8e6dea0c040c9"
+    *                     username:
+    *                       type: string
+    *                       example: "dani.blanco"
+    *                     email:
+    *                       type: string
+    *                       example: "dani.prueba@gmail.com"
+    *                     rol:
+    *                       type: string
+    *                       example: "basico"
+    *                     estado:
+    *                       type: string
+    *                       example: "activo"
+    *                     ultimaActividad:
+    *                       type: string
+    *                       format: date-time
+    *                       nullable: true
+    *                       example: "2025-03-07T10:30:00.000Z"
+    *                     autenticacion:
+    *                       type: object
+    *                       properties:
+    *                         ultimoLogin:
+    *                           type: string
+    *                           format: date-time
+    *                           example: "2025-03-07T10:29:00.000Z"
+    *                         proveedor:
+    *                           type: string
+    *                           example: "local"
+    *                     token:
+    *                       type: string
+    *                       example: "eyJhbGciOiJIUzI1NiIsInR..."
+    *       400:
+    *         description: Error en la solicitud (datos incorrectos o cuenta bloqueada).
+    *         content:
+    *           application/json:
+    *             schema:
+    *               type: object
+    *               properties:
+    *                 ok:
+    *                   type: boolean
+    *                   example: false
+    *                 mensaje:
+    *                   type: string
+    *                   example: "Credenciales inválidas o cuenta bloqueada."
+    *       403:
+    *         description: Usuario no verificado.
+    *         content:
+    *           application/json:
+    *             schema:
+    *               type: object
+    *               properties:
+    *                 ok:
+    *                   type: boolean
+    *                   example: false
+    *                 mensaje:
+    *                   type: string
+    *                   example: "Cuenta no verificada. Revisa tu correo."
+    */
+     app.route(`${ruta}/login`)
+     .post(async (req, res, next) => {
+         try {
+             const { emailOrUsername, password, captchaToken } = req.body;
+
+             // Validación de parámetros obligatorios
+             if (!emailOrUsername || !password || !captchaToken) {
+                 return res.status(400).json({
+                     ok: false,
+                     mensaje: "Credenciales o CAPTCHA incompletos."
+                 });
+             }
+
+             // Llamada al servicio de autenticación
+             const resultado = await USUARIOS_AUTH.iniciarSesion({ emailOrUsername, password, captchaToken });
+
+             res.status(200).json({
+                 ok: true,
+                 mensaje: "Inicio de sesión exitoso.",
+                 datos: {
+                     _id: resultado.usuario._id,
+                     username: resultado.usuario.username,
+                     email: resultado.usuario.email,
+                     rol: resultado.usuario.rol,
+                     estado: resultado.usuario.estado,
+                     ultimaActividad: resultado.usuario.ultimaActividad,
+                     autenticacion: {
+                         ultimoLogin: new Date().toISOString(),
+                         proveedor: "local"
+                     },
+                     token: resultado.token
+                 }
+             });
+         } catch (err) {
+             if (err.message.includes("verificación")) {
+                 return res.status(403).json({
+                     ok: false,
+                     mensaje: err.message
+                 });
+             }
+             res.status(400).json({
+                 ok: false,
+                 mensaje: err.message
+             });
+         }
+     });
+
 };

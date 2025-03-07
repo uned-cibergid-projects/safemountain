@@ -12,6 +12,8 @@ const EXPORTACION = {
     host: 'localhost', // Puedes reemplazar 'localhost' por la dirección del servidor si es necesario
 };
 
+require('dotenv').config(); 
+
 module.exports = {
     'daniel': {
         ENTORNO: 'daniel',
@@ -43,8 +45,11 @@ module.exports = {
         CARPETAS: CARPETAS,
         DEBUG: DEBUG,
         EXPORTACION: EXPORTACION,
-        EMAIL_USER: '66e640f3a50d84',
-        EMAIL_PASS: 'c263e3fca25962',
+        EMAIL_USER: process.env.EMAIL_USER,
+        EMAIL_PASS: process.env.EMAIL_PASS,
+        CAPTCHA_SECRET_KEY: process.env.CAPTCHA_SECRET_KEY,
+        HCAPTCHA_SECRET_KEY: process.env.HCAPTCHA_SECRET_KEY,
+        JWT_SECRET: process.env.JWT_SECRET
     },
     'helena': {
         ENTORNO: 'helena',
@@ -76,7 +81,10 @@ module.exports = {
         CARPETAS: CARPETAS,
         DEBUG: DEBUG,
         EXPORTACION: EXPORTACION,
-        EMAIL_USER: '66e640f3a50d84',
-        EMAIL_PASS: 'c263e3fca25962',
+        EMAIL_USER: process.env.EMAIL_USER,
+        EMAIL_PASS: process.env.EMAIL_PASS,
+        CAPTCHA_SECRET_KEY: process.env.CAPTCHA_SECRET_KEY,
+        HCAPTCHA_SECRET_KEY: process.env.HCAPTCHA_SECRET_KEY,
+        JWT_SECRET: process.env.JWT_SECRET
     },
 };
