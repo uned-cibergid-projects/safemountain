@@ -5,7 +5,6 @@
  *
  * @see usuarios_api
  */
-
 'use strict';
 const axios = require('axios');
 const bcrypt = require('bcrypt');
@@ -19,8 +18,8 @@ const ENV = process.env.NODE_ENV;
 const EMAIL_USER = config[ENV].EMAIL_USER;
 const EMAIL_PASS = config[ENV].EMAIL_PASS;
 const JWT_SECRET = config[ENV].JWT_SECRET;
+const REFRESH_SECRET = config[ENV].REFRESH_SECRET;
 const CAPTCHA_SECRET_KEY = config[ENV].CAPTCHA_SECRET_KEY;
-const HCAPTCHA_SECRET_KEY = config[ENV].HCAPTCHA_SECRET_KEY;
 
 /**
  * @description Genera un token JWT para sesiones de usuario.
@@ -36,27 +35,47 @@ function generarToken(usuario) {
 }
 
 /**
- * @description Verifica el token del CAPTCHA con Google reCAPTCHA y hCaptcha como fallback.
+ * @description Genera un refresh token con duración de 7 días.
+ * @param {Object} usuario - Datos del usuario.
+ * @returns {string} Token de refresco.
+ */
+function generarRefreshToken(usuario) {
+  return jwt.sign(
+    { id: usuario._id },
+    REFRESH_SECRET,
+    { expiresIn: '7d' }
+  );
+}
+
+/**
+ * @description Revoca un token añadiéndolo a la blacklist.
+ * @param {string} token - JWT a invalidar.
+ */
+function revocarToken(token) {
+  JWT_BLACKLIST.add(token);
+}
+
+/**
+ * @description Verifica si un token está revocado.
+ * @param {string} token - Token JWT a verificar.
+ * @returns {boolean} Retorna `true` si el token está revocado, `false` en caso contrario.
+ */
+function tokenRevocado(token) {
+  return JWT_BLACKLIST.has(token);
+}
+
+/**
+ * @description Verifica el token del CAPTCHA.
  * @param {string} captchaToken - Token generado por el frontend.
- * @returns {Promise<boolean>} Retorna `true` si el CAPTCHA es válido, `false` en caso contrario.
+ * @returns {Promise<boolean>} Retorna `true` si el CAPTCHA es válido.
  */
 async function verificarCaptcha(captchaToken) {
   try {
-    let response = await axios.post('https://www.google.com/recaptcha/api/siteverify', null, {
+    const response = await axios.post('https://www.google.com/recaptcha/api/siteverify', null, {
       params: { secret: CAPTCHA_SECRET_KEY, response: captchaToken }
-    });
-    if (response.data.success) return true;
-  } catch (error) {
-    console.warn('Error con Google reCAPTCHA, probando hCaptcha...');
-  }
-  
-  try {
-    let response = await axios.post('https://hcaptcha.com/siteverify', null, {
-      params: { secret: HCAPTCHA_SECRET_KEY, response: captchaToken }
     });
     return response.data.success;
   } catch (error) {
-    console.error('Error verificando CAPTCHA:', error);
     return false;
   }
 }
@@ -190,77 +209,42 @@ async function crearUsuario(data) {
 }
 
 /**
- * @description Inicia sesión validando credenciales y genera un JWT si es exitoso.
- *
- * @function iniciarSesion
- * @param {Object} credenciales - Credenciales de inicio de sesión.
- * @param {string} credenciales.emailOrUsername - Email o nombre de usuario.
- * @param {string} credenciales.password - Contraseña en texto plano.
- * @param {string} credenciales.captchaToken - Token del CAPTCHA validado por el frontend.
- * @returns {Promise<Object>} Retorna un objeto con la información del usuario y el token JWT.
- * @throws {Error} Si las credenciales son incorrectas, la cuenta está bloqueada o el CAPTCHA falla.
+ * @description Inicia sesión con verificación de CAPTCHA y bloqueos progresivos.
+ * @param {Object} credenciales - Credenciales del usuario.
+ * @returns {Promise<Object>} Retorna el usuario con tokens de sesión.
  */
 async function iniciarSesion(credenciales) {
-  try {
-    if (!credenciales || !credenciales.emailOrUsername || !credenciales.password || !credenciales.captchaToken) {
-      throw new Error('Credenciales o CAPTCHA incompletos.');
-    }
-
-    if (!(await verificarCaptcha(credenciales.captchaToken))) {
-      throw new Error('Validación de CAPTCHA fallida.');
-    }
-
-    const posibleEmail = credenciales.emailOrUsername.toLowerCase();
-    const filtro = { filtro: { $or: [{ email: posibleEmail }, { username: credenciales.emailOrUsername }] }, campos: {} };
-    const usuariosEncontrados = await CRUD.leerCampo(filtro, COLECCION);
-    if (!usuariosEncontrados.ok || usuariosEncontrados.datos.length === 0) {
-      throw new Error('Credenciales inválidas o usuario no encontrado.');
-    }
-
-    const usuarioBD = usuariosEncontrados.datos[0];
-
-    if (usuarioBD.bloqueadoHasta && new Date() < new Date(usuarioBD.bloqueadoHasta)) {
-      throw new Error('Cuenta bloqueada temporalmente. Inténtalo más tarde.');
-    }
-
-    if (!usuarioBD.verificado) {
-      throw new Error('Debes verificar tu cuenta antes de iniciar sesión.');
-    }
-
-    if (!(await bcrypt.compare(credenciales.password, usuarioBD.passwordHash))) {
-      await registrarIntentoFallido(usuarioBD._id);
-      throw new Error('Credenciales inválidas.');
-    }
-
-    await CRUD.modificarId(usuarioBD._id.toString(), { intentosFallidos: 0, ultimaActividad: new Date() }, COLECCION);
-    const token = generarToken(usuarioBD);
-
-    return { usuario: { ...usuarioBD, passwordHash: undefined }, token };
-  } catch (error) {
-    throw new Error(`Error al iniciar sesión: ${error.message}`);
+  if (!(await verificarCaptcha(credenciales.captchaToken))) {
+    throw new Error('El CAPTCHA no es válido.');
   }
-}
 
-/**
- * @description Verifica el token del CAPTCHA con el servicio de Google reCAPTCHA o hCaptcha.
- * @param {string} captchaToken - Token generado por el frontend.
- * @returns {Promise<boolean>} Retorna `true` si el CAPTCHA es válido, `false` en caso contrario.
- */
-async function verificarCaptcha(captchaToken) {
-  try {
-    const SECRET_KEY = config[ENV].CAPTCHA_SECRET_KEY;
-    const response = await axios.post('https://www.google.com/recaptcha/api/siteverify', null, {
-      params: {
-        secret: SECRET_KEY,
-        response: captchaToken
-      }
-    });
+  const usuario = await CRUD.leerCampo({
+    filtro: { $or: [{ email: credenciales.emailOrUsername.toLowerCase() }, { username: credenciales.emailOrUsername }] }
+  }, COLECCION);
 
-    return response.data.success;
-  } catch (error) {
-    console.error('Error verificando CAPTCHA:', error);
-    return false;
+  if (!usuario.datos.length) {
+    throw new Error('Credenciales incorrectas.');
   }
+  
+  const usuarioBD = usuario.datos[0];
+
+  if (!usuarioBD.verificado) {
+    throw new Error('Cuenta no verificada. Revisa tu correo electrónico para activarla.');
+  }
+
+  if (!(await bcrypt.compare(credenciales.password, usuarioBD.passwordHash))) {
+    await registrarIntentoFallido(usuarioBD._id);
+    throw new Error('Credenciales incorrectas.');
+  }
+
+  await CRUD.modificarId(usuarioBD._id, { intentosFallidos: 0, ultimaActividad: new Date() }, COLECCION);
+  
+  return {
+    username: usuarioBD.username,
+    rol: usuarioBD.rol,
+    token: generarToken(usuarioBD),
+    refreshToken: generarRefreshToken(usuarioBD)
+  };
 }
 
 /**
@@ -300,5 +284,7 @@ function enviarCorreoVerificacion(usuario, token) {
 module.exports = {
   crearUsuario,
   iniciarSesion,
-  enviarCorreoVerificacion
+  enviarCorreoVerificacion,
+  revocarToken,
+  tokenRevocado
 };
