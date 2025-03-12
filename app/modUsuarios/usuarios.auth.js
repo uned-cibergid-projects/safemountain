@@ -20,6 +20,7 @@ const EMAIL_PASS = config[ENV].EMAIL_PASS;
 const JWT_SECRET = config[ENV].JWT_SECRET;
 const REFRESH_SECRET = config[ENV].REFRESH_SECRET;
 const CAPTCHA_SECRET_KEY = config[ENV].CAPTCHA_SECRET_KEY;
+const JWT_BLACKLIST = new Set();
 
 /**
  * @description Genera un token JWT para sesiones de usuario.
@@ -248,6 +249,26 @@ async function iniciarSesion(credenciales) {
 }
 
 /**
+ * @description Cierra sesión del usuario invalidando su token.
+ * @param {string} token - JWT del usuario a invalidar.
+ * @returns {Promise<Object>} Respuesta de cierre de sesión.
+ */
+async function cerrarSesion(token) {
+  if (!token) {
+    throw new Error("Token no proporcionado.");
+  }
+
+  // Verificar si ya estaba revocado
+  if (tokenRevocado(token)) {
+    return { ok: false, mensaje: "Token ya ha sido invalidado." };
+  }
+
+  // Revocar token
+  revocarToken(token);
+  return { ok: true, mensaje: "Cierre de sesión exitoso." };
+}
+
+/**
  * @description Envía un correo de verificación al usuario con un token de un solo uso.
  * @param {Object} usuario - Objeto del usuario recién creado (contiene email, nombre, etc.).
  * @param {string} token - Token generado para la verificación.
@@ -280,11 +301,11 @@ function enviarCorreoVerificacion(usuario, token) {
     return transporter.sendMail(mailOptions);
 }
 
-
 module.exports = {
   crearUsuario,
   iniciarSesion,
   enviarCorreoVerificacion,
   revocarToken,
-  tokenRevocado
+  tokenRevocado,
+  cerrarSesion
 };
