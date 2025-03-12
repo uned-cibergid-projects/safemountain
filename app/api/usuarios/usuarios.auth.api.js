@@ -279,40 +279,84 @@ module.exports = (app, ruta) => {
     *                   type: string
     *                   example: "Cuenta no verificada. Revisa tu correo."
     */
-     app.route(`${ruta}/login`)
-     .post(async (req, res, next) => {
-         try {
-             const { emailOrUsername, password, captchaToken } = req.body;
+    app.route(`${ruta}/login`)
+    .post(async (req, res, next) => {
+        try {
+            const { emailOrUsername, password, captchaToken } = req.body;
+            // Validación de parámetros obligatorios
+            if (!emailOrUsername || !password || !captchaToken) {
+                return res.status(400).json({
+                    ok: false,
+                    mensaje: "Credenciales o CAPTCHA incompletos."
+                });
+            }
+            // Llamada al servicio de autenticación
+            const resultado = await USUARIOS_AUTH.iniciarSesion({ emailOrUsername, password, captchaToken });
+            res.status(200).json({
+                ok: true,
+                mensaje: "Inicio de sesión exitoso.",
+                datos: resultado
+            });
+        } catch (err) {
+            if (err.message.includes("verificación")) {
+                return res.status(403).json({
+                    ok: false,
+                    mensaje: err.message
+                });
+            }
+            res.status(400).json({
+                ok: false,
+                mensaje: err.message
+            });
+        }
+    });
 
-             // Validación de parámetros obligatorios
-             if (!emailOrUsername || !password || !captchaToken) {
-                 return res.status(400).json({
-                     ok: false,
-                     mensaje: "Credenciales o CAPTCHA incompletos."
-                 });
-             }
+    /**
+     * @swagger
+     * /api/auth/logout:
+     *   post:
+     *     summary: Cierra sesión invalidando el token del usuario.
+     *     tags: [Usuarios]
+     *     security:
+     *       - BearerAuth: []
+     *     responses:
+     *       200:
+     *         description: Cierre de sesión exitoso.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 ok:
+     *                   type: boolean
+     *                   example: true
+     *                 mensaje:
+     *                   type: string
+     *                   example: "Cierre de sesión exitoso."
+     *       400:
+     *         description: Token no proporcionado o inválido.
+     */
+    app.route(`${ruta}/logout`)
+    .post(async (req, res, next) => {
+      try {
+        const token = req.headers.authorization?.split(" ")[1];
 
-             // Llamada al servicio de autenticación
-             const resultado = await USUARIOS_AUTH.iniciarSesion({ emailOrUsername, password, captchaToken });
+        if (!token) {
+          return res.status(400).json({
+            ok: false,
+            mensaje: "Token no proporcionado.",
+          });
+        }
 
-             res.status(200).json({
-                 ok: true,
-                 mensaje: "Inicio de sesión exitoso.",
-                 datos: resultado
-             });
-         } catch (err) {
-             if (err.message.includes("verificación")) {
-                 return res.status(403).json({
-                     ok: false,
-                     mensaje: err.message
-                 });
-             }
-             res.status(400).json({
-                 ok: false,
-                 mensaje: err.message
-             });
-         }
-     });
+        const resultado = await USUARIOS_AUTH.cerrarSesion(token);
+        res.status(200).json(resultado);
+      } catch (err) {
+        res.status(400).json({
+          ok: false,
+          mensaje: err.message,
+        });
+      }
+    });
 
 
     /**
@@ -494,5 +538,4 @@ module.exports = (app, ruta) => {
                     });
                 });
         });
-
 };
