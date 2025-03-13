@@ -6,7 +6,7 @@ app/public/logs
 app/public/procesos
 app/config.js
 *.txt
-.env
+.env*
 !.env.example
 # No ignorar requirements.txt
 !requirements.txt
