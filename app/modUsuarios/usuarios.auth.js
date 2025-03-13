@@ -8,6 +8,7 @@
 'use strict';
 const axios = require('axios');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const validator = require('validator');
 const CRUD = require('../servicios/crud');
@@ -46,6 +47,14 @@ function generarRefreshToken(usuario) {
     REFRESH_SECRET,
     { expiresIn: '7d' }
   );
+}
+
+/**
+ * @description Genera un token seguro para recuperación de cuenta o verificación.
+ * @returns {string} Token aleatorio de 32 bytes en hexadecimal.
+ */
+function generarTokenUnico() {
+  return crypto.randomBytes(32).toString('hex');
 }
 
 /**
@@ -96,7 +105,7 @@ async function registrarIntentoFallido(idUsuario) {
   if (usuario.bloqueadoHasta) {
     const tiempoPasado = new Date() - new Date(usuario.bloqueadoHasta);
     if (tiempoPasado < 0) {
-      bloqueoTiempo = Math.min(tiempoPasado * 2, 24 * 60 * 60 * 1000); // Exponential backoff hasta 24 horas
+      bloqueoTiempo = Math.min(tiempoPasado * 2, 24 * 60 * 60 * 1000);
     }
   }
 
@@ -274,7 +283,7 @@ async function cerrarSesion(token) {
  * @param {string} token - Token generado para la verificación.
  * @returns {Promise<void>}
  */
-function enviarCorreoVerificacion(usuario, token) {
+function enviarCorreoVerificacion(usuario, contenido) {
     const transporter = nodemailer.createTransport({
         host: "sandbox.smtp.mailtrap.io",
         port: 2525,
@@ -284,21 +293,77 @@ function enviarCorreoVerificacion(usuario, token) {
         }
     });
 
-    const urlVerificacion = `http://10.201.54.162:8020/api/usuarios/verify/${token}`;
-
     const mailOptions = {
         from: '"SafeMountain" <noreply@safemountain.com>',
         to: usuario.email,
-        subject: 'Verifica tu cuenta',
-        text: `Hola ${usuario.nombre}, verifica tu cuenta en: ${urlVerificacion}`,
-        html: `
-          <p>Hola <strong>${usuario.nombre}</strong>,</p>
-          <p>Por favor verifica tu cuenta haciendo clic en el siguiente enlace:</p>
-          <a href="${urlVerificacion}">Verificar cuenta</a>
-        `
+        subject: contenido.subject,
+        text: contenido.text,
+        html: contenido.html
     };
 
     return transporter.sendMail(mailOptions);
+}
+
+/**
+ * @description Solicita el cambio de contraseña generando un token OTP.
+ * @param {string} email - Correo del usuario.
+ * @returns {Promise<Object>} Mensaje de éxito o error.
+ */
+async function solicitarCambioPassword(email) {
+  const usuario = await CRUD.leerCampo({ filtro: { email: email.toLowerCase() } }, COLECCION);
+  if (!usuario.datos.length) {
+    throw new Error('Usuario no encontrado.');
+  }
+
+  const usuarioBD = usuario.datos[0];
+  const resetToken = generarTokenUnico();
+  const resetTokenExpires = new Date(Date.now() + 10 * 60 * 1000);
+
+  await CRUD.modificarId(usuarioBD._id, {
+    resetToken,
+    resetTokenExpires
+  }, COLECCION);
+
+  await enviarCorreoVerificacion(usuarioBD, {
+    subject: 'Recuperación de contraseña',
+    text: `Hola ${usuarioBD.nombre}, usa el siguiente enlace para cambiar tu contraseña: http://10.201.54.162:8020/api/auth/reset-password/${resetToken}`,
+    html: `<p>Hola <strong>${usuarioBD.nombre}</strong>,</p>
+           <p>Haz clic en el siguiente enlace para cambiar tu contraseña:</p>
+           <a href="http://10.201.54.162:8020/api/auth/reset-password/${resetToken}">Restablecer contraseña</a>`
+  });
+  return { ok: true, mensaje: 'Correo de recuperación enviado.' };
+}
+
+/**
+ * @description Cambia la contraseña de un usuario verificando el token.
+ * @param {string} token - Token de recuperación.
+ * @param {string} nuevaPassword - Nueva contraseña.
+ * @returns {Promise<Object>} Mensaje de éxito o error.
+ */
+async function cambiarPassword(token, nuevaPassword) {
+  const usuario = await CRUD.leerCampo({ filtro: { resetToken: token, resetTokenExpires: { $gt: new Date() } } }, COLECCION);
+  if (!usuario.datos.length) {
+    throw new Error('Token inválido o expirado.');
+  }
+
+  if (!validarPasswordFuerte(nuevaPassword)) {
+    throw new Error(
+      'La contraseña no cumple los requisitos de seguridad (8+ caracteres, mayúscula, minúscula, dígito, caracter especial).'
+    );
+  }
+
+  const usuarioBD = usuario.datos[0];
+  const passwordHash = await bcrypt.hash(nuevaPassword, 10);
+
+  await CRUD.modificarId(usuarioBD._id, {
+    passwordHash,
+    resetToken: null,
+    resetTokenExpires: null
+  }, COLECCION);
+
+  revocarToken(usuarioBD._id.toString())
+
+  return { ok: true, mensaje: 'Contraseña cambiada correctamente.' };
 }
 
 module.exports = {
@@ -307,5 +372,7 @@ module.exports = {
   enviarCorreoVerificacion,
   revocarToken,
   tokenRevocado,
-  cerrarSesion
+  cerrarSesion,
+  solicitarCambioPassword,
+  cambiarPassword
 };

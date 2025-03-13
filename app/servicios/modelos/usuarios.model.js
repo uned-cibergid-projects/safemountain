@@ -118,7 +118,7 @@ const { usuariosConnection } = require('../mongoose');
  *           type: string
  *           description: "Token para verificación de correo. Campo opcional."
  *           example: "f8ad1d488d214a698816c4092785c819"
- *         verificationExpires:
+ *         verificationTokenExpires:
  *           type: string
  *           format: date-time
  *           description: "Fecha límite para usar el token de verificación."
@@ -127,6 +127,15 @@ const { usuariosConnection } = require('../mongoose');
  *           type: boolean
  *           description: "Indica si el usuario ya ha verificado su cuenta."
  *           example: false
+ *         resetToken:
+ *           type: string
+ *           description: "Token de recuperación de contraseña."
+ *           example: "f8ad1d488d214a698816c4092785c819"
+ *         resetTokenExpires:
+ *           type: string
+ *           format: date-time
+ *           description: "Fecha de expiración del token de recuperación de contraseña."
+ *           example: "2025-03-01T12:00:00Z"
  */
 
 /**
@@ -148,8 +157,10 @@ const { usuariosConnection } = require('../mongoose');
  * @property {Object} autenticacion - Información sobre autenticación (ej: login social).
  * @property {Object} estadisticas - Datos estadísticos sobre el uso del sistema.
  * @property {string} [verificationToken] - Token para verificar el correo electrónico.
- * @property {Date} [verificationExpires] - Fecha límite para usar el token de verificación.
+ * @property {Date} [verificationTokenExpires] - Fecha límite para usar el token de verificación.
  * @property {boolean} [verificado] - Indica si el usuario ya verificó su cuenta.
+ * @property {string} [resetToken] - Token para verificar el usuario en operaciones como cambios de contraseña.
+ * @property {Date} [resetTokenExpires] - Fecha límite para usar el token de verificación "resetToken".
  */
 const usuarioSchema = new Schema(
   {
@@ -188,8 +199,10 @@ const usuarioSchema = new Schema(
     },
     // Campos para verificación de correo
     verificationToken: { type: String, default: null },
-    verificationExpires: { type: Date, default: null },
+    verificationTokenExpires: { type: Date, default: null },
     verificado: { type: Boolean, default: false },
+    resetToken: { type: String, default: null },
+    resetTokenExpires: { type: Date, default: null },
   },
   { collection: 'usuarios' }
 );

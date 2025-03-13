@@ -132,7 +132,7 @@ module.exports = (app, ruta) => {
     *                     verificationToken:
     *                       type: string
     *                       example: "c940b238bd05f6fc7aae5a551fe6b0a4a20d8605"
-    *                     verificationExpires:
+    *                     verificationTokenExpires:
     *                       type: string
     *                       format: date-time
     *                       example: "2025-02-27T13:10:16.530Z"
@@ -144,25 +144,31 @@ module.exports = (app, ruta) => {
     *                       example: 0
     */
     app.route(`${ruta}/signup`)
-        .get((req, res, next) => {
-            const opciones = req.body
-
-            USUARIOS.buscarUsuarios(opciones)
-                .then(result => res.status(200).json(result))
-                .catch(err => next(err));
-        })
         .post(async (req, res, next) => {
             try {
                 let usuarioCreado = await USUARIOS_AUTH.crearUsuario(req.body);
-                const tokenVerificacion = crypto.randomBytes(20).toString('hex');
+                const tokenVerificacion = crypto.randomBytes(32).toString('hex');
 
                 // Guardar el token en la base de datos y enviar el correo en paralelo
                 usuarioCreado = await USUARIOS.modificarUsuario(usuarioCreado._id, {
                     verificationToken: tokenVerificacion,
-                    verificationExpires: new Date(Date.now() + 3600000) // 1 hora
+                    verificationTokenExpires: new Date(Date.now() + 3600000) // 1 hora
                 });
 
-                USUARIOS_AUTH.enviarCorreoVerificacion(usuarioCreado, tokenVerificacion)
+                const urlVerificacion = `http://10.201.54.162:8020/api/usuarios/verify/${tokenVerificacion}`
+
+                const contenido = {
+                    urlVerificacion: urlVerificacion,
+                    subject: 'Verifica tu cuenta',
+                    text: `Hola ${usuarioCreado.nombre}, verifica tu cuenta en: ${urlVerificacion}`,
+                    html: `
+                            <p>Hola <strong>${usuarioCreado.nombre}</strong>,</p>
+                            <p>Por favor verifica tu cuenta haciendo clic en el siguiente enlace:</p>
+                            <a href="${urlVerificacion}">Verificar cuenta</a>
+                        `
+                }
+
+                USUARIOS_AUTH.enviarCorreoVerificacion(usuarioCreado, contenido)
                     .then(() => {
                         res.status(200).json({
                             ok: true,
@@ -170,7 +176,7 @@ module.exports = (app, ruta) => {
                             datos: usuarioCreado
                         });
                     })
-                    .catch(err => next(err)); // Manejo de error en el envío de correo
+                    .catch(err => next(err));
 
             } catch (err) {
                 next(err);
@@ -465,7 +471,7 @@ module.exports = (app, ruta) => {
     *                       type: string
     *                       nullable: true
     *                       example: null
-    *                     verificationExpires:
+    *                     verificationTokenExpires:
     *                       type: string
     *                       format: date-time
     *                       nullable: true
@@ -499,7 +505,7 @@ module.exports = (app, ruta) => {
             const opciones = {
                 filtro: {
                     verificationToken: token,
-                    verificationExpires: { $gt: new Date() }
+                    verificationTokenExpires: { $gt: new Date() }
                 },
                 campos: {},
                 limite: 1
@@ -515,7 +521,7 @@ module.exports = (app, ruta) => {
                     return USUARIOS.modificarUsuario(usuarioBD._id, {
                         verificado: true,
                         verificationToken: null,
-                        verificationExpires: null
+                        verificationTokenExpires: null
                     });
                 })
                 .then(usuarioVerificado => {
@@ -537,5 +543,117 @@ module.exports = (app, ruta) => {
                         error: err.stack
                     });
                 });
+        });
+
+    /**
+    * @swagger
+    * /api/auth/reset-password:
+    *   post:
+    *     summary: Solicita un cambio de contraseña enviando un correo con un token de recuperación.
+    *     tags: [Usuarios]
+    *     requestBody:
+    *       required: true
+    *       content:
+    *         application/json:
+    *           schema:
+    *             type: object
+    *             properties:
+    *               email:
+    *                 type: string
+    *                 example: "dani.prueba@gmail.com"
+    *     responses:
+    *       200:
+    *         description: Se ha enviado un correo con el enlace para restablecer la contraseña.
+    *         content:
+    *           application/json:
+    *             schema:
+    *               type: object
+    *               properties:
+    *                 ok:
+    *                   type: boolean
+    *                   example: true
+    *                 mensaje:
+    *                   type: string
+    *                   example: "Correo de recuperación enviado."
+    *       400:
+    *         description: Error en la solicitud.
+    */
+        app.route(`${ruta}/reset-password`)
+        .post(async (req, res, next) => {
+            try {
+                const { email } = req.body;
+                if (!email) {
+                    return res.status(400).json({
+                        ok: false,
+                        mensaje: "Es obligatorio proporcionar un email"
+                    });
+                }
+
+                const resultado = await USUARIOS_AUTH.solicitarCambioPassword(email);
+                res.status(200).json(resultado);
+            } catch (err) {
+                res.status(400).json({
+                    ok: false,
+                    mensaje: err.message
+                });
+            }
+        });
+
+    /**
+    * @swagger
+    * /api/auth/reset-password/confirm:
+    *   post:
+    *     summary: Cambia la contraseña utilizando un token de recuperación.
+    *     tags: [Usuarios]
+    *     requestBody:
+    *       required: true
+    *       content:
+    *         application/json:
+    *           schema:
+    *             type: object
+    *             properties:
+    *               token:
+    *                 type: string
+    *                 example: "b1946ac92492d2347c6235b4d2611184"
+    *               newPassword:
+    *                 type: string
+    *                 example: "NuevaContraseñaSegura!123"
+    *     responses:
+    *       200:
+    *         description: La contraseña ha sido cambiada exitosamente.
+    *         content:
+    *           application/json:
+    *             schema:
+    *               type: object
+    *               properties:
+    *                 ok:
+    *                   type: boolean
+    *                   example: true
+    *                 mensaje:
+    *                   type: string
+    *                   example: "Contraseña cambiada correctamente."
+    *       400:
+    *         description: Error en la solicitud.
+    */
+    app.route(`${ruta}/reset-password/confirm/:token`)
+        .post(async (req, res, next) => {
+            try {
+                const token = req.params.token;
+                const { newPassword } = req.body;
+                if (!token || !newPassword) {
+                    return res.status(400).json({
+                        ok: false,
+                        mensaje: "El token y la nueva contraseña son obligatorios."
+                    });
+                }
+
+                const resultado = await USUARIOS_AUTH.cambiarPassword(token, newPassword);
+                res.status(200).json(resultado);
+            } catch (err) {
+                res.status(400).json({
+                    ok: false,
+                    mensaje: err.message
+                });
+            }
         });
 };
