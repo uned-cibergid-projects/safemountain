@@ -15,7 +15,7 @@ const { subirArchivoTemporal } = require('../utils/fileUtils');
 const APKS = require('../modMetadata/apks');
 const CRUD = require('../servicios/crud');
 const COLECCION = require('../servicios/modelos/analisis.model').estatico
-const CONFIG = require('../config.js')[process.env.NODE_ENV || 'desarrollo'];
+const CONFIG = require('../config.js')[process.env.NODE_ENV || 'development'];
 
 
 /**
