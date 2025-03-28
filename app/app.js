@@ -1,6 +1,6 @@
 'use strict'
 
-const CONFIG = require('./config.js')[process.env.NODE_ENV || 'desarrollo'];
+const CONFIG = require('./config.js')[process.env.NODE_ENV || 'development'];
 
 process.env.DEBUG = CONFIG.DEBUG || '*:*';
 

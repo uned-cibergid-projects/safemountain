@@ -1,5 +1,5 @@
 'use strict'
-const CONFIG = require('../config')[process.env.NODE_ENV ||'desarrollo'];
+const CONFIG = require('../config')[process.env.NODE_ENV ||'development'];
 const debug = require('debug')(`${CONFIG.APP}:middleware`);
 
 const serveIndex = require('serve-index');
