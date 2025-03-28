@@ -15,11 +15,11 @@ const CRUD = require('../servicios/crud');
 const COLECCION = require('../servicios/modelos/usuarios.model').usuarios;
 const nodemailer = require('nodemailer');
 const config = require('../config.js');
-const ENV = process.env.NODE_ENV;
-const EMAIL_USER = config[ENV].EMAIL_USER;
-const EMAIL_PASS = config[ENV].EMAIL_PASS;
-const JWT_SECRET = config[ENV].JWT_SECRET;
-const REFRESH_SECRET = config[ENV].REFRESH_SECRET;
+const ENV = process.env.NODE_ENV || 'development';
+const SMTP_MAIL_USER = config[ENV].SMTP_MAIL_USER;
+const SMTP_MAIL_PASSWORD = config[ENV].SMTP_MAIL_PASSWORD;
+const JWT_SECRET_KEY = config[ENV].JWT_SECRET_KEY;
+const REFRESH_JWT_SECRET_KEY = config[ENV].REFRESH_JWT_SECRET_KEY;
 const CAPTCHA_SECRET_KEY = config[ENV].CAPTCHA_SECRET_KEY;
 const JWT_BLACKLIST = new Set();
 
@@ -31,7 +31,7 @@ const JWT_BLACKLIST = new Set();
 function generarToken(usuario) {
   return jwt.sign(
     { id: usuario._id, username: usuario.username, rol: usuario.rol },
-    JWT_SECRET,
+    JWT_SECRET_KEY,
     { expiresIn: '24h' }
   );
 }
@@ -44,7 +44,7 @@ function generarToken(usuario) {
 function generarRefreshToken(usuario) {
   return jwt.sign(
     { id: usuario._id },
-    REFRESH_SECRET,
+    REFRESH_JWT_SECRET_KEY,
     { expiresIn: '7d' }
   );
 }
@@ -288,8 +288,8 @@ function enviarCorreoVerificacion(usuario, contenido) {
         host: "sandbox.smtp.mailtrap.io",
         port: 2525,
         auth: {
-            user: EMAIL_USER,
-            pass: EMAIL_PASS
+            user: SMTP_MAIL_USER,
+            pass: SMTP_MAIL_PASSWORD
         }
     });
 

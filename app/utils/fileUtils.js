@@ -12,7 +12,7 @@ const util = require('util');
 const path = require('path');
 const multer = require('multer');
 const execAsync = util.promisify(exec);
-const CONFIG = require('../config.js')[process.env.NODE_ENV || 'desarrollo'];
+const CONFIG = require('../config.js')[process.env.NODE_ENV || 'development'];
 
 /**
  * @description Extensiones de archivo permitidas para la carga.

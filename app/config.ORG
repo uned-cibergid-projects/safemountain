@@ -15,8 +15,8 @@ const EXPORTACION = {
 require('dotenv').config(); 
 
 module.exports = {
-    'daniel': {
-        ENTORNO: 'daniel',
+    'development': {
+        ENTORNO: 'development',
         VERSION: VERSION,
         APP: APP,
         PORT: 8020,
@@ -45,14 +45,14 @@ module.exports = {
         CARPETAS: CARPETAS,
         DEBUG: DEBUG,
         EXPORTACION: EXPORTACION,
-        EMAIL_USER: process.env.EMAIL_USER,
-        EMAIL_PASS: process.env.EMAIL_PASS,
+        SMTP_MAIL_USER: process.env.SMTP_MAIL_USER,
+        SMTP_MAIL_PASSWORD: process.env.SMTP_MAIL_PASSWORD,
         CAPTCHA_SECRET_KEY: process.env.CAPTCHA_SECRET_KEY,
         HCAPTCHA_SECRET_KEY: process.env.HCAPTCHA_SECRET_KEY,
-        JWT_SECRET: process.env.JWT_SECRET
+        JWT_SECRET_KEY: process.env.JWT_SECRET_KEY
     },
-    'helena': {
-        ENTORNO: 'helena',
+    'staging': {
+        ENTORNO: 'staging',
         VERSION: VERSION,
         APP: APP,
         PORT: 8020,
@@ -81,10 +81,82 @@ module.exports = {
         CARPETAS: CARPETAS,
         DEBUG: DEBUG,
         EXPORTACION: EXPORTACION,
-        EMAIL_USER: process.env.EMAIL_USER,
-        EMAIL_PASS: process.env.EMAIL_PASS,
+        SMTP_MAIL_USER: process.env.SMTP_MAIL_USER,
+        SMTP_MAIL_PASSWORD: process.env.SMTP_MAIL_PASSWORD,
         CAPTCHA_SECRET_KEY: process.env.CAPTCHA_SECRET_KEY,
         HCAPTCHA_SECRET_KEY: process.env.HCAPTCHA_SECRET_KEY,
-        JWT_SECRET: process.env.JWT_SECRET
+        JWT_SECRET_KEY: process.env.JWT_SECRET_KEY
+    },
+    'production': {
+        ENTORNO: 'production',
+        VERSION: VERSION,
+        APP: APP,
+        PORT: 8020,
+        MONGO_METADATA: {
+            db: 'metadata',
+            host: '10.201.54.162',
+            user: '',
+            pass: '',
+            port: 49016
+        },
+        MONGO_ANALISIS: {
+            db: 'analisis',
+            host: '10.201.54.162',
+            user: '',
+            pass: '',
+            port: 49016
+        },
+        MONGO_USUARIOS: {
+            db: 'usuarios',
+            host: '10.201.54.162',
+            user: '',
+            pass: '',
+            port: 49016
+        },
+        BASE_DIRECTORY: '/home/ciber/projects/SafeMountain/nfs/incibePro/analisisAplicaciones/datasets/hostApks',
+        CARPETAS: CARPETAS,
+        DEBUG: DEBUG,
+        EXPORTACION: EXPORTACION,
+        SMTP_MAIL_USER: process.env.SMTP_MAIL_USER,
+        SMTP_MAIL_PASSWORD: process.env.SMTP_MAIL_PASSWORD,
+        CAPTCHA_SECRET_KEY: process.env.CAPTCHA_SECRET_KEY,
+        HCAPTCHA_SECRET_KEY: process.env.HCAPTCHA_SECRET_KEY,
+        JWT_SECRET_KEY: process.env.JWT_SECRET_KEY
+    },
+    'test': {
+        ENTORNO: 'test',
+        VERSION: VERSION,
+        APP: APP,
+        PORT: 8020,
+        MONGO_METADATA: {
+            db: 'metadata',
+            host: '10.201.54.162',
+            user: '',
+            pass: '',
+            port: 49016
+        },
+        MONGO_ANALISIS: {
+            db: 'analisis',
+            host: '10.201.54.162',
+            user: '',
+            pass: '',
+            port: 49016
+        },
+        MONGO_USUARIOS: {
+            db: 'usuarios',
+            host: '10.201.54.162',
+            user: '',
+            pass: '',
+            port: 49016
+        },
+        BASE_DIRECTORY: '/home/ciber/projects/SafeMountain/nfs/incibePro/analisisAplicaciones/datasets/hostApks',
+        CARPETAS: CARPETAS,
+        DEBUG: DEBUG,
+        EXPORTACION: EXPORTACION,
+        SMTP_MAIL_USER: process.env.SMTP_MAIL_USER,
+        SMTP_MAIL_PASSWORD: process.env.SMTP_MAIL_PASSWORD,
+        CAPTCHA_SECRET_KEY: process.env.CAPTCHA_SECRET_KEY,
+        HCAPTCHA_SECRET_KEY: process.env.HCAPTCHA_SECRET_KEY,
+        JWT_SECRET_KEY: process.env.JWT_SECRET_KEY
     },
 };

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const CONFIG = require('../config')[process.env.NODE_ENV || 'desarrollo'];
+const CONFIG = require('../config')[process.env.NODE_ENV || 'development'];
 
 const app = require('../app');
 const debug = require('debug')('metadata:server');
