@@ -6,13 +6,14 @@
  * @see usuarios_api
  */
 
-'use strict';
-const validator = require('validator');
-const CRUD = require('../servicios/crud');
-const COLECCION = require('../servicios/modelos/usuarios.model').usuarios;
+'use strict'
+
+const validator = require('validator')
+const CRUD = require('../servicios/crud')
+const COLECCION = require('../servicios/modelos/usuarios.model').usuarios
 
 /**
- * @description Busca usuarios según criterios avanzados como filtros, orden y paginación. 
+ * @description Busca usuarios según criterios avanzados como filtros, orden y paginación.
  *              De forma predeterminada, se excluye el campo `passwordHash` para evitar fugas de información sensible.
  *
  * @function buscarUsuarios
@@ -25,39 +26,38 @@ const COLECCION = require('../servicios/modelos/usuarios.model').usuarios;
  * @returns {Promise<Array>} Promesa que resuelve con la lista de usuarios encontrados, sin `passwordHash`.
  * @throws {Error} Si ocurre un fallo en la búsqueda.
  */
-async function buscarUsuarios(opciones = {}) {
+async function buscarUsuarios (opciones = {}) {
   try {
-    opciones.limite = opciones.limite || 100;
-    opciones.skip = opciones.skip || 0;
+    opciones.limite = opciones.limite || 100
+    opciones.skip = opciones.skip || 0
 
     // Asegurarnos de no incluir passwordHash
     if (!opciones.campos) {
-      opciones.campos = {};
+      opciones.campos = {}
     }
-    
+
     // Validar si el cliente está intentando incluir passwordHash
-    if ("passwordHash" in opciones.campos) {
-      throw new Error("No se puede solicitar el campo 'passwordHash'.");
+    if ('passwordHash' in opciones.campos) {
+      throw new Error('No se puede solicitar el campo \'passwordHash\'.')
     }
 
     // Detectar si hay inclusiones en la proyección
-    const tieneInclusiones = Object.values(opciones.campos).some(valor => valor === 1);
+    const tieneInclusiones = Object.values(opciones.campos).some((valor) => valor === 1)
 
     // Si no hay inclusiones definidas, excluimos passwordHash por defecto
     if (!tieneInclusiones) {
-      opciones.campos.passwordHash = 0;
+      opciones.campos.passwordHash = 0
     }
 
-    const resultados = await CRUD.leerCampo(opciones, COLECCION);
+    const resultados = await CRUD.leerCampo(opciones, COLECCION)
 
     if (Array.isArray(resultados.datos)) {
-      resultados.datos = resultados.datos.map(({ passwordHash, ...usuario }) => usuario);
-
+      resultados.datos = resultados.datos.map(({ passwordHash: _passwordHash, ...usuario }) => usuario)
     }
 
-    return resultados;
+    return resultados
   } catch (error) {
-    throw new Error(`Error al buscar usuarios: ${error.message}`);
+    throw new Error(`Error al buscar usuarios: ${error.message}`)
   }
 }
 
@@ -69,27 +69,27 @@ async function buscarUsuarios(opciones = {}) {
  * @returns {Promise<Object>} Objeto con la información de la eliminación.
  * @throws {Error} Si el usuario no existe o la operación falla.
  */
-async function eliminarUsuario(id) {
+async function eliminarUsuario (id) {
   try {
     // Verificar que el usuario exista (excluyendo passwordHash)
-    const usuario = await CRUD.leerId(id, COLECCION, { passwordHash: 0 });
+    const usuario = await CRUD.leerId(id, COLECCION, { passwordHash: 0 })
     if (!usuario || !usuario.datos) {
-      throw new Error(`Usuario con ID ${id} no encontrado.`);
+      throw new Error(`Usuario con ID ${id} no encontrado.`)
     }
 
     // Eliminar usuario
-    const resultado = await CRUD.borrar(id, COLECCION);
+    await CRUD.borrar(id, COLECCION)
     return {
       mensaje: 'Usuario eliminado correctamente',
       usuarioEliminado: usuario.datos
-    };
+    }
   } catch (error) {
-    throw new Error(`Error al eliminar usuario: ${error.message}`);
+    throw new Error(`Error al eliminar usuario: ${error.message}`)
   }
 }
 
 /**
- * @description Modifica atributos de un usuario sin afectar información sensible 
+ * @description Modifica atributos de un usuario sin afectar información sensible
  *              (no permite modificar la contraseña ni el passwordHash).
  *
  * @function modificarUsuario
@@ -104,15 +104,15 @@ async function eliminarUsuario(id) {
  * @returns {Promise<Object>} Promesa que resuelve con el usuario modificado (sin `passwordHash`).
  * @throws {Error} Si la operación falla o se intenta modificar información sensible.
  */
-async function modificarUsuario(id, cambios) {
+async function modificarUsuario (id, cambios) {
   try {
     // Bloquear cambios directos a la contraseña o el hash
     if (cambios.password || cambios.passwordHash) {
-      throw new Error('No se permite modificar la contraseña desde esta función.');
+      throw new Error('No se permite modificar la contraseña desde esta función.')
     }
 
     if (cambios.email && !validator.isEmail(cambios.email)) {
-      throw new Error('Formato de email no válido.');
+      throw new Error('Formato de email no válido.')
     }
 
     // Evitar colisiones si se cambia username o email
@@ -120,39 +120,39 @@ async function modificarUsuario(id, cambios) {
       const filtroDuplicados = {
         filtro: { $or: [] },
         campos: { _id: 1 }
-      };
+      }
 
       if (cambios.username) {
-        filtroDuplicados.filtro.$or.push({ username: cambios.username });
+        filtroDuplicados.filtro.$or.push({ username: cambios.username })
       }
       if (cambios.email) {
-        filtroDuplicados.filtro.$or.push({ email: cambios.email.toLowerCase() });
+        filtroDuplicados.filtro.$or.push({ email: cambios.email.toLowerCase() })
       }
 
       if (filtroDuplicados.filtro.$or.length > 0) {
-        const usuariosCoincidentes = await CRUD.leerCampo(filtroDuplicados, COLECCION);
+        const usuariosCoincidentes = await CRUD.leerCampo(filtroDuplicados, COLECCION)
         // Verificar si alguno de esos usuarios es distinto al que estamos modificando
-        if (usuariosCoincidentes.some(u => u.datos._id.toString() !== id)) {
-          throw new Error('Ya existe un usuario con ese email o username.');
+        if (usuariosCoincidentes.some((u) => u.datos._id.toString() !== id)) {
+          throw new Error('Ya existe un usuario con ese email o username.')
         }
       }
     }
 
     // Convertir email a minúsculas si se modifica
     if (cambios.email) {
-      cambios.email = cambios.email.toLowerCase();
+      cambios.email = cambios.email.toLowerCase()
     }
 
-    const resultado = await CRUD.modificarId(id, cambios, COLECCION);
+    const resultado = await CRUD.modificarId(id, cambios, COLECCION)
 
     // Retornar sin passwordHash
     const usuarioModificado = {
       ...resultado.datos,
       passwordHash: undefined
-    };
-    return usuarioModificado;
+    }
+    return usuarioModificado
   } catch (error) {
-    throw new Error(`Error al modificar usuario: ${error.message}`);
+    throw new Error(`Error al modificar usuario: ${error.message}`)
   }
 }
 
@@ -160,4 +160,4 @@ module.exports = {
   buscarUsuarios,
   eliminarUsuario,
   modificarUsuario
-};
+}

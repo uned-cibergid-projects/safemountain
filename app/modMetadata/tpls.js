@@ -1,18 +1,19 @@
-/** 
+/**
  * @module modMetadata/tpls
- * 
+ *
  * @description Funciones para gestionar TPLs en el módulo modMetadata.
- * 
+ *
  * @see tpls_api
  */
 
 'use strict'
+
 const COLECCION = require('../servicios/modelos/metadata.model').tpls
-const CRUD = require('../servicios/crud');
+const CRUD = require('../servicios/crud')
 
 module.exports = {
-    leerId:leerId,
-    leerCampo:leerCampo,
+  leerId,
+  leerCampo
 }
 
 /**
@@ -23,14 +24,13 @@ module.exports = {
  * @returns {Promise<Object>} Una promesa que resuelve con el objeto TPL correspondiente al ID especificado.
  * @throws {Error} Si la operación falla, se lanza un error.
  */
-function leerId(id){
-    let promesa = (resolve,reject) =>{
-        CRUD.leerId(id, COLECCION)
-            .then(result => resolve(result))
-            .catch(err => reject(err)
-        )
-    }
-    return new Promise(promesa)
+function leerId (id) {
+  const promesa = (resolve, reject) => {
+    CRUD.leerId(id, COLECCION)
+      .then((result) => resolve(result))
+      .catch((err) => reject(err))
+  }
+  return new Promise(promesa)
 }
 
 /**
@@ -46,12 +46,11 @@ function leerId(id){
  * @returns {Promise<Object>} Una promesa que resuelve con un objeto que contiene el estado de la operación y los datos recuperados.
  * @throws {Error} Si la operación falla, se lanza un error con propiedades adicionales para contexto.
  */
-function leerCampo(opciones){
-    let promesa = (resolve,reject) =>{
-        CRUD.leerCampo(opciones, COLECCION)
-            .then(result => resolve(result))
-            .catch(err => reject(err)
-        )
-    }
-    return new Promise(promesa)
+function leerCampo (opciones) {
+  const promesa = (resolve, reject) => {
+    CRUD.leerCampo(opciones, COLECCION)
+      .then((result) => resolve(result))
+      .catch((err) => reject(err))
+  }
+  return new Promise(promesa)
 }

@@ -1,14 +1,15 @@
 /**
  * @module servicios/modelos/usuarios
- * 
+ *
  * @description Schemas y modelos de usuarios.
  */
 
-'use strict';
+'use strict'
 
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const { usuariosConnection } = require('../mongoose');
+const mongoose = require('mongoose')
+
+const { Schema } = mongoose
+const { usuariosConnection } = require('../mongoose')
 
 /**
  * @swagger
@@ -140,7 +141,7 @@ const { usuariosConnection } = require('../mongoose');
 
 /**
  * @description Schema Mongoose para la colección "usuarios".
- * 
+ *
  * @typedef {Object} usuarioSchema
  * @property {string} nombre - Nombre completo del usuario.
  * @property {string} username - Nombre de usuario único.
@@ -186,27 +187,27 @@ const usuarioSchema = new Schema(
     configuracion: {
       idioma: { type: String, default: 'es' },
       tema: { type: String, enum: ['claro', 'oscuro', 'sistema'], default: 'sistema' },
-      notificaciones: { type: Boolean, default: true },
+      notificaciones: { type: Boolean, default: true }
     },
     autenticacion: {
       ultimoLogin: { type: Date, default: null },
-      proveedor: { type: String, enum: ['local', 'google', 'github'], default: 'local' },
+      proveedor: { type: String, enum: ['local', 'google', 'github'], default: 'local' }
     },
     estadisticas: {
       analisisRealizados: { type: Number, default: 0 },
       apiRequests: { type: Number, default: 0 },
-      tiempoTotalUso: { type: Number, default: 0.0 },
+      tiempoTotalUso: { type: Number, default: 0.0 }
     },
     // Campos para verificación de correo
     verificationToken: { type: String, default: null },
     verificationTokenExpires: { type: Date, default: null },
     verificado: { type: Boolean, default: false },
     resetToken: { type: String, default: null },
-    resetTokenExpires: { type: Date, default: null },
+    resetTokenExpires: { type: Date, default: null }
   },
   { collection: 'usuarios' }
-);
+)
 
-const usuarios = usuariosConnection().model('usuarios', usuarioSchema);
+const usuarios = usuariosConnection().model('usuarios', usuarioSchema)
 
-module.exports = { usuarios };
+module.exports = { usuarios }

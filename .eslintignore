@@ -1,0 +1,29 @@
+# Dependencias y control de versiones
+node_modules
+.git
+
+# Archivos binarios o comprimidos
+*.gz
+*.tar
+*.zip
+*.apk
+
+# Carpetas auxiliares y de recursos
+docs
+downloads
+uploads
+public
+dist
+tools
+
+# Archivos de entorno
+.env*
+*.env
+
+# Archivos específicos del proyecto
+estructura*.txt
+
+# Archivos base
+app/servicios
+app/utils
+app/config

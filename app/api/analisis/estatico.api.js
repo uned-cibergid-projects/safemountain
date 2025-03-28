@@ -1,9 +1,9 @@
-'use strict';
-const ESTATICO = require('../../modAnalisis/estatico.js');
+'use strict'
+
+const ESTATICO = require('../../modAnalisis/estatico.js')
 
 module.exports = (app, ruta) => {
-
-    /**
+  /**
      * @swagger
      * tags:
      *   name: Estático
@@ -23,20 +23,20 @@ module.exports = (app, ruta) => {
      *               items:
      *                 $ref: '#/components/schemas/Estatico'
      */
-    app.route(`${ruta}/search`)
+  app.route(`${ruta}/search`)
     .post((req, res, next) => {
-        const opciones = req.body;
+      const opciones = req.body
 
-        if (typeof opciones !== 'object') {
-            return res.status(400).json({
-                ok: false,
-                mensaje: 'Las opciones deben ser un objeto válido.',
-                datos: []
-            });
-        }
+      if (typeof opciones !== 'object') {
+        return res.status(400).json({
+          ok: false,
+          mensaje: 'Las opciones deben ser un objeto válido.',
+          datos: []
+        })
+      }
 
-        ESTATICO.leerCampo(opciones)
-            .then(result => res.status(200).json(result))
-            .catch(err => next(err));
-    });
-};
+      ESTATICO.leerCampo(opciones)
+        .then((result) => res.status(200).json(result))
+        .catch((err) => next(err))
+    })
+}

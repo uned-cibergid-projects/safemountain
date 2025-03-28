@@ -1,9 +1,9 @@
-'use strict';
-const MOBSF = require('../../modAnalisis/mobsf.js');
-const { subirArchivo } = require('../../utils/fileUtils');
+'use strict'
+
+const MOBSF = require('../../modAnalisis/mobsf.js')
 
 module.exports = (app, ruta) => {
-    /**
+  /**
     * @swagger
     * tags:
     *   name: Análisis de APK
@@ -46,13 +46,13 @@ module.exports = (app, ruta) => {
     *                     package: "com.instagram.lite"
     *                     name: "instagram-lite.apk"
     */
-    app.route(`${ruta}/analizar`)
-        .post(async (req, res, next) => {
-            try {
-                const result = await MOBSF.analizar(req, res);
-                res.status(200).json(result);
-            } catch (err) {
-                next(err);
-            }
-        });
-};
+  app.route(`${ruta}/analizar`)
+    .post(async (req, res, next) => {
+      try {
+        const result = await MOBSF.analizar(req, res)
+        res.status(200).json(result)
+      } catch (err) {
+        next(err)
+      }
+    })
+}
