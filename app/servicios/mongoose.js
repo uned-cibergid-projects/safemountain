@@ -3,7 +3,7 @@ const debug = require('debug')('metadata:cargarBD');
 const mongoose = require('mongoose');
 
 // Obtenemos la configuración correspondiente al entorno actual
-const config = require('../config')[process.env.NODE_ENV || 'desarrollo'];
+const config = require('../config')[process.env.NODE_ENV || 'development'];
 
 // Construimos la URL de conexión para la base 'metadata'
 let db_addr_metadata;
