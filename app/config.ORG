@@ -1,3 +1,7 @@
+'use strict'
+const path = require('path');
+const fs = require('fs')
+
 const VERSION = '1.0.1';
 const APP = 'metadata';
 const CARPETAS = {
@@ -12,7 +16,15 @@ const EXPORTACION = {
     host: 'localhost', // Puedes reemplazar 'localhost' por la dirección del servidor si es necesario
 };
 
-require('dotenv').config(); 
+const ENV = process.env.NODE_ENV || 'development';
+const envFilePath = path.resolve(__dirname, `../.env.${ENV}`);
+
+if (fs.existsSync(envFilePath)) {
+    require('dotenv').config({ path: envFilePath });
+    console.log(`✅ Archivo de entorno cargado: .env.${ENV}`);
+} else {
+    console.warn(`⚠️ Archivo .env.${ENV} no encontrado. Se intentará usar variables de entorno del sistema.`);
+}
 
 module.exports = {
     'development': {
@@ -49,7 +61,8 @@ module.exports = {
         SMTP_MAIL_PASSWORD: process.env.SMTP_MAIL_PASSWORD,
         CAPTCHA_SECRET_KEY: process.env.CAPTCHA_SECRET_KEY,
         HCAPTCHA_SECRET_KEY: process.env.HCAPTCHA_SECRET_KEY,
-        JWT_SECRET_KEY: process.env.JWT_SECRET_KEY
+        JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
+        REFRESH_JWT_SECRET_KEY: process.env.REFRESH_JWT_SECRET_KEY
     },
     'staging': {
         ENTORNO: 'staging',
@@ -85,7 +98,8 @@ module.exports = {
         SMTP_MAIL_PASSWORD: process.env.SMTP_MAIL_PASSWORD,
         CAPTCHA_SECRET_KEY: process.env.CAPTCHA_SECRET_KEY,
         HCAPTCHA_SECRET_KEY: process.env.HCAPTCHA_SECRET_KEY,
-        JWT_SECRET_KEY: process.env.JWT_SECRET_KEY
+        JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
+        REFRESH_JWT_SECRET_KEY: process.env.REFRESH_JWT_SECRET_KEY
     },
     'production': {
         ENTORNO: 'production',
@@ -121,7 +135,8 @@ module.exports = {
         SMTP_MAIL_PASSWORD: process.env.SMTP_MAIL_PASSWORD,
         CAPTCHA_SECRET_KEY: process.env.CAPTCHA_SECRET_KEY,
         HCAPTCHA_SECRET_KEY: process.env.HCAPTCHA_SECRET_KEY,
-        JWT_SECRET_KEY: process.env.JWT_SECRET_KEY
+        JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
+        REFRESH_JWT_SECRET_KEY: process.env.REFRESH_JWT_SECRET_KEY
     },
     'test': {
         ENTORNO: 'test',
@@ -157,6 +172,7 @@ module.exports = {
         SMTP_MAIL_PASSWORD: process.env.SMTP_MAIL_PASSWORD,
         CAPTCHA_SECRET_KEY: process.env.CAPTCHA_SECRET_KEY,
         HCAPTCHA_SECRET_KEY: process.env.HCAPTCHA_SECRET_KEY,
-        JWT_SECRET_KEY: process.env.JWT_SECRET_KEY
+        JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
+        REFRESH_JWT_SECRET_KEY: process.env.REFRESH_JWT_SECRET_KEY
     },
 };
