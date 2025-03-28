@@ -10,7 +10,9 @@
     "start": "node ./app/bin/www",
     "docs": "node_modules/.bin/jsdoc --configure jsdoc.json --verbose && node ./app/utils/doc.js && redocly build-docs ./docs/swagger/swagger.json -o ./docs/swagger/index.html",
     "install:privado": "node ./scripts/instalar/privado.js",
-    "install:descompilador": "node ./scripts/instalar/descompilador.js"
+    "install:descompilador": "node ./scripts/instalar/descompilador.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@ctrl/tinycolor": "^4.0.3",
@@ -45,6 +47,11 @@
     "xmlbuilder2": "2.1.2"
   },
   "devDependencies": {
+    "eslint": "^8.57.1",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.6.0",
     "jsdoc": "^4.0.4",
     "nodemon": "^2.0.7"
   }

@@ -1,9 +1,9 @@
-'use strict';
-const APKS = require('../../modMetadata/apks.js');
+'use strict'
+
+const APKS = require('../../modMetadata/apks.js')
 
 module.exports = (app, ruta) => {
-    
-    /**
+  /**
      * @swagger
      * tags:
      *   name: Metadata APK
@@ -23,21 +23,20 @@ module.exports = (app, ruta) => {
      *               items:
      *                 $ref: '#/components/schemas/Apk'
      */
-    app.route(ruta)
-        .get((req, res, next) => {
-            let opciones = {
-                filtro: {},
-                campos: {},
-                limite: 0,
-                orden: {}
-            };
-            APKS.leerCampo(opciones)
-                .then(result => res.status(200).json(result))
-                .catch(err => next(err));
-        });
+  app.route(ruta)
+    .get((req, res, next) => {
+      const opciones = {
+        filtro: {},
+        campos: {},
+        limite: 0,
+        orden: {}
+      }
+      APKS.leerCampo(opciones)
+        .then((result) => res.status(200).json(result))
+        .catch((err) => next(err))
+    })
 
-
-    /**
+  /**
      * @swagger
      * tags:
      *   name: Metadata APK
@@ -57,14 +56,14 @@ module.exports = (app, ruta) => {
      *               items:
      *                 $ref: '#/components/schemas/Apk'
      */
-    app.route(`${ruta}/:id`)
-        .get((req, res, next) => {
-            APKS.leerId(req.params.id)
-                .then(result => res.status(200).json(result))
-                .catch(err => next(err));
-        });
+  app.route(`${ruta}/:id`)
+    .get((req, res, next) => {
+      APKS.leerId(req.params.id)
+        .then((result) => res.status(200).json(result))
+        .catch((err) => next(err))
+    })
 
-    /**
+  /**
      * @swagger
      * tags:
      *   name: Metadata APK
@@ -84,22 +83,22 @@ module.exports = (app, ruta) => {
      *               items:
      *                 $ref: '#/components/schemas/Apk'
      */
-    app.route(`${ruta}/name/:name`)
-        .get((req, res, next) => {
-            let opciones = {
-                filtro: { 
-                    name: req.params.name 
-                },
-                orden: {},
-                campos: {},
-                limite: 1
-            };
-            APKS.leerCampo(opciones)
-                .then(result => res.status(200).json(result))
-                .catch(err => next(err));
-        });
+  app.route(`${ruta}/name/:name`)
+    .get((req, res, next) => {
+      const opciones = {
+        filtro: {
+          name: req.params.name
+        },
+        orden: {},
+        campos: {},
+        limite: 1
+      }
+      APKS.leerCampo(opciones)
+        .then((result) => res.status(200).json(result))
+        .catch((err) => next(err))
+    })
 
-    /**
+  /**
      * @swagger
      * tags:
      *   name: Metadata APK
@@ -119,22 +118,22 @@ module.exports = (app, ruta) => {
      *               items:
      *                 $ref: '#/components/schemas/Apk'
      */
-    app.route(`${ruta}/package/:package`)
-        .get((req, res, next) => {
-            let opciones = {
-                filtro: { 
-                    package: req.params.package 
-                },
-                orden: {},
-                campos: {},
-                limite: 1
-            };
-            APKS.leerCampo(opciones)
-                .then(result => res.status(200).json(result))
-                .catch(err => next(err));
-        });
+  app.route(`${ruta}/package/:package`)
+    .get((req, res, next) => {
+      const opciones = {
+        filtro: {
+          package: req.params.package
+        },
+        orden: {},
+        campos: {},
+        limite: 1
+      }
+      APKS.leerCampo(opciones)
+        .then((result) => res.status(200).json(result))
+        .catch((err) => next(err))
+    })
 
-    /**
+  /**
      * @swagger
      * tags:
      *   name: Metadata APK
@@ -154,20 +153,20 @@ module.exports = (app, ruta) => {
      *               items:
      *                 $ref: '#/components/schemas/Apk'
      */
-    app.route(`${ruta}/search`)
+  app.route(`${ruta}/search`)
     .post((req, res, next) => {
-        const opciones = req.body;
+      const opciones = req.body
 
-        if (typeof opciones !== 'object') {
-            return res.status(400).json({
-                ok: false,
-                mensaje: 'Las opciones deben ser un objeto válido.',
-                datos: []
-            });
-        }
+      if (typeof opciones !== 'object') {
+        return res.status(400).json({
+          ok: false,
+          mensaje: 'Las opciones deben ser un objeto válido.',
+          datos: []
+        })
+      }
 
-        APKS.leerCampo(opciones, 'apks')
-            .then(result => res.status(200).json(result))
-            .catch(err => next(err));
-    });
-};
+      APKS.leerCampo(opciones, 'apks')
+        .then((result) => res.status(200).json(result))
+        .catch((err) => next(err))
+    })
+}

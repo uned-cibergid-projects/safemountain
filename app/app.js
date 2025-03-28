@@ -1,48 +1,48 @@
 'use strict'
 
-const CONFIG = require('./config.js')[process.env.NODE_ENV || 'development'];
+const CONFIG = require('./config.js')[process.env.NODE_ENV || 'development']
 
-process.env.DEBUG = CONFIG.DEBUG || '*:*';
+process.env.DEBUG = CONFIG.DEBUG || '*:*'
 
 // const debug = require('debug')('metadata:inicio');
 
-const debug = require('debug')(`${CONFIG.APP}:inicio`);
+const debug = require('debug')(`${CONFIG.APP}:inicio`)
 
 const SISTEMA = require('./servicios/sistema.js')
 
-const mongoose = require('./servicios/mongoose.js');
+const mongoose = require('./servicios/mongoose.js')
 
-mongoose.cargarBd();
+mongoose.cargarBd()
 
 const middleware = require('./config/middleware.js')
-var app = middleware()
+
+const app = middleware()
 
 // Comprobamos existencia carpetas definidas dentro de config
 const TOOLS = require('./servicios/tools.js')
 
-const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerJSDoc = require('swagger-jsdoc')
 
 const swaggerDefinition = {
   openapi: '3.0.0',
   info: {
     title: 'SafeMountain API',
-    version: '1.0.0',
-  },
-};
+    version: '1.0.0'
+  }
+}
 
 const options = {
   swaggerDefinition,
-  apis: ['./routes/*.js'],
-};
+  apis: ['./routes/*.js']
+}
 
-const swaggerSpec = swaggerJSDoc(options);
+swaggerJSDoc(options)
 
 TOOLS.comprobarCarpetaYCrear(CONFIG)
-    .then(result => debug('Comprobación carpetas ok'))
-    .catch(err => debug(err))
+  .then(() => debug('Comprobación carpetas ok'))
+  .catch((err) => debug(err))
 
-
-debug('process.cwd()',process.cwd())
+debug('process.cwd()', process.cwd())
 
 debug(`
   Entorno: ${process.env.NODE_ENV}
@@ -59,16 +59,15 @@ debug(`
   MONGO_PORT_ANALISIS: ${CONFIG.MONGO_ANALISIS.port}
   
   APP_LISTEN_PORT: ${CONFIG.PORT}
-  `);
-
+  `)
 
 // versiones básicas instaladas
 // const COMANDOS = ["node --version", "npm --version", "npm list express", "npm list mongoose"];
 
-const COMANDOS = ["node --version", "npm --version"];
+const COMANDOS = ['node --version', 'npm --version']
 
 SISTEMA.runComandos(COMANDOS)
-	.then(res => debug(res))
-    .catch(err => debug(err))
+  .then((res) => debug(res))
+  .catch((err) => debug(err))
 
-module.exports = app;
+module.exports = app

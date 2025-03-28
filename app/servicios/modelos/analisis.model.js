@@ -5,9 +5,10 @@
  *              incluyendo certificados, permisos, análisis de malware, binario, manifest, etc.
  */
 
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const { analisisConnection } = require('../mongoose');
+const mongoose = require('mongoose')
+
+const { Schema } = mongoose
+const { analisisConnection } = require('../mongoose')
 
 /**
  * @swagger
@@ -324,16 +325,15 @@ const estaticoSchema = new Schema(
     playstore_details: { type: Schema.Types.Mixed },
     network_security: { type: Schema.Types.Mixed },
     secrets: [String],
-    sbom: { type: Schema.Types.Mixed },
+    sbom: { type: Schema.Types.Mixed }
   },
   {
-    collection: 'estatico',
+    collection: 'estatico'
   }
-);
+)
 
-const estatico = analisisConnection().model('estatico', estaticoSchema);
-
+const estatico = analisisConnection().model('estatico', estaticoSchema)
 
 module.exports = {
-  estatico,
-};
+  estatico
+}

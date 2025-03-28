@@ -1,17 +1,16 @@
-'use strict';
+'use strict'
 
-const USUARIOS = require('../../modUsuarios/usuarios.js');
-const crypto = require('crypto');
+const USUARIOS = require('../../modUsuarios/usuarios.js')
 
 module.exports = (app, ruta) => {
-    /**
+  /**
     * @swagger
     * tags:
     *   name: Usuarios
     *   description: Rutas para gestionar los usuarios en la plataforma.
     */
 
-    /**
+  /**
     * @swagger
     * /api/usuarios:
     *   get:
@@ -124,16 +123,16 @@ module.exports = (app, ruta) => {
     *                         type: integer
     *                         example: 0
     */
-    app.route(ruta)
-        .get((req, res, next) => {
-            const opciones = req.body
+  app.route(ruta)
+    .get((req, res, next) => {
+      const opciones = req.body
 
-            USUARIOS.buscarUsuarios(opciones)
-                .then(result => res.status(200).json(result))
-                .catch(err => next(err));
-        })
+      USUARIOS.buscarUsuarios(opciones)
+        .then((result) => res.status(200).json(result))
+        .catch((err) => next(err))
+    })
 
-    /**
+  /**
     * @swagger
     * /api/usuarios/:id:
     *   get:
@@ -172,7 +171,7 @@ module.exports = (app, ruta) => {
     *                 error:
     *                   type: string
     *                   example: "Usuario no encontrado."
-    *   
+    *
     *   put:
     *     summary: Modifica campos del usuario por su ID.
     *     tags: [Usuarios]
@@ -261,43 +260,43 @@ module.exports = (app, ruta) => {
     *                               type: string
     *                               example: "$2b$10$pkdVuUB8xSgTL9/8w453euJ2ag4hQWLgzN9WqVY9LTZtfe800oZXG"
     */
-    app.route(`${ruta}/:id`)
+  app.route(`${ruta}/:id`)
     .get((req, res, next) => {
-        const id = req.params.id;
-        const opciones = {
-            filtro: { _id: id },
-            campos: {},
-            limite: 1
-        };
-        USUARIOS.buscarUsuarios(opciones)
-            .then(usuario => {
-                if (!usuario || usuario.datos.length === 0) {
-                    return res.status(404).json({ error: 'Usuario no encontrado.' });
-                }
-                return res.status(200).json({
-                    ok:true,
-                    message:"Usuario encontrado correctamente.",
-                    datos:usuario.datos
-                });
-            })
-            .catch(err => next(err));
+      const { id } = req.params
+      const opciones = {
+        filtro: { _id: id },
+        campos: {},
+        limite: 1
+      }
+      USUARIOS.buscarUsuarios(opciones)
+        .then((usuario) => {
+          if (!usuario || usuario.datos.length === 0) {
+            return res.status(404).json({ error: 'Usuario no encontrado.' })
+          }
+          return res.status(200).json({
+            ok: true,
+            message: 'Usuario encontrado correctamente.',
+            datos: usuario.datos
+          })
+        })
+        .catch((err) => next(err))
     })
     .delete((req, res, next) => {
-        USUARIOS.eliminarUsuario(req.params.id)
-            .then(resultado => res.status(200).json({
-                ok:true,
-                mensaje:"Usuario eliminado correctamente.",
-                datos:resultado
-            }))
-            .catch(err => next(err));
+      USUARIOS.eliminarUsuario(req.params.id)
+        .then((resultado) => res.status(200).json({
+          ok: true,
+          mensaje: 'Usuario eliminado correctamente.',
+          datos: resultado
+        }))
+        .catch((err) => next(err))
     })
     .put((req, res, next) => {
-        USUARIOS.modificarUsuario(req.params.id, req.body)
-            .then(usuarioModificado => res.status(200).json({
-                ok:true,
-                mensaje:"Usuario modificado correctamente.",
-                datos:usuarioModificado
-            }))
-            .catch(err => next(err));
-    });
-};
+      USUARIOS.modificarUsuario(req.params.id, req.body)
+        .then((usuarioModificado) => res.status(200).json({
+          ok: true,
+          mensaje: 'Usuario modificado correctamente.',
+          datos: usuarioModificado
+        }))
+        .catch((err) => next(err))
+    })
+}
