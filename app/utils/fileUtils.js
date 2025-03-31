@@ -26,7 +26,7 @@ const extensionesPermitidas = ['.apk']
  * @description Tamaño máximo permitido para los archivos en bytes (50MB).
  * @constant {number}
  */
-const tamañoMaximoArchivo = 50 * 1024 * 1024
+const tamañoMaximoArchivo = 1000 * 1024 * 1024
 
 /**
  * @description Configuración de almacenamiento de Multer para gestionar la carga de archivos.
