@@ -39,7 +39,7 @@ def get_dex_files(app_dir):
 def dex_2_smali(checksum, app_dir, tools_dir):
     """Run dex2smali."""
     try:
-        #EGA if not settings_enabled('DEX2SMALI_ENABLED'):
+        # if not settings_enabled('DEX2SMALI_ENABLED'):
         #    return
         msg = 'Converting DEX to Smali'
         #logger.info(msg)
@@ -50,7 +50,7 @@ def dex_2_smali(checksum, app_dir, tools_dir):
             try:
                 logger.info('Converting %s to Smali Code',
                             filename_from_path(dex_path))
-                #EGA ini
+                # ini
                 """
                 if (len(settings.BACKSMALI_BINARY) > 0
                         and is_file_exists(settings.BACKSMALI_BINARY)):
@@ -60,7 +60,7 @@ def dex_2_smali(checksum, app_dir, tools_dir):
                 """
 
                 bs_path = os.path.join(tools_dir, 'baksmali-3.0.8-dev-fat.jar')
-                #EGA fin
+                # fin
                 output = os.path.join(app_dir, 'smali_source/')
                 smali = [
                     find_java_binary(),
@@ -88,7 +88,7 @@ def apk_2_java(checksum, app_path, app_dir, dwd_tools_dir):
     """Run JADX to decompile APK or all DEX files to Java source code."""
     try:
         jadx_version = '1.5.0'
-        # EGA jadx_base_path = Path(dwd_tools_dir) / 'jadx' / f'jadx-{jadx_version}' / 'bin'
+        # jadx_base_path = Path(dwd_tools_dir) / 'jadx' / f'jadx-{jadx_version}' / 'bin'
         output_dir = Path(app_dir) / 'java_source'
 
         msg = 'Decompiling APK to Java with JADX'
@@ -101,7 +101,7 @@ def apk_2_java(checksum, app_path, app_dir, dwd_tools_dir):
             shutil.rmtree(output_dir, ignore_errors=True)
 
         # Determine JADX executable path
-        #EGA jadx path
+        # jadx path
         """
         if (len(settings.JADX_BINARY) > 0
                 and is_file_exists(settings.JADX_BINARY)):
@@ -183,7 +183,7 @@ def apk_2_java(checksum, app_path, app_dir, dwd_tools_dir):
 def run_apktool(app_path, app_dir, tools_dir):
     """Get readable AndroidManifest.xml from APK."""
     try:
-        # EGA ini
+        # ini
         """
          if (len(settings.APKTOOL_BINARY) > 0
                 and Path(settings.APKTOOL_BINARY).exists()):
@@ -193,7 +193,7 @@ def run_apktool(app_path, app_dir, tools_dir):
         """
 
         apktool_path = os.path.join(processControl.env['tools'], 'apktool_2.10.0.jar')
-        #EGA fin
+        # fin
 
         # Prepare output directory and manifest file paths
         output_dir = app_dir / 'apktool_out'

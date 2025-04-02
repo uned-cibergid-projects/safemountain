@@ -131,7 +131,7 @@ def getDataEstatico(checksum):
         )
         result = mongo.getOneRecord({"md5": checksum})
         if not result:
-            raise Exception(f"Could not get metadata for {checksum}")
+            return False
         return result
 
     except Exception as e:

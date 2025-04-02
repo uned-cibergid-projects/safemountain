@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 def get_multiprocessing_strategy():
     """Get the multiprocessing strategy."""
-    #EGA ini elimino las opciones
+    # ini elimino las opciones
     """
     if settings.MULTIPROCESSING:
         # Settings take precedence

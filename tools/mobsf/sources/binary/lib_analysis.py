@@ -34,10 +34,10 @@ logger = logging.getLogger(__name__)
 
 def library_analysis(checksum, src, arch):
     """Perform library binary analysis."""
-    #EGA ini.
+    # ini.
     #base_dir = Path(settings.UPLD_DIR) / checksum
     base_dir = processControl.env['outputPath']
-    #EGA fin
+    # fin
 
     res = {
         f'{arch}_analysis': [],

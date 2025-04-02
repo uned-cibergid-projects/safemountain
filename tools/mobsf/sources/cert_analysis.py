@@ -46,10 +46,10 @@ HASH_FUNCS = {
     'sha256': hashlib.sha256,
     'sha512': hashlib.sha512,
 }
-#EGA init. custom function
+#init. custom function
 def escape(str):
     return str
-#EGA end.
+#end.
 
 def get_hardcoded_cert_keystore(app_dic):
     """Returns the hardcoded certificate keystore."""
@@ -152,12 +152,12 @@ def get_signature_versions(checksum, app_path, tools_dir, signed):
             return v1, v2, v3, v4
         logger.info('Getting Signature Versions')
         apksigner = Path(tools_dir) / 'apksigner.jar'
-        #EGA init
+        #init
         apksigner = os.path.join(processControl.env['tools'], "apksigner.jar")
 
         args = [find_java_binary(), '-Xmx1024M',
                 '-Djava.library.path=', '-jar',
-                #apksigner.as_posix(),   #EGA
+                #apksigner.as_posix(),   
                 apksigner,
                 'verify', '--verbose', app_path]
         # EGA fin
