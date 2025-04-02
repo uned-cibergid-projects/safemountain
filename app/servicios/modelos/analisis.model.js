@@ -275,7 +275,7 @@ const { analisisConnection } = require('../mongoose')
  * @property {Mixed} [permission_mapping] - Mapeo de permisos con el código.
  * @property {Mixed[]} [urls] - Listado de URLs detectadas.
  * @property {Mixed} [domains] - Listado de dominios.
- * @property {string[]} [emails] - Listado de correos encontrados.
+ * @property {Mixed[]} [emails] - Listado de correos encontrados.
  * @property {Mixed} [strings] - Strings extraídos de la app.
  * @property {Mixed[]} [firebase_urls] - Detalles de Firebase.
  * @property {Mixed} [playstore_details] - Info de Play Store.
@@ -319,7 +319,7 @@ const estaticoSchema = new Schema(
     permission_mapping: { type: Schema.Types.Mixed },
     urls: [Schema.Types.Mixed],
     domains: { type: Schema.Types.Mixed },
-    emails: [String],
+    emails: [Schema.Types.Mixed],
     strings: { type: Schema.Types.Mixed },
     firebase_urls: [Schema.Types.Mixed],
     playstore_details: { type: Schema.Types.Mixed },

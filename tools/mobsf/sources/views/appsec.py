@@ -34,7 +34,7 @@ logger = logging.getLogger(__name__)
 def common_fields(findings, data):
     """Common Fields for Android and iOS."""
     # Code Analysis
-    #EGA for cd in data['code_analysis']['findings'].values():
+    # for cd in data['code_analysis']['findings'].values():
     for cd in data['code_analysis'].values():
         if cd['metadata']['severity'] == 'good':
             sev = 'secure'
@@ -161,7 +161,7 @@ def common_fields(findings, data):
             })
         elif t > 0:
             sev = 'hotspot' if processControl.settings["EFR_01"] == '1' else 'warning'
-            #EGA sev = 'hotspot' if settings.EFR_01 == '1' else 'warning'
+            # sev = 'hotspot' if settings.EFR_01 == '1' else 'warning'
             findings[sev].append({
                 'title': 'Application contains Privacy Trackers',
                 'description': (
@@ -184,7 +184,7 @@ def common_fields(findings, data):
     if len(secrets) > 1:
         sec = '\n'.join(secrets)
         sev = 'hotspot' if processControl.settings["EFR_01"] == '1' else 'warning'
-        #EGA sev = 'hotspot' if settings.EFR_01 == '1' else 'warning'
+        # sev = 'hotspot' if settings.EFR_01 == '1' else 'warning'
         # EFR_01 puede ser un indicador de configuracion para endurecer las alertas de seguridad
         findings[sev].append({
             'title': 'This app may contain hardcoded secrets',
@@ -220,7 +220,7 @@ def get_android_dashboard(context, from_ctx=False):
         'hotspot': [],
         'total_trackers': None,
     }
-    #EGA ini
+    # ini
     data = context
     """
     if from_ctx:
@@ -228,7 +228,7 @@ def get_android_dashboard(context, from_ctx=False):
     else:
         data = adb(context)
     """
-    #EGA fin
+    # fin
 
     # Certificate Analysis
     if (data.get('certificate_analysis')
@@ -291,7 +291,7 @@ def get_ios_dashboard(context, from_ctx=False):
         'hotspot': [],
         'total_trackers': None,
     }
-    #EGA
+    #
     data = context
     """
     if from_ctx:
@@ -378,10 +378,12 @@ def get_ios_dashboard(context, from_ctx=False):
 
 #@login_required
 def appsec_dashboard(request, checksum, api=False):
-    #EGA ini
+    # ini
     from sources.mongoManager import getDataEstatico
 
     android_static_db = getDataEstatico(checksum)
+    if not(android_static_db):
+        return False
     context = get_android_dashboard(android_static_db)
     return context
 """
@@ -428,5 +430,4 @@ def appsec_dashboard(request, checksum, api=False):
             return print_n_send_error_response(request, msg, False, exp)   
     
 """
-    #EGA fin
-
+    # fin

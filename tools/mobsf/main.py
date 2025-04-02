@@ -6,20 +6,18 @@
 import os
 import shutil
 import json
-import sys
-
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-sys.path.append(BASE_DIR)
 
 from sources.common.common import logger, processControl, log_
 from sources.common.paramsManager import getConfigs
 from sources.static_analyzer import static_analyzer
 from sources.views.appsec import appsec_dashboard
 from sources.mongoManager import storeBoard
+from sources.common.utils import clear_directory
 
 
 def mainProcess():
     try:
+
         if processControl.args.source:
             src = processControl.args.source
             dst = processControl.env['inputPath']
@@ -27,6 +25,8 @@ def mainProcess():
 
         directory = processControl.env['inputPath']
         for filename in os.listdir(directory):
+            clear_directory(processControl.env['outputPath'])
+
             processControl.data['process'] = {}
             processControl.data['process']['filename'] = filename
             processControl.data['process']['filePath'] = os.path.join(directory, filename)
@@ -35,7 +35,7 @@ def mainProcess():
             request = {}
             if not processControl.args.result:
                 context = appsec_dashboard(request, checksum, api=False)
-                if processControl.args.result:
+                if context:
                     jsonResultsPath = os.path.join(processControl.args.result, f"scoreBoard_{filename}.json")
                     with open(jsonResultsPath, "w", encoding="utf-8") as f:
                         json.dump(context, f, indent=4)

@@ -59,9 +59,9 @@ def app_search(checksum, app_id):
     det = {'error': True}
     #if not settings.APPMONSTA_API:
     #    return det
-    #EGA ini. Utiliza los servicios de una app externa AppMonsta cuando android scrapper no funciona, por tanto desestimamos
+    # ini. Utiliza los servicios de una app externa AppMonsta cuando android scrapper no funciona, por tanto desestimamos
     return det
-    #EGA end.
+    # end.
 """
     msg = f'Fetching Details from AppMonsta: {app_id}'
     append_scan_status(checksum, msg)

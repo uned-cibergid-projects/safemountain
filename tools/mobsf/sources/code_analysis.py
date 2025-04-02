@@ -53,7 +53,7 @@ logger = logging.getLogger(__name__)
 def get_perm_rules(checksum, perm_rules, android_permissions):
     """Get applicable permission rules."""
     try:
-        #EGA if not settings_enabled('PERM_MAPPING_ENABLED'):
+        # if not settings_enabled('PERM_MAPPING_ENABLED'):
         #    return None
         if not android_permissions:
             return None
@@ -101,7 +101,7 @@ def code_analysis(checksum, app_dir, typ, manifest_file, android_permissions):
         'sbom': {},
     }
     try:
-        #EGA init
+        # init
         # root = Path(settings.BASE_DIR) / 'StaticAnalyzer' / 'views'
         root = Path(processControl.env['realPath'])
         #and_rules = root / 'android' / 'rules'
@@ -115,7 +115,7 @@ def code_analysis(checksum, app_dir, typ, manifest_file, android_permissions):
         niap_rules = and_rules / 'android_niap.yaml'
         app_dir = Path(app_dir)
         src = get_android_src_dir(app_dir, typ).as_posix() + '/'
-        #EGA skp = settings.SKIP_CLASS_PATH
+        # skp = settings.SKIP_CLASS_PATH
         skp = ""
         msg = f'Code Analysis Started on - {filename_from_path(src)}'
         #logger.info(msg)

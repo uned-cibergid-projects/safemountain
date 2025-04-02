@@ -305,9 +305,9 @@ def is_file_exists(file_path):
 
 def find_java_binary():
     """Find Java."""
-    #EGA init
+    # init
     return 'java'
-    #EGA end
+    # end
 """
     # Respect user settings
     if platform.system() == 'Windows':
@@ -399,7 +399,7 @@ def get_android_src_dir(app_dir, typ):
     return src
 
 def append_scan_status(checksum, status, exception=None):
-    #EGA ini elimino
+    # ini elimino
     pass
 """
     #Append Scan Status to Database.
@@ -447,7 +447,7 @@ def url_n_email_extract(dat, relative_path):
     if urls:
         url_n_file.append({
             'urls': list(urls),
-            #EGA 'path': escape(relative_path)})
+            # 'path': escape(relative_path)})
             'path': relative_path})
 
     # Email Extraction
@@ -457,7 +457,7 @@ def url_n_email_extract(dat, relative_path):
     if emails:
         email_n_file.append({
             'emails': list(emails),
-            #EGA 'path': escape(relative_path)})
+            # 'path': escape(relative_path)})
             'path': relative_path})
     return urllist, url_n_file, email_n_file
 
@@ -530,7 +530,7 @@ def strings_and_entropies(checksum, src, exts):
             data['secrets'] = get_entropies(data['strings'])
     except Exception as exp:
         msg = 'Failed to extract String values and entropies from Code'
-        #EGA logger.exception(msg)
+        # logger.exception(msg)
         #append_scan_status(checksum, msg, repr(exp))
 
     return data
@@ -611,6 +611,14 @@ def upstream_proxy(flaw_type):
     verify = settings.UPSTREAM_PROXY_SSL_VERIFY in ('1', '"1"')
     return proxies, verify
     """
-    #EGA
+    #
     return {flaw_type: None}, False
 
+def clear_directory(directory):
+    if os.path.exists(directory) and os.path.isdir(directory):
+        for item in os.listdir(directory):
+            item_path = os.path.join(directory, item)
+            if os.path.isfile(item_path) or os.path.islink(item_path):
+                os.remove(item_path)  # Remove file or symbolic link
+            elif os.path.isdir(item_path):
+                shutil.rmtree(item_path)

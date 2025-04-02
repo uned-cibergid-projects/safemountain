@@ -726,7 +726,7 @@ def apk_analysis(request, app_dic, rescan, api):
     return context
 
 '''
-    #EGA En esta parte accede a DB pues puede haber ya un análisis anterior de la misma APK guardado
+    #En esta parte accede a DB pues puede haber ya un análisis anterior de la misma APK guardado
     
     db_entry = StaticAnalyzerAndroid.objects.filter(MD5=checksum)
     if db_entry.exists() and not rescan:
