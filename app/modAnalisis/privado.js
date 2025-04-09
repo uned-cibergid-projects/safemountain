@@ -34,8 +34,6 @@ async function analizar (paquete) {
 
     try {
       await ejecutarSpawn(jadxBin, [
-        '--deobf',
-        '--deobf-use-sourcename',
         '--decompilation-mode', 'simple',
         '--no-debug-info',
         '-ds', outputDir,
@@ -47,6 +45,13 @@ async function analizar (paquete) {
       console.warn(
         `Advertencia: Falló durante la descompilación. Continuando con el análisis. Error: ${decompileError.message}`
       )
+    }
+
+    try {
+      await fs.chmod(outputDir, 0o777)
+      console.log(`Permisos 777 asignados a: ${outputDir}`)
+    } catch (permError) {
+      console.warn(`No se pudo modificar permisos de ${outputDir}: ${permError.message}`)
     }
 
     console.log(`Ejecutando análisis con Privado CLI en: ${outputDir}`)
