@@ -18,6 +18,7 @@ const APKS = require('../modMetadata/apks')
 const CRUD = require('../servicios/crud')
 const COLECCION = require('../servicios/modelos/analisis.model').estatico
 const CONFIG = require('../config.js')[process.env.NODE_ENV || 'development']
+const { detectarCoincidencias } = require('../utils/regexMatcher')
 
 /**
  * @description Procesa y analiza un archivo APK utilizando MobSF.
@@ -62,6 +63,17 @@ async function analizar (req, res) {
       const fileContent = await fs.promises.readFile(jsonFile, 'utf8')
       analisisData = JSON.parse(fileContent)
       analisisData.name = path.parse(analisisData.file_name).name
+      const coincidencias = detectarCoincidencias(analisisData.strings)
+
+      const ppiFiltrado = {}
+      for (const [key, valores] of Object.entries(coincidencias)) {
+        const filtrados = valores.filter((item) => Array.isArray(item.matches) && item.matches.length > 0)
+        if (filtrados.length > 0) {
+          ppiFiltrado[key] = filtrados
+        }
+      }
+    
+      analisisData.ppi = ppiFiltrado
     } catch (readError) {
       throw new Error(`No se pudo realizar un análisis de forma correcta: ${readError}`)
     }

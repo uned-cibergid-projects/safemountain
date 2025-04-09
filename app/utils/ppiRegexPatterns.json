@@ -1,0 +1,1181 @@
+[
+  {
+    "id": "Data.Sensitive.AccountData.AccountID",
+    "name": "Account ID",
+    "category": "Account Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      ".*(?:account|user|customer|doctor|patient|policyholder|insurer|claimant)[^\\s/(;)#|,=!>]{0,3}(id|number|no|num)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.AccountData.SocialMediaLoginIdentifier",
+    "name": "Social Media Login Identifier",
+    "category": "Account Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      "(?:facebook|twitter|instagram|linkedin|pinterest|behance|dribble)[^\\s/(;)#|,=!>]{0,2}(?:id|account|username|handle)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.AccountData.LanguagePreferences",
+    "name": "Language Preferences",
+    "category": "Account Data",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      ".*language.*"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.AccountData.AccountPassword",
+    "name": "Account Password",
+    "category": "Account Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      "(.*(?<!(db|database|jira|sql|postgres|mongo|aws)[^\\s/(;)#|,=!>]{0,3})(pwd|psw|pswd|password|passwrd))"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.AccountData.Mnemonic",
+    "name": "Mnemonic",
+    "category": "Account Data",
+    "isSensitive": false,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      ".*(mnemonic)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.AccountData.AccountName",
+    "name": "Account Name",
+    "category": "Account Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      "(.*(?<!(db|database|jira|sql|postgres|mongo|aws)[^\\s/(;)#|,=!>]{0,3})user[^\\s/(;)#|,=!>]{0,3}name)|(.*(account|customer|doctor|patient|teacher|student|person|organi[zs]ation|company)[^\\s/(;)#|,=!>]{0,3}name)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.AudioVisualAndSensoryData.Video",
+    "name": "Video",
+    "category": "Audio Visual & Sensory Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      "(?:cctv|webcam|video|camera)[^\\s/(;)#|,=!>]{0,5}(?:feed|clip|recording|footage)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.AudioVisualAndSensoryData.AudioRecordings",
+    "name": "Audio Recordings",
+    "category": "Audio Visual & Sensory Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      "(?:audio|microphone|phone|call)[^\\s/(;)#|,=!>]{0,5}(?:feed|clip|recording|record)[^\\s/(;)#|,=!>]{0,2}"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.AudioVisualAndSensoryData.IoTorSensorData",
+    "name": "IoT or Sensor Data",
+    "category": "Audio Visual & Sensory Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      "thermocouples|thermistor|thermometer|(?:thermal|temperature|radiation|light|proximity|gyroscope|pressure|position)[^\\s/(;)#|,=!>]{0,10}(?:sensors|sensor)|(?:sensors|sensor)[^\\s/(;)#|,=!>]{0,10}(?:thermal|temperature|radiation|light|proximity|gyroscope|pressure|position)|accelerometer"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.BackgroundCheckDetails.CriminalRecordsHistory",
+    "name": "Criminal Records History",
+    "category": "Background Check Details",
+    "isSensitive": true,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      ".*(?:criminal|crime)[^\\s/(;)#|,=!>]{0,10}(?:background|record|history|activity)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.BackgroundCheckDetails.ReferenceChecks",
+    "name": "Reference Checks",
+    "category": "Background Check Details",
+    "isSensitive": false,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      ".*(?:reference|verification)[^\\s/(;)#|,=!>]{0,10}check"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.BackgroundCheckDetails.EmploymentHistory",
+    "name": "Employment History",
+    "category": "Background Check Details",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      ".*employment[^\\s/(;)#|,=!>]{0,10}(?:history|verification|check)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.BackgroundCheckDetails.CompensationHistory",
+    "name": "Compensation History",
+    "category": "Background Check Details",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      ".*(?:past|previous|latest)[^\\s/(;)#|,=!>]{0,10}(salary|compensation|ctc)|salary[^\\s/(;)#|,=!>]{0,10}history"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.BackgroundCheckDetails.CreditHistory",
+    "name": "Credit History",
+    "category": "Background Check Details",
+    "isSensitive": false,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      ".*loan[^\\s/(;)#|,=!>]{0,10}history|credit[^\\s/(;)#|,=!>]{0,10}(?:score|record|slip|report|history|rate|worth|rank)|financial[^\\s/(;)#|,=!>]{0,10}condition|loan[^\\s/(;)#|,=!>]{0,10}taken"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.BiometricData.IrisRecognition",
+    "name": "Iris Recognition",
+    "category": "Biometric Data",
+    "isSensitive": true,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      "iris[^\\s/(;)#|,=!>]*(?:recognition|feature|scan)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.BiometricData.FacialRecognition",
+    "name": "Facial Recognition",
+    "category": "Biometric Data",
+    "isSensitive": true,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      "(?:facial)[^\\s/(;)#|,=!>]{0,3}(?:recognition|hair|happy|angry|agree|talk|crazy|talk[^\\s/(;)#|,=!>]{0,3}angry|sad|neutral|shock|rolleye|think|shake|asleep|drunk|serious|landmark|mark|detection)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.BiometricData.VoiceRecognition",
+    "name": "Voice Recognition",
+    "category": "Biometric Data",
+    "isSensitive": true,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      "(voice|speech)[^\\s/(;)#|,=!>]{0,5}(?:recognition|recog)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.BiometricData.HandwritingRecognition",
+    "name": "Handwriting Recognition",
+    "category": "Biometric Data",
+    "isSensitive": true,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      "handwriting[^\\s/(;)#|,=!>]*recognition|handwritten[^\\s/(;)#|,=!>]*text[^\\s/(;)#|,=!>]*recognition"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.BiometricData.DNAMatching",
+    "name": "DNA Matching",
+    "category": "Biometric Data",
+    "isSensitive": true,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      "dna(?!me)[^\\s/(;)#|,=!>]{0,10}(?:subsequence|scan|print|sequence)|prote[^\\s/(;)#|,=!>]{0,10}insequence"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.BiometricData.Gait",
+    "name": "Gait",
+    "category": "Biometric Data",
+    "isSensitive": true,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      "(?:abnormal|hemiplegic|diplegic|neuropathic|myopathic|choreiform|ataxic|parkinsonian|sensory)[^\\s/(;)#|,=!>]{0,3}gait|(?:forefoot|midfoot|rarefoot|heel|fore[^\\s/(;)#|,=!>]{0,3}foot|mid[^\\s/(;)#|,=!>]{0,3}foot|rare[^\\s/(;)#|,=!>]{0,3}foot)[^\\s/(;)#|,=!>]{0,3}strike|(?:foot|hip)[^\\s/(;)#|,=!>]{0,3}angle|foot[^\\s/(;)#|,=!>]{0,2}progression[^\\s/(;)#|,=!>]{0,3}angle|stride[^\\s/(;)#|,=!>]{0,3}(?:length|width|duration)|(?:lateral|forward)[^\\s/(;)#|,=!>]{0,3}stride"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.ContactData.Address",
+    "name": "Address",
+    "category": "Contact Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      "(.*(?<!(ip|mac|email|server|logical|physical|port|public|private|inet[46]?|cc|bcc|to|data|internet|host|remote)[-_]?)address)|(?:home|house|billing|mailing|shipping|contact|delivery|office|person|policyholder|insurer|claimant)[^\\s/(;)#|,=!>]{0,10}(?:address|addr)|(?:pin|zip|postal|metro)[-_\\[<'. ]{0,2}code|(?:delivery|pickup)[^\\s/(;)#|,=!>]{0,10}(?:location|position)|house[^\\s/(;)#|,=!>]{0,2}(?:number|no)|address[-_.]{0,2}line]|(?:address)[-_.]{0,2}line[-_.]\\d"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.ContactData.EmailAddress",
+    "name": "Email Address",
+    "category": "Contact Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      "(.*email)|(?:business|personal|work|contact)[^\\s/(;)#|,=!>]{0,10}email.*|.*email[^\\s/(;)#|,=!>]{0,10}(?:address|id)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.ContactData.PhoneNumber",
+    "name": "Phone Number",
+    "category": "Contact Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      "((phone|mobile|cellphone|contact)|(.*((phone|mobile|cellphone|contact)[^\\s/(;)#|,=!>]{0,2}(?:detail|details)|(?:mobile|phone|cellphone|contact)[^\\s/(;)#|,=!>]{0,10}(?:number|nbr|num|no)|(?:primary|secondary)[^\\s/(;)#|,=!>]{0,10}(phone|landline|telephone))))",
+      "(home|office|work|mobile)[^\\s/(;)#|,=!>]{0,2}phone"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.ContactData.EmergencyContactDetails",
+    "name": "Emergency Contact Details",
+    "category": "Contact Data",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      "emergency[^\\s/(;)#|,=!>]{0,5}contact[^\\s/(;)#|,=!>]{0,5}(?:number|no|nbr|phone|mobile|mob|landline|email|details|detail|relation)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.EducationalBackground.EducationalHistory",
+    "name": "Educational History",
+    "category": "Educational Background",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      "educational[^\\s/(;)#|,=!>]{0,10}history|(?:master|bachelor)[^\\s/(;)#|,=!>]{0,10}degree|attended[^\\s/(;)#|,=!>]{0,10}(?:universities|university|school|college)|(?:universities|university|school|college)[^\\s/(;)#|,=!>]{0,10}attended"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.EducationalBackground.Skills",
+    "name": "Skills",
+    "category": "Educational Background",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      "(?:technical|speaking|programming|soft)[^\\s/(;)#|,=!>]{0,10}skills"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.EducationalBackground.AcademicTranscripts",
+    "name": "Academic Transcripts",
+    "category": "Educational Background",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      "academic[^\\s/(;)#|,=!>]{0,10}transcripts|(?:diploma|bachelor|[^\\s/(;)#|,=!>]{0,10}degree|masters[^\\s/(;)#|,=!>]{0,10}degree|pg|degree)[^\\s/(;)#|,=!>]{0,10}certificate"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.FinancialData.BankAccountDetails",
+    "name": "Bank Account Details",
+    "category": "Financial Data",
+    "isSensitive": false,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      ".*((?<!question)bank[^\\s/(;)#|,=!>]*(?:name|account|details|detail|address|country|(swift|bic)-code|(swift|bic)_code)|bank[^\\s/(;)#|,=!>]*account[^\\s/(;)#|,=!>]*details|(swift|bic)[-_]code|(swift|bic)code)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.FinancialData.CardIssuer",
+    "name": "Card Issuer",
+    "category": "Financial Data",
+    "isSensitive": false,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      ".*((?:credit|debit)[^\\s/(;)#|,=!>]{0,10}card[^\\s/(;)#|,=!>]{0,10}issuer|card[^\\s/(;)#|,=!>]{0,10}issuer)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.FinancialData.CardNumber",
+    "name": "Card Number",
+    "category": "Financial Data",
+    "isSensitive": false,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      "(?![A-Z_]+).*((?:credit|debit)[^\\s/(;)#|,=!>]{0,10}card[^\\s/(;)#|,=!>]{0,10}(number|no|num|nbr)|(?:credit|debit)[^\\s/(;)#|,=!>]{0,10}card)|cc[-_]{0,1}(number|num|nbr|no)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.FinancialData.VPAAddress",
+    "name": "VPA Address",
+    "category": "Financial Data",
+    "isSensitive": false,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      ".*(virtual[^\\s/(;)#|,=!>]{0,5}payment[^\\s/(;)#|,=!>]{0,5}address|virtual[^\\s/(;)#|,=!>]{0,5}payment|upi[-_<'.]{0,2}id)|(merchant|payee|payment|retailer|dealer|seller|vendor)[-_]{0,1}vpa|vpa[-_]{0,1}id"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.FinancialData.PaymentNonce",
+    "name": "Payment Nonce",
+    "category": "Financial Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      "(.*)(payment[s]?)(nonce)(.*)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.FinancialData.PaymentMode",
+    "name": "Payment Mode",
+    "category": "Financial Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      ".*(payment[^\\s/(;)#|,=!>]{0,5}(?:mode|method|option|options|methodtype))"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.FinancialData.CreditScore",
+    "name": "Credit Score",
+    "category": "Financial Data",
+    "isSensitive": false,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      ".*((?:credit|cibil|crisil|fico|schufa)[^\\s/(;)#|,=!>]{0,10}score)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.FinancialData.TaxInformation",
+    "name": "Tax Information",
+    "category": "Financial Data",
+    "isSensitive": false,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      "(tax[^\\s/(;)#|,=!>]{0,5}(?:information|group|rate|info|percent|statement|detail|amount|calculate|type|slip|number)|taxable[^\\s/(;)#|,=!>]{0,10}value|(?:standard|income|without)[^\\s/(;)#|,=!>]{0,10}tax|(form|name|box|item)1099)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.FinancialData.RetirementAccountInformation",
+    "name": "Retirement Account Information",
+    "category": "Financial Data",
+    "isSensitive": false,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      ".*(401k|(?:retirement|pension)[^\\s/(;)#|,=!>]{0,10}(?:plan|account)).*"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.FinancialData.PayrollInformation",
+    "name": "Payroll Information",
+    "category": "Financial Data",
+    "isSensitive": false,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      ".*(payroll|pay[-_]roll).*"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.FinancialData.Expenses",
+    "name": "Expenses",
+    "category": "Financial Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      ".*((?:travel|lodging|food|mileage|healthcare|business|medical|travel)[^\\s/(;)#|,=!>]{0,10}(?:reimbursement|reimbursements|expense))"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.FinancialData.CompanyAllowances",
+    "name": "Company Allowances",
+    "category": "Financial Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      ".*((?:dearness|houserent|entertainment|overtime|compensatory|conveyance|leave[^\\s/(;)#|,=!>]{0,10}travel|medical|periodicals|books|withholding|personal|employment|child|basic[^\\s/(;)#|,=!>]{0,10}tax|travel|maternity|paternity)[^\\s/(;)#|,=!>]{0,10}allowance)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.FinancialData.StockorEquityGrants",
+    "name": "Stock or Equity Grants",
+    "category": "Financial Data",
+    "isSensitive": false,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      ".*((?:user|employee|incentive|phantom|common|restricted)[^\\s/(;)#|,=!>]{0,10}(?:stocks|equity)|stocks[^\\s/(;)#|,=!>]{0,10}grant|employee[^\\s/(;)#|,=!>]{0,10}stock[^\\s/(;)#|,=!>]{0,10}purchase[^\\s/(;)#|,=!>]{0,10}plan|incentive[^\\s/(;)#|,=!>]{0,10}stock[^\\s/(;)#|,=!>]{0,10}option|employee[^\\s/(;)#|,=!>]{0,10}stock[^\\s/(;)#|,=!>]{0,10}option[^\\s/(;)#|,=!>]{0,10}scheme|restricted[^\\s/(;)#|,=!>]{0,10}stock[^\\s/(;)#|,=!>]{0,10}units|stock[^\\s/(;)#|,=!>]{0,10}appreciation[^\\s/(;)#|,=!>]{0,10}rights|phantom[^\\s/(;)#|,=!>]{0,10}stocks|non[^\\s/(;)#|,=!>]{0,10}qualified[^\\s/(;)#|,=!>]{0,10}stock[^\\s/(;)#|,=!>]{0,10}options|stock[^\\s/(;)#|,=!>]{0,10}option[^\\s/(;)#|,=!>]{0,10}grant|restricted[^\\s/(;)#|,=!>]{0,10}stock[^\\s/(;)#|,=!>]{0,10}awards)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.FinancialData.Salary",
+    "name": "Salary",
+    "category": "Financial Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      ".*(salary[^\\s/(;)#|,=!>]{0,10}(?:details|detail|slip|pay)|employee[^\\s/(;)#|,=!>]{0,10}salary|basic[^\\s/(;)#|,=!>]{0,10}salary|(?:dearness|houserent)[^\\s/(;)#|,=!>]{0,10}allowance|salary)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.FinancialData.Benefits",
+    "name": "Benefits",
+    "category": "Financial Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      ".*(gym[^\\s/(;)#|,=!>]{0,10}membership|free[^\\s/(;)#|,=!>]{0,10}(?:lunch|snacks|breakfast|drinks|dinner)|employee[^\\s/(;)#|,=!>]{0,10}discount|employee[^\\s/(;)#|,=!>]{0,10}assistance[^\\s/(;)#|,=!>]{0,10}program|company[^\\s/(;)#|,=!>]{0,10}car|(?:retirement|pension)[^\\s/(;)#|,=!>]{0,10}plan|performance[^\\s/(;)#|,=!>]{0,10}bonus|(?:life|medical|dental|vision)[^\\s/(;)#|,=!>]{0,10}insurance|flexible[^\\s/(;)#|,=!>]{0,10}hours|company[^\\s/(;)#|,=!>]{0,10}shuttle|relocation[^\\s/(;)#|,=!>]{0,10}bonus|(?:paternity|maternity)[^\\s/(;)#|,=!>]{0,10}leave)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.FinancialData.InsuranceNumber",
+    "name": "Insurance Number",
+    "category": "Financial Data",
+    "isSensitive": true,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      ".*(insurance[^\\s/(;)#|,=!>]*(?:policy|plan|card|claim)|(?:insurance)[^\\s/(;)#|,=!>]*(?:card|policy|claim|plan|company)|card[^\\s/(;)#|,=!>]*insurance|insurance[^\\s/(;)#|,=!>]*policy[^\\s/(;)#|,=!>]*(?:nbr|number|id|no)|insurance[^\\s/(;)#|,=!>]*claim[^\\s/(;)#|,=!>]*(?:nbr|number|id|no))"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.HealthData.DisabilityorSpecificCondition",
+    "name": "Disability or Specific Condition",
+    "category": "Health Data",
+    "isSensitive": true,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      ".*(locomotor[^\\s/(;)#|,=!>]*disability|mental[^\\s/(;)#|,=!>]*illness|cerebral[^\\s/(;)#|,=!>]*palsy|hearing[^\\s/(;)#|,=!>]*impairment|muscular[^\\s/(;)#|,=!>]*dystrophy|multiple[^\\s/(;)#|,=!>]*sclerosis|hiv[^\\s/(;)#|,=!>]*aids|physical[^\\s/(;)#|,=!>]*disability|mental[^\\s/(;)#|,=!>]*disability|alzheimer|thalassemia|hemophilia|autism|cancer|dwarfism|blindness|handicapped|wheelchair|diabetic|dyslexia|epilepsy|schizophrenia|depression|physical[^\\s/(;)#|,=!>]disorder).*"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.HealthData.IllnessorMedicalCondition",
+    "name": "Illness or Medical Condition",
+    "category": "Health Data",
+    "isSensitive": true,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      ".*(health[^\\s/(;)#|,=!>]{0,10}record|medical[^\\s/(;)#|,=!>]{0,10}condition|(?:user|person|customer|employee)[^\\s/(;)#|,=!>]{0,10}health|illness[^\\s/(;)#|,=!>]{0,10}(?:record|name|data|type|date))"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.HealthData.MaternityLeaveDetails",
+    "name": "Maternity Leave Details",
+    "category": "Health Data",
+    "isSensitive": true,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      ".*(maternity[^\\s/(;)#|,=!>]{0,10}leave).*"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.HealthData.PaternityLeaveDetails",
+    "name": "Paternity Leave Details",
+    "category": "Health Data",
+    "isSensitive": true,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      ".*(paternity[^\\s/(;)#|,=!>]{0,10}leave).*"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.HealthData.MedicalCertificates",
+    "name": "Medical Certificates",
+    "category": "Health Data",
+    "isSensitive": true,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      ".*(blood[^\\s/(;)#|,=!>]{0,10}report|medical[^\\s/(;)#|,=!>]{0,10}(?:report|test)|medical[^\\s/(;)#|,=!>]{0,10}certificate|blood[^\\s/(;)#|,=!>]{0,10}group).*"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.LocationData.PreciseLocation",
+    "name": "Precise Location",
+    "category": "Location Data",
+    "isSensitive": false,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      "(.*(gps[^\\s/(;)#|,=!>]{0,3}(?:location|position|trace)|user[^\\s/(;)#|,=!>]{0,5}location|latitude|longitude|geo[^\\s/(;)#|,=!>]{0,5}coordinates)|(lat|lon|latlng|latlon))"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.NationalIdentificationNumbers.Passport",
+    "name": "Passport",
+    "category": "National Identification Numbers",
+    "isSensitive": false,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      "(.*passport[^\\s/(;)#|,=!>]{0,10}(?:no|number|id|expiry|validity|country))"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.NationalIdentificationNumbers.DrivingLicense",
+    "name": "Driving License",
+    "category": "National Identification Numbers",
+    "isSensitive": false,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      ".*((?:driving|driver)[^\\s/(;)#|,=!>]{0,5}(?:license|lisense|licence)[^\\s/(;)#|,=!>]{0,5}(?:no|number|id)|(?:driving|driver)[^\\s/(;)#|,=!>]{0,5}(?:license|lisense|licence))"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.NationalIdentificationNumbers.SocialSecurityNumber",
+    "name": "Social Security Number",
+    "category": "National Identification Numbers",
+    "isSensitive": false,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      "(social[^\\s/(;)#|,=!>]{0,5}security[^\\s/(;)#|,=!>]{0,5}(?:number|no|id)|.*_ssn|ssn)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.NationalIdentificationNumbers.TaxpayerIdentificationNumber",
+    "name": "Taxpayer Identification Number",
+    "category": "National Identification Numbers",
+    "isSensitive": false,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      "(tax[^\\s/(;)#|,=!>]{0,3}payer[^\\s/(;)#|,=!>]{0,3}(identification|id)[^\\s/(;)#|,=!>]{0,3}(?:number|no)|tin|(i|a|p)tin)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.NationalIdentificationNumbers.EmployerIdentificationNumber",
+    "name": "Employer Identification Number",
+    "category": "National Identification Numbers",
+    "isSensitive": false,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      "(employer[^\\s/(;)#|,=!>]{0,3}(identification|id)[^\\s/(;)#|,=!>]{0,3}(?:number|no)|ein)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.OnlineIdentifiers.Cookies",
+    "name": "Cookies",
+    "category": "Online Identifiers",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      ".*(cookie([s]?$))"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.OnlineIdentifiers.DeviceIdentifier",
+    "name": "Device Identifier",
+    "category": "Online Identifiers",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      ".*(device[^\\s/(;)#|,=!>]{0,5}(?:id|info|details|token))|imei"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.OnlineIdentifiers.IPAddress",
+    "name": "IP Address",
+    "category": "Online Identifiers",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      "(?:(?<!(sh|tr)[-_]{0,1})ip|ipv4|ipv6)[^\\s/(;)#|,=!>]{0,10}address|machine[^\\s/(;)#|,=!>]{0,10}ip|ip|remoteip"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.OnlineIdentifiers.MACAddress",
+    "name": "MAC Address",
+    "category": "Online Identifiers",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      "(mac|ieee)[^\\s/(;)#|,=!>]{0,2}(?:address|ip)|ip[^\\s/(;)#|,=!>]{0,2}mac"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.OnlineIdentifiers.Pixel",
+    "name": "Pixel",
+    "category": "Online Identifiers",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      ".*(online[^\\s/(;)#|,=!>]{0,10}identifier|online[^\\s/(;)#|,=!>]{0,10}identity|(tracking|ad|advertising)[^\\s/(;)#|,=!>]{0,10}pixel)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.OnlineIdentifiers.AdvertisingIdentifiers",
+    "name": "Advertising Identifiers",
+    "category": "Online Identifiers",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      "idfa|idfv|aaid|advertising[^\\s/(;)#|,=!>]{0,5}id|gps[^\\s/(;)#|,=!>]{0,5}adid"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.PersonalCharacteristics.MaritalStatus",
+    "name": "Marital Status",
+    "category": "Personal Characteristics",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      ".*(marital|married|relationship[^\\s/(;)#|,=!>]{0,2}status).*"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.PersonalCharacteristics.Nationality",
+    "name": "Nationality",
+    "category": "Personal Characteristics",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      ".*(nationality|nationalities)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.PersonalCharacteristics.RacialorEthnicOrigin",
+    "name": "Racial or Ethnic Origin",
+    "category": "Personal Characteristics",
+    "isSensitive": true,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      ".*((?:racial|ethnic)[^\\s/(;)#|,=!>]{0,5}(?:origin|group)|ethnicity)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.PersonalCharacteristics.Religion/ReligiousBeliefs",
+    "name": "Religion / Religious Beliefs",
+    "category": "Personal Characteristics",
+    "isSensitive": true,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      ".*(religion|religious[^\\s/(;)#|,=!>]{0,5}(group|community|practices|belief|beleifs))"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.PersonalCharacteristics.SexualOrientation",
+    "name": "Sexual Orientation",
+    "category": "Personal Characteristics",
+    "isSensitive": true,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      ".*(sexual[^\\s/(;)#|,=!>]{0,5}(orientation|nature|preference|inclination))"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.PersonalCharacteristics.Signature",
+    "name": "Signature",
+    "category": "Personal Characteristics",
+    "isSensitive": false,
+    "sensitivity": "high",
+    "law": "GDPR",
+    "patterns": [
+      "(?:person|customer|user|buyer|seller|publisher|CEO|CFO)[^\\s/(;)#|,=!>]{0,5}signature"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.PersonalCharacteristics.Weight",
+    "name": "Weight",
+    "category": "Personal Characteristics",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      "body[^\\s/(;)#|,=!>]{0,5}mass[^\\s/(;)#|,=!>]{0,5}index|body[^\\s/(;)#|,=!>]{0,5}weight|weight[^\\s/(;)#|,=!>]{0,5}(?:kg|kgs|pound|pounds)|(?:body|person|patient|baby|student|user|girl|boy|male|female)[^\\s/(;)#|,=!>]{0,5}weight"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.PersonalIdentification.DateofBirth",
+    "name": "Date of Birth",
+    "category": "Personal Identification",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      "(dob|(.*(date[^\\s/(;)#|,=!>]{0,5}of[^\\s/(;)#|,=!>]{0,5}birth|birth[^\\s/(;)#|,=!>]{0,5}(?:day|date|month|year)|birth[-_]{0,2}dt)))"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.PersonalIdentification.FirstName",
+    "name": "First Name",
+    "category": "Personal Identification",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      ".*((?:first|given)[^\\s/(;)#|,=!>]{0,5}|full)name"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.PersonalIdentification.Gender",
+    "name": "Gender",
+    "category": "Personal Identification",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      "((.*gender)|is[_-]{0,1}male|is[_-]{0,1}female|sex)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.PersonalIdentification.LastName",
+    "name": "Last Name",
+    "category": "Personal Identification",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      ".*((?:last|sur(?!geon))[^\\s/(;)#|,=!>]{0,5}name)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.PersonalIdentification.Age",
+    "name": "Age",
+    "category": "Personal Identification",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      "^(user|person|customer|under|years|yrs|human)?(_)?(of|in)?(_)?(age)$",
+      "^(age)(_)?(of|in)?(_)?(human|years|yrs|user|person|customer)?$"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.PersonalIdentification.EmployeeCode",
+    "name": "Employee Code",
+    "category": "Personal Identification",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      "(?:.*employee|emp)[^\\s/(;)#|,=!>]{0,10}(?:no|number|code|id|nbr|num)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.PersonalIdentification.Photograph",
+    "name": "Photograph",
+    "category": "Personal Identification",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      ".*(?:profile|employee|user)[^\\s/(;)#|,=!>]{0,5}(?:picture|image|pic|photo)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.ProfessionalAndEmploymentBackground.TotalExperience",
+    "name": "Total Experience",
+    "category": "Professional & Employment Background",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      "(?:applicant|candidate|job[^\\s/(;)#|,=!>]*applicant)[^\\s/(;)#|,=!>]*(?:experience|experiences)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.ProfessionalAndEmploymentBackground.PastEmployers",
+    "name": "Past Employers",
+    "category": "Professional & Employment Background",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      "(?:employee|employment|employee[^\\s/(;)#|,=!>]*work)[^\\s/(;)#|,=!>]*(?:history|experience|experiences)|past[^\\s/(;)#|,=!>]*(?:experience|experiences)|previous[^\\s/(;)#|,=!>]*employers|(?:candidate|applicant)[^\\s/(;)#|,=!>]*past[^\\s/(;)#|,=!>]*company"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.ProfessionalAndEmploymentBackground.PastRolesorPositions",
+    "name": "Past Roles or Positions",
+    "category": "Professional & Employment Background",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      "past[^\\s/(;)#|,=!>]{0,5}role|(?:previous|past)[^\\s/(;)#|,=!>]{0,5}job[^\\s/(;)#|,=!>]{0,5}title"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.ProfessionalAndEmploymentBackground.PastSalaryDetails",
+    "name": "Past Salary Details",
+    "category": "Professional & Employment Background",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      "(?:past|previous)[^\\s/(;)#|,=!>]{0,5}salary|salary[^\\s/(;)#|,=!>]{0,5}history"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.ProfessionalAndEmploymentBackground.Reasonforleavingorchangeofjob",
+    "name": "Reason for leaving or change of job",
+    "category": "Professional & Employment Background",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      "reason[^\\s/(;)#|,=!>]{0,5}leaving|job[^\\s/(;)#|,=!>]{0,5}change[^\\s/(;)#|,=!>]{0,5}reason|employment[^\\s/(;)#|,=!>]{0,5}change[^\\s/(;)#|,=!>]{0,5}reason"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.ProfessionalAndEmploymentBackground.PastDatesofEmployment",
+    "name": "Past Dates of Employment",
+    "category": "Professional & Employment Background",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      "job[^\\s/(;)#|,=!>]{0,5}(?:from|to)[^\\s/(;)#|,=!>]{0,5}date|employment[^\\s/(;)#|,=!>]{0,5}date|employment[^\\s/(;)#|,=!>]{0,5}date[^\\s/(;)#|,=!>]{0,5}(?:start|end)|(?:start|end)[^\\s/(;)#|,=!>]{0,5}employment[^\\s/(;)#|,=!>]{0,5}date"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.ProfessionalAndEmploymentBackground.ProofofLastSalary",
+    "name": "Proof of Last Salary",
+    "category": "Professional & Employment Background",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      "((?:last|previous|latest)[^\\s/(;)#|,=!>]{0,5}){0,1}salary[^\\s/(;)#|,=!>]{0,5}slip"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.PurchaseData.PurchaseHistory",
+    "name": "Purchase History",
+    "category": "Purchase Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      "purchase[^\\s/(;)#|,=!>]{0,5}(?:history|(?<!site|val)id)|past[^\\s/(;)#|,=!>]{0,5}(?:purchases|purchase)|previous[^\\s/(;)#|,=!>]{0,5}purchase"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.PurchaseData.ProductReturnHistory",
+    "name": "Product Return History",
+    "category": "Purchase Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      "return[^\\s/(;)#|,=!>]{0,5}(?:history|product)|cancel[^\\s/(;)#|,=!>]{0,5}(?:order|purchase)|exchange[^\\s/(;)#|,=!>]{0,5}product"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.PurchaseData.OrderDetails",
+    "name": "Order Details",
+    "category": "Purchase Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      ".*((order|shipping|billing|invoice|total)(subscription|charge|charged)?[^\\s/(;)#|,=!>]{0,5}(number|code|num|no|id|amount))"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.PurchaseData.OfferDetails",
+    "name": "Offer Details",
+    "category": "Purchase Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      ".*(?:product|special)[^\\s/(;)#|,=!>]{0,5}offer|offer[^\\s/(;)#|,=!>]{0,5}(?:details|detail|applied|card|code|id|number)|coupon|cashback|product[^\\s/(;)#|,=!>]{0,5}discount|reward[^\\s/(;)#|,=!>]{0,5}(?:points|point).*"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.SocialMediaData.SocialMediaAccount",
+    "name": "Social Media Account",
+    "category": "Social Media Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      "(?:facebook|instagram|linkedin|twitter|youtube|whatsapp|reddit|snapchat|pinterest|medium|behance|dribble)[^\\s/(;)#|,=!>]*(?:account|profile)"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.SocialMediaData.SocialMediaActivity",
+    "name": "Social Media Activity",
+    "category": "Social Media Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      "(?:facebook|instagram|linkedin|twitter|youtube|whatsapp|reddit|snapchat|pinterest|medium|behance|dribble)[^\\s/(;)#|,=!>]*(?:likes|comments|shares)|reddit[^\\s/(;)#|,=!>]*(?:upvote|downvote)|pinterest[^\\s/(;)#|,=!>]*pin|twitter[^\\s/(;)#|,=!>]*tweet"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.SocialMediaData.SocialMediaContact",
+    "name": "Social Media Contact",
+    "category": "Social Media Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      "social[^\\s/(;)#|,=!>]{0,10}account"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.SpouseFamilyAndDependentDetails.ParentsName",
+    "name": "Parents Name",
+    "category": "Spouse/Family & Dependent Details",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      ".*(?:guardian|mother|father)[^\\s/(;)#|,=!>]{0,8}name|name[^\\s/(;)#|,=!>]{0,8}(?:guardian|mother|father).*"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.SpouseFamilyAndDependentDetails.ParentsContactDetails",
+    "name": "Parents Contact Details",
+    "category": "Spouse/Family & Dependent Details",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      ".*((?:guardian|mother|father)[^\\s/(;)#|,=!>]{0,10}(?:contact|number|nbr|phone|mobile|landline|email|address|addr)).*"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.SpouseFamilyAndDependentDetails.SpouseName",
+    "name": "Spouse Name",
+    "category": "Spouse/Family & Dependent Details",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      ".*(?:fiance|spouse|husband|wife)[^\\s/(;)#|,=!>]{0,8}name.*"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.SpouseFamilyAndDependentDetails.SpouseContactDetails",
+    "name": "Spouse Contact Details",
+    "category": "Spouse/Family & Dependent Details",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      ".*(?:fiance|spouse|husband|wife)[^\\s/(;)#|,=!>]{0,4}(?:contact|number|nbr|phone|mobile|mob|landline|email|address|addr).*"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.SpouseFamilyAndDependentDetails.DependentName",
+    "name": "Dependent Name",
+    "category": "Spouse/Family & Dependent Details",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      ".*(?:dependant|dependent|daughter|children|wife|husband|fiance|grand[^\\s/(;)#|,=!>]{0,8}mother|grand[^\\s/(;)#|,=!>]{0,8}father)[^\\s/(;)#|,=!>]{0,8}name.*"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.SpouseFamilyAndDependentDetails.DependentContactDetails",
+    "name": "Dependent Contact Details",
+    "category": "Spouse/Family & Dependent Details",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      ".*(?:dependant|dependent|daughter|children|wife|fiance|grand[^\\s/(;)#|,=!>]{0,10}mother|grand[^\\s/(;)#|,=!>]{0,10}father|family)[^\\s/(;)#|,=!>]{0,5}(?:contact|number|nbr|phone|mobile|landline|email|address|addr).*"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.TechnicalData.CrashData",
+    "name": "Crash Data",
+    "category": "Technical Data",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      ".*(crash[^\\s/(;)#|,=!>]{0,5}(?:report|status|file|dump|table|log)).*"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.TechnicalData.BrowsingHistory",
+    "name": "Browsing History",
+    "category": "Technical Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      "browsing[^\\s/(;)#|,=!>]*history|website[^\\s/(;)#|,=!>]*visited|web[^\\s/(;)#|,=!>]*pages[^\\s/(;)#|,=!>]*visited"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.TechnicalData.TechnicalDiagnosticData",
+    "name": "Technical Diagnostic Data",
+    "category": "Technical Data",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      ".*((?:performance)[^\\s/(;)#|,=!>]{0,5}(?:report|dump|info|log)|(cpu|memory|disk)[^\\s/(;)#|,=!>]{0,5}(usage|freq|available|used)).*"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.TechnicalData.BrowsingTime",
+    "name": "Browsing Time",
+    "category": "Technical Data",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      ".*(browsing[^\\s/(;)#|,=!>]{0,10}(?:time|duration))"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.UsageData.ClickStream",
+    "name": "Click Stream",
+    "category": "Usage Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      ".*(click(stream|track|log)|track{0,2}click|number[^\\s/(;)#|,=!>]{0,10}of[^\\s/(;)#|,=!>]{0,10}(?:clicks|click)|count[^\\s/(;)#|,=!>]{0,10}(?:clicks|click)).*|trackInteractions|trackFrustrations"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.UsageData.SearchHistory",
+    "name": "Search History",
+    "category": "Usage Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      ".*(search[^\\s/(;)#|,=!>]{0,12}history|saved[^\\s/(;)#|,=!>]{0,12}search|past[^\\s/(;)#|,=!>]{0,12}searches).*"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.UsageData.ProductInteractions",
+    "name": "Product Interactions",
+    "category": "Usage Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      ".*(buttons[-_]{0,1}clicked|pages[-_]{0,1}viewed|event[-_]{0,1}(streaming|monitoring|analysis|tracking)[-_]{0,1}data).*"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.VehicleData.VehicleRegistrationNumber",
+    "name": "Vehicle Registration Number",
+    "category": "Vehicle Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      ".*((?:vehicle|truck|motorcycle|tractor)[^\\s/(;)#|,=!>]{0,5}registration([^\\s/(;)#|,=!>]{0,5}(details|number|num|nbr|no)){0,1}|(?:car)[-_.]{0,3}registration[^\\s/(;)#|,=!>]{0,5}(details|number|num|nbr|no)).*"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.VehicleData.LicensePlate",
+    "name": "License Plate",
+    "category": "Vehicle Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      ".*(license[^\\s/(;)#|,=!>]{0,5}plate([^\\s/(;)#|,=!>]{0,5}(details|number|num|nbr|no)){0,1}).*"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.WorkplaceMonitoringData.VideoRecordings",
+    "name": "Video Recordings",
+    "category": "Workplace Monitoring Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      ".*((?:video|screen)[^\\s/(;)#|,=!>]{0,10}recording).*"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.WorkplaceMonitoringData.WebsiteFiltering",
+    "name": "Website Filtering",
+    "category": "Workplace Monitoring Data",
+    "isSensitive": false,
+    "sensitivity": "medium",
+    "law": "GDPR",
+    "patterns": [
+      ".*((?:website|domain)[^\\s/(;)#|,=!>]{0,3}blocked|(?:whitelisted|blacklisted)[^\\s/(;)#|,=!>]{0,3}site).*"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.WorkplaceMonitoringData.BuildingInformationSystemAccess",
+    "name": "Building Information System Access",
+    "category": "Workplace Monitoring Data",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      ".*(access[^\\s/(;)#|,=!>]{0,10}card[^\\s/(;)#|,=!>]{0,10}number|access[^\\s/(;)#|,=!>]{0,10}card|employee[^\\s/(;)#|,=!>]{0,10}check[^\\s/(;)#|,=!>]{0,10}(?:out|in)|punch[^\\s/(;)#|,=!>]{0,10}card[^\\s/(;)#|,=!>]{0,10}time|punch[^\\s/(;)#|,=!>]{0,10}card).*"
+    ]
+  },
+  {
+    "id": "Data.Sensitive.WorkplaceMonitoringData.ApplicationUsage",
+    "name": "Application Usage",
+    "category": "Workplace Monitoring Data",
+    "isSensitive": false,
+    "sensitivity": "low",
+    "law": "GDPR",
+    "patterns": [
+      ".*(app[^\\s/(;)#|,=!>]{0,3}(usage|stats|statistics)).*"
+    ]
+  }
+]

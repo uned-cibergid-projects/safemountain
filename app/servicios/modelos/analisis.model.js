@@ -211,6 +211,21 @@ const { analisisConnection } = require('../mongoose')
  *           type: object
  *           description: "Listado general de strings extraídos de la app, clasificados o no."
  *           additionalProperties: true
+ *         ppi:
+ *           type: object
+ *           description: "Resultados del análisis de datos personales identificables (PPI) usando expresiones regulares."
+ *           additionalProperties: true
+ *           example:
+ *             strings_apk_res:
+ *               - string: "gender_ftm_and_mft_tags_have_moved"
+ *                 matches:
+ *                   - id: "Data.Sensitive.PersonalIdentification.Gender"
+ *                     name: "Gender"
+ *                     category: "Personal Identification"
+ *                     isSensitive: false
+ *                     sensitivity: "low"
+ *                     law: "GDPR"
+ *                     pattern_matched: ".*gender.*"
  *         firebase_urls:
  *           type: array
  *           description: "Detalles sobre el uso de Firebase (Remote Config, etc.)."
@@ -277,6 +292,7 @@ const { analisisConnection } = require('../mongoose')
  * @property {Mixed} [domains] - Listado de dominios.
  * @property {Mixed[]} [emails] - Listado de correos encontrados.
  * @property {Mixed} [strings] - Strings extraídos de la app.
+ * @property {Mixed} [ppi] - Datos sobre los PPIs que se mencionan en los strings de la app.
  * @property {Mixed[]} [firebase_urls] - Detalles de Firebase.
  * @property {Mixed} [playstore_details] - Info de Play Store.
  * @property {Mixed} [network_security] - Hallazgos de network security config.
@@ -321,6 +337,7 @@ const estaticoSchema = new Schema(
     domains: { type: Schema.Types.Mixed },
     emails: [Schema.Types.Mixed],
     strings: { type: Schema.Types.Mixed },
+    ppi: { type: Schema.Types.Mixed },
     firebase_urls: [Schema.Types.Mixed],
     playstore_details: { type: Schema.Types.Mixed },
     network_security: { type: Schema.Types.Mixed },
