@@ -7,7 +7,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:account|user|customer|doctor|patient|policyholder|insurer|claimant)[^\\s/(;)#|,=!>]{0,3}(?:id|number|no|num)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:account|user|customer|doctor|patient|policyholder|insurer|claimant)[^\\s_/(;)#|,=!>]{0,3}(?:id|number|no|num)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -18,7 +18,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:facebook|twitter|instagram|linkedin|pinterest|behance|dribble)[^\\s/(;)#|,=!>]{0,2}(?:id|account|username|handle)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:facebook|twitter|instagram|linkedin|pinterest|behance|dribble)[^\\s_/(;)#|,=!>]{0,2}(?:id|account|username|handle)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -29,7 +29,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])language(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])language(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -40,7 +40,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?<![dD][bB][^\\s/(;)#|,=!>]{0,3}|[dD]atabase[^\\s/(;)#|,=!>]{0,3}|jira[^\\s/(;)#|,=!>]{0,3}|sql[^\\s/(;)#|,=!>]{0,3}|postgres[^\\s/(;)#|,=!>]{0,3}|mongo[^\\s/(;)#|,=!>]{0,3}|aws[^\\s/(;)#|,=!>]{0,3})(?:^|[\\s/(;)#|,=!>])(?:pwd|psw|pswd|password|passwrd)(?:$|[\\s/(;)#|,=!>])"
+      "(?<![dD][bB][^\\s_/(;)#|,=!>]{0,3}|[dD]atabase[^\\s_/(;)#|,=!>]{0,3}|jira[^\\s_/(;)#|,=!>]{0,3}|sql[^\\s_/(;)#|,=!>]{0,3}|postgres[^\\s_/(;)#|,=!>]{0,3}|mongo[^\\s_/(;)#|,=!>]{0,3}|aws[^\\s_/(;)#|,=!>]{0,3})(?:^|[\\s_/(;)#|,=!>])(?:pwd|psw|pswd|password|passwrd)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -51,7 +51,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])mnemonic(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])mnemonic(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -62,7 +62,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?<![dD][bB][^\\s/(;)#|,=!>]{0,3}|[dD]atabase[^\\s/(;)#|,=!>]{0,3}|jira[^\\s/(;)#|,=!>]{0,3}|sql[^\\s/(;)#|,=!>]{0,3}|postgres[^\\s/(;)#|,=!>]{0,3}|mongo[^\\s/(;)#|,=!>]{0,3}|aws[^\\s/(;)#|,=!>]{0,3})(?:^|[\\s/(;)#|,=!>])user[^\\s/(;)#|,=!>]{0,3}name(?:$|[\\s/(;)#|,=!>])|(?:^|[\\s/(;)#|,=!>])(account|customer|doctor|patient|teacher|student|person|organi[zs]ation|company)[^\\s/(;)#|,=!>]{0,3}name(?:$|[\\s/(;)#|,=!>])"
+      "(?<![dD][bB][^\\s_/(;)#|,=!>]{0,3}|[dD]atabase[^\\s_/(;)#|,=!>]{0,3}|jira[^\\s_/(;)#|,=!>]{0,3}|sql[^\\s_/(;)#|,=!>]{0,3}|postgres[^\\s_/(;)#|,=!>]{0,3}|mongo[^\\s_/(;)#|,=!>]{0,3}|aws[^\\s_/(;)#|,=!>]{0,3})(?:^|[\\s_/(;)#|,=!>])user[^\\s_/(;)#|,=!>]{0,3}name(?:$|[\\s_/(;)#|,=!>])|(?:^|[\\s_/(;)#|,=!>])(account|customer|doctor|patient|teacher|student|person|organi[zs]ation|company)[^\\s_/(;)#|,=!>]{0,3}name(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -73,7 +73,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:cctv|webcam|video|camera)[^\\s/(;)#|,=!>]{0,5}(?:feed|clip|recording|footage)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:cctv|webcam|video|camera)[^\\s_/(;)#|,=!>]{0,5}(?:feed|clip|recording|footage)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -84,7 +84,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:audio|microphone|phone|call)[^\\s/(;)#|,=!>]{0,5}(?:feed|clip|recording|record)[^\\s/(;)#|,=!>]{0,2}(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:audio|microphone|phone|call)[^\\s_/(;)#|,=!>]{0,5}(?:feed|clip|recording|record)[^\\s_/(;)#|,=!>]{0,2}(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -95,7 +95,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:thermocouples|thermistor|thermometer|(?:thermal|temperature|radiation|light|proximity|gyroscope|pressure|position)[^\\s/(;)#|,=!>]{0,10}(?:sensors|sensor)|(?:sensors|sensor)[^\\s/(;)#|,=!>]{0,10}(?:thermal|temperature|radiation|light|proximity|gyroscope|pressure|position)|accelerometer)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:thermocouples|thermistor|thermometer|(?:thermal|temperature|radiation|light|proximity|gyroscope|pressure|position)[^\\s_/(;)#|,=!>]{0,10}(?:sensors|sensor)|(?:sensors|sensor)[^\\s_/(;)#|,=!>]{0,10}(?:thermal|temperature|radiation|light|proximity|gyroscope|pressure|position)|accelerometer)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -106,7 +106,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:criminal|crime)[^\\s/(;)#|,=!>]{0,10}(?:background|record|history|activity)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:criminal|crime)[^\\s_/(;)#|,=!>]{0,10}(?:background|record|history|activity)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -117,7 +117,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:reference|verification)[^\\s/(;)#|,=!>]{0,10}check(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:reference|verification)[^\\s_/(;)#|,=!>]{0,10}check(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -128,7 +128,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])employment[^\\s/(;)#|,=!>]{0,10}(?:history|verification|check)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])employment[^\\s_/(;)#|,=!>]{0,10}(?:history|verification|check)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -139,7 +139,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:past|previous|latest)[^\\s/(;)#|,=!>]{0,10}(?:salary|compensation|ctc)(?:$|[\\s/(;)#|,=!>])|(?:^|[\\s/(;)#|,=!>])salary[^\\s/(;)#|,=!>]{0,10}history(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:past|previous|latest)[^\\s_/(;)#|,=!>]{0,10}(?:salary|compensation|ctc)(?:$|[\\s_/(;)#|,=!>])|(?:^|[\\s_/(;)#|,=!>])salary[^\\s_/(;)#|,=!>]{0,10}history(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -150,7 +150,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:loan[^\\s/(;)#|,=!>]{0,10}history|credit[^\\s/(;)#|,=!>]{0,10}(?:score|record|slip|report|history|rate|worth|rank)|financial[^\\s/(;)#|,=!>]{0,10}condition|loan[^\\s/(;)#|,=!>]{0,10}taken)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:loan[^\\s_/(;)#|,=!>]{0,10}history|credit[^\\s_/(;)#|,=!>]{0,10}(?:score|record|slip|report|history|rate|worth|rank)|financial[^\\s_/(;)#|,=!>]{0,10}condition|loan[^\\s_/(;)#|,=!>]{0,10}taken)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -161,7 +161,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])iris[^\\s/(;)#|,=!>]*(?:recognition|feature|scan)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])iris[^\\s_/(;)#|,=!>]*(?:recognition|feature|scan)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -172,7 +172,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])facial[^\\s/(;)#|,=!>]{0,3}(?:recognition|hair|happy|angry|agree|talk|crazy|talk[^\\s/(;)#|,=!>]{0,3}angry|sad|neutral|shock|rolleye|think|shake|asleep|drunk|serious|landmark|mark|detection)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])facial[^\\s_/(;)#|,=!>]{0,3}(?:recognition|hair|happy|angry|agree|talk|crazy|talk[^\\s_/(;)#|,=!>]{0,3}angry|sad|neutral|shock|rolleye|think|shake|asleep|drunk|serious|landmark|mark|detection)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -183,7 +183,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(voice|speech)[^\\s/(;)#|,=!>]{0,5}(?:recognition|recog)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(voice|speech)[^\\s_/(;)#|,=!>]{0,5}(?:recognition|recog)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -194,7 +194,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:handwriting[^\\s/(;)#|,=!>]*recognition|handwritten[^\\s/(;)#|,=!>]*text[^\\s/(;)#|,=!>]*recognition)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:handwriting[^\\s_/(;)#|,=!>]*recognition|handwritten[^\\s_/(;)#|,=!>]*text[^\\s_/(;)#|,=!>]*recognition)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -205,7 +205,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:dna(?!me)[^\\s/(;)#|,=!>]{0,10}(?:subsequence|scan|print|sequence)|prote[^\\s/(;)#|,=!>]{0,10}insequence)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:dna(?!me)[^\\s_/(;)#|,=!>]{0,10}(?:subsequence|scan|print|sequence)|prote[^\\s_/(;)#|,=!>]{0,10}insequence)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -216,7 +216,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:abnormal|hemiplegic|diplegic|neuropathic|myopathic|choreiform|ataxic|parkinsonian|sensory)[^\\s/(;)#|,=!>]{0,3}gait|(?:forefoot|midfoot|rarefoot|heel|fore[^\\s/(;)#|,=!>]{0,3}foot|mid[^\\s/(;)#|,=!>]{0,3}foot|rare[^\\s/(;)#|,=!>]{0,3}foot)[^\\s/(;)#|,=!>]{0,3}strike|(?:foot|hip)[^\\s/(;)#|,=!>]{0,3}angle|foot[^\\s/(;)#|,=!>]{0,2}progression[^\\s/(;)#|,=!>]{0,3}angle|stride[^\\s/(;)#|,=!>]{0,3}(?:length|width|duration)|(?:lateral|forward)[^\\s/(;)#|,=!>]{0,3}stride(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:abnormal|hemiplegic|diplegic|neuropathic|myopathic|choreiform|ataxic|parkinsonian|sensory)[^\\s_/(;)#|,=!>]{0,3}gait|(?:forefoot|midfoot|rarefoot|heel|fore[^\\s_/(;)#|,=!>]{0,3}foot|mid[^\\s_/(;)#|,=!>]{0,3}foot|rare[^\\s_/(;)#|,=!>]{0,3}foot)[^\\s_/(;)#|,=!>]{0,3}strike|(?:foot|hip)[^\\s_/(;)#|,=!>]{0,3}angle|foot[^\\s_/(;)#|,=!>]{0,2}progression[^\\s_/(;)#|,=!>]{0,3}angle|stride[^\\s_/(;)#|,=!>]{0,3}(?:length|width|duration)|(?:lateral|forward)[^\\s_/(;)#|,=!>]{0,3}stride(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -227,7 +227,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?<![iI][pP]|[mM][aA][cC]|email|server|logical|physical|port|public|private|inet[46]?|cc|bcc|to|data|internet|host|remote)(?:^|[\\s/(;)#|,=!>])address|(?:^|[\\s/(;)#|,=!>])(?:home|house|billing|mailing|shipping|contact|delivery|office|person|policyholder|insurer|claimant)[^\\s/(;)#|,=!>]{0,10}(?:address|addr)(?:$|[\\s/(;)#|,=!>])|(?:^|[\\s/(;)#|,=!>])(?:pin|zip|postal|metro)[-_\\[<'. ]{0,2}code(?:$|[\\s/(;)#|,=!>])|(?:^|[\\s/(;)#|,=!>])(?:delivery|pickup)[^\\s/(;)#|,=!>]{0,10}(?:location|position)(?:$|[\\s/(;)#|,=!>])|(?:^|[\\s/(;)#|,=!>])house[^\\s/(;)#|,=!>]{0,2}(?:number|no)(?:$|[\\s/(;)#|,=!>])|(?:^|[\\s/(;)#|,=!>])address[-_.]{0,2}line\\d|(?:^|[\\s/(;)#|,=!>])address[-_.]{0,2}line[-_.]\\d"
+      "(?<![iI][pP]|[mM][aA][cC]|email|server|logical|physical|port|public|private|inet[46]?|cc|bcc|to|data|internet|host|remote)(?:^|[\\s_/(;)#|,=!>])address|(?:^|[\\s_/(;)#|,=!>])(?:home|house|billing|mailing|shipping|contact|delivery|office|person|policyholder|insurer|claimant)[^\\s_/(;)#|,=!>]{0,10}(?:address|addr)(?:$|[\\s_/(;)#|,=!>])|(?:^|[\\s_/(;)#|,=!>])(?:pin|zip|postal|metro)[-_\\[<'. ]{0,2}code(?:$|[\\s_/(;)#|,=!>])|(?:^|[\\s_/(;)#|,=!>])(?:delivery|pickup)[^\\s_/(;)#|,=!>]{0,10}(?:location|position)(?:$|[\\s_/(;)#|,=!>])|(?:^|[\\s_/(;)#|,=!>])house[^\\s_/(;)#|,=!>]{0,2}(?:number|no)(?:$|[\\s_/(;)#|,=!>])|(?:^|[\\s_/(;)#|,=!>])address[-_.]{0,2}line\\d|(?:^|[\\s_/(;)#|,=!>])address[-_.]{0,2}line[-_.]\\d"
     ]
   },
   {
@@ -238,7 +238,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])email(?:$|[\\s/(;)#|,=!>])|(?:^|[\\s/(;)#|,=!>])(?:business|personal|work|contact)[^\\s/(;)#|,=!>]{0,10}email(?:$|[\\s/(;)#|,=!>])|(?:^|[\\s/(;)#|,=!>])email[^\\s/(;)#|,=!>]{0,10}(?:address|id)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])email(?:$|[\\s_/(;)#|,=!>])|(?:^|[\\s_/(;)#|,=!>])(?:business|personal|work|contact)[^\\s_/(;)#|,=!>]{0,10}email(?:$|[\\s_/(;)#|,=!>])|(?:^|[\\s_/(;)#|,=!>])email[^\\s_/(;)#|,=!>]{0,10}(?:address|id)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -249,7 +249,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:(?:phone|mobile|cellphone|contact)[^\\s/(;)#|,=!>]{0,2}(?:detail|details)|(?:mobile|phone|cellphone|contact)[^\\s/(;)#|,=!>]{0,10}(?:number|nbr|num|no)|(?:primary|secondary)[^\\s/(;)#|,=!>]{0,10}(?:phone|landline|telephone))(?:$|[\\s/(;)#|,=!>])|(?:^|[\\s/(;)#|,=!>])(?:home|office|work|mobile)[^\\s/(;)#|,=!>]{0,2}phone(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:(?:phone|mobile|cellphone|contact)[^\\s_/(;)#|,=!>]{0,2}(?:detail|details)|(?:mobile|phone|cellphone|contact)[^\\s_/(;)#|,=!>]{0,10}(?:number|nbr|num|no)|(?:primary|secondary)[^\\s_/(;)#|,=!>]{0,10}(?:phone|landline|telephone))(?:$|[\\s_/(;)#|,=!>])|(?:^|[\\s_/(;)#|,=!>])(?:home|office|work|mobile)[^\\s_/(;)#|,=!>]{0,2}phone(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -260,7 +260,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])emergency[^\\s/(;)#|,=!>]{0,5}contact[^\\s/(;)#|,=!>]{0,5}(?:number|no|nbr|phone|mobile|mob|landline|email|details|detail|relation)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])emergency[^\\s_/(;)#|,=!>]{0,5}contact[^\\s_/(;)#|,=!>]{0,5}(?:number|no|nbr|phone|mobile|mob|landline|email|details|detail|relation)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -271,7 +271,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])educational[^\\s/(;)#|,=!>]{0,10}history(?:$|[\\s/(;)#|,=!>])|(?:^|[\\s/(;)#|,=!>])(?:master|bachelor)[^\\s/(;)#|,=!>]{0,10}degree(?:$|[\\s/(;)#|,=!>])|(?:^|[\\s/(;)#|,=!>])attended[^\\s/(;)#|,=!>]{0,10}(?:universities|university|school|college)(?:$|[\\s/(;)#|,=!>])|(?:^|[\\s/(;)#|,=!>])(?:universities|university|school|college)[^\\s/(;)#|,=!>]{0,10}attended(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])educational[^\\s_/(;)#|,=!>]{0,10}history(?:$|[\\s_/(;)#|,=!>])|(?:^|[\\s_/(;)#|,=!>])(?:master|bachelor)[^\\s_/(;)#|,=!>]{0,10}degree(?:$|[\\s_/(;)#|,=!>])|(?:^|[\\s_/(;)#|,=!>])attended[^\\s_/(;)#|,=!>]{0,10}(?:universities|university|school|college)(?:$|[\\s_/(;)#|,=!>])|(?:^|[\\s_/(;)#|,=!>])(?:universities|university|school|college)[^\\s_/(;)#|,=!>]{0,10}attended(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -282,7 +282,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:technical|speaking|programming|soft)[^\\s/(;)#|,=!>]{0,10}skills(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:technical|speaking|programming|soft)[^\\s_/(;)#|,=!>]{0,10}skills(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -293,7 +293,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])academic[^\\s/(;)#|,=!>]{0,10}transcripts(?:$|[\\s/(;)#|,=!>])|(?:^|[\\s/(;)#|,=!>])(?:diploma|bachelor|[^\\s/(;)#|,=!>]{0,10}degree|masters[^\\s/(;)#|,=!>]{0,10}degree|pg|degree)[^\\s/(;)#|,=!>]{0,10}certificate(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])academic[^\\s_/(;)#|,=!>]{0,10}transcripts(?:$|[\\s_/(;)#|,=!>])|(?:^|[\\s_/(;)#|,=!>])(?:diploma|bachelor|[^\\s_/(;)#|,=!>]{0,10}degree|masters[^\\s_/(;)#|,=!>]{0,10}degree|pg|degree)[^\\s_/(;)#|,=!>]{0,10}certificate(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -304,7 +304,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?<!question)bank[^\\s/(;)#|,=!>]*(?:name|account|details|detail|address|country|(?:swift|bic)-code|(?:swift|bic)_code)(?:$|[\\s/(;)#|,=!>])|(?:^|[\\s/(;)#|,=!>])bank[^\\s/(;)#|,=!>]*account[^\\s/(;)#|,=!>]*details(?:$|[\\s/(;)#|,=!>])|(?:^|[\\s/(;)#|,=!>])(?:swift|bic)[-_]code(?:$|[\\s/(;)#|,=!>])|(?:^|[\\s/(;)#|,=!>])(?:swift|bic)code(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?<!question)bank[^\\s_/(;)#|,=!>]*(?:name|account|details|detail|address|country|(?:swift|bic)-code|(?:swift|bic)_code)(?:$|[\\s_/(;)#|,=!>])|(?:^|[\\s_/(;)#|,=!>])bank[^\\s_/(;)#|,=!>]*account[^\\s_/(;)#|,=!>]*details(?:$|[\\s_/(;)#|,=!>])|(?:^|[\\s_/(;)#|,=!>])(?:swift|bic)[-_]code(?:$|[\\s_/(;)#|,=!>])|(?:^|[\\s_/(;)#|,=!>])(?:swift|bic)code(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -315,7 +315,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:(?:credit|debit)[^\\s/(;)#|,=!>]{0,10}card[^\\s/(;)#|,=!>]{0,10}issuer|card[^\\s/(;)#|,=!>]{0,10}issuer)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:(?:credit|debit)[^\\s_/(;)#|,=!>]{0,10}card[^\\s_/(;)#|,=!>]{0,10}issuer|card[^\\s_/(;)#|,=!>]{0,10}issuer)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -326,7 +326,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?![A-Z_]+)(?:(?:(?:credit|debit)[^\\s/(;)#|,=!>]{0,10}card[^\\s/(;)#|,=!>]{0,10}(?:number|no|num|nbr)|(?:credit|debit)[^\\s/(;)#|,=!>]{0,10}card)|cc[-_]{0,1}(?:number|num|nbr|no))(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?![A-Z_]+)(?:(?:(?:credit|debit)[^\\s_/(;)#|,=!>]{0,10}card[^\\s_/(;)#|,=!>]{0,10}(?:number|no|num|nbr)|(?:credit|debit)[^\\s_/(;)#|,=!>]{0,10}card)|cc[-_]{0,1}(?:number|num|nbr|no))(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -337,7 +337,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:virtual[^\\s/(;)#|,=!>]{0,5}payment[^\\s/(;)#|,=!>]{0,5}address|virtual[^\\s/(;)#|,=!>]{0,5}payment|upi[-_<'.]{0,2}id|(?:merchant|payee|payment|retailer|dealer|seller|vendor)[-_]{0,1}vpa|vpa[-_]{0,1}id)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:virtual[^\\s_/(;)#|,=!>]{0,5}payment[^\\s_/(;)#|,=!>]{0,5}address|virtual[^\\s_/(;)#|,=!>]{0,5}payment|upi[-_<'.]{0,2}id|(?:merchant|payee|payment|retailer|dealer|seller|vendor)[-_]{0,1}vpa|vpa[-_]{0,1}id)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -348,7 +348,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])payments?nonce(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])payments?nonce(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -359,7 +359,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])payment[^\\s/(;)#|,=!>]{0,5}(?:mode|method|option|options|methodtype)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])payment[^\\s_/(;)#|,=!>]{0,5}(?:mode|method|option|options|methodtype)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -370,7 +370,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:credit|cibil|crisil|fico|schufa)[^\\s/(;)#|,=!>]{0,10}score(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:credit|cibil|crisil|fico|schufa)[^\\s_/(;)#|,=!>]{0,10}score(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -381,7 +381,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])tax[^\\s/(;)#|,=!>]{0,5}(?:information|group|rate|info|percent|statement|detail|amount|calculate|type|slip|number)(?:$|[\\s/(;)#|,=!>])|(?:^|[\\s/(;)#|,=!>])taxable[^\\s/(;)#|,=!>]{0,10}value(?:$|[\\s/(;)#|,=!>])|(?:^|[\\s/(;)#|,=!>])(?:standard|income|without)[^\\s/(;)#|,=!>]{0,10}tax(?:$|[\\s/(;)#|,=!>])|(?:^|[\\s/(;)#|,=!>])(?:form|name|box|item)1099(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])tax[^\\s_/(;)#|,=!>]{0,5}(?:information|group|rate|info|percent|statement|detail|amount|calculate|type|slip|number)(?:$|[\\s_/(;)#|,=!>])|(?:^|[\\s_/(;)#|,=!>])taxable[^\\s_/(;)#|,=!>]{0,10}value(?:$|[\\s_/(;)#|,=!>])|(?:^|[\\s_/(;)#|,=!>])(?:standard|income|without)[^\\s_/(;)#|,=!>]{0,10}tax(?:$|[\\s_/(;)#|,=!>])|(?:^|[\\s_/(;)#|,=!>])(?:form|name|box|item)1099(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -392,7 +392,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:401k|(?:retirement|pension)[^\\s/(;)#|,=!>]{0,10}(?:plan|account))(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:401k|(?:retirement|pension)[^\\s_/(;)#|,=!>]{0,10}(?:plan|account))(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -403,7 +403,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:payroll|pay[-_]roll)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:payroll|pay[-_]roll)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -414,7 +414,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:(?:travel|lodging|food|mileage|healthcare|business|medical)[^\\s/(;)#|,=!>]{0,10}(?:reimbursement|reimbursements|expense))(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:(?:travel|lodging|food|mileage|healthcare|business|medical)[^\\s_/(;)#|,=!>]{0,10}(?:reimbursement|reimbursements|expense))(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -425,7 +425,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:(?:dearness|houserent|entertainment|overtime|compensatory|conveyance|leave[^\\s/(;)#|,=!>]{0,10}travel|medical|periodicals|books|withholding|personal|employment|child|basic[^\\s/(;)#|,=!>]{0,10}tax|travel|maternity|paternity)[^\\s/(;)#|,=!>]{0,10}allowance)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:(?:dearness|houserent|entertainment|overtime|compensatory|conveyance|leave[^\\s_/(;)#|,=!>]{0,10}travel|medical|periodicals|books|withholding|personal|employment|child|basic[^\\s_/(;)#|,=!>]{0,10}tax|travel|maternity|paternity)[^\\s_/(;)#|,=!>]{0,10}allowance)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -436,7 +436,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:(?:user|employee|incentive|phantom|common|restricted)[^\\s/(;)#|,=!>]{0,10}(?:stocks|equity)|stocks[^\\s/(;)#|,=!>]{0,10}grant|employee[^\\s/(;)#|,=!>]{0,10}stock[^\\s/(;)#|,=!>]{0,10}purchase[^\\s/(;)#|,=!>]{0,10}plan|incentive[^\\s/(;)#|,=!>]{0,10}stock[^\\s/(;)#|,=!>]{0,10}option|employee[^\\s/(;)#|,=!>]{0,10}stock[^\\s/(;)#|,=!>]{0,10}option[^\\s/(;)#|,=!>]{0,10}scheme|restricted[^\\s/(;)#|,=!>]{0,10}stock[^\\s/(;)#|,=!>]{0,10}units|stock[^\\s/(;)#|,=!>]{0,10}appreciation[^\\s/(;)#|,=!>]{0,10}rights|phantom[^\\s/(;)#|,=!>]{0,10}stocks|non[^\\s/(;)#|,=!>]{0,10}qualified[^\\s/(;)#|,=!>]{0,10}stock[^\\s/(;)#|,=!>]{0,10}options|stock[^\\s/(;)#|,=!>]{0,10}option[^\\s/(;)#|,=!>]{0,10}grant|restricted[^\\s/(;)#|,=!>]{0,10}stock[^\\s/(;)#|,=!>]{0,10}awards)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:(?:user|employee|incentive|phantom|common|restricted)[^\\s_/(;)#|,=!>]{0,10}(?:stocks|equity)|stocks[^\\s_/(;)#|,=!>]{0,10}grant|employee[^\\s_/(;)#|,=!>]{0,10}stock[^\\s_/(;)#|,=!>]{0,10}purchase[^\\s_/(;)#|,=!>]{0,10}plan|incentive[^\\s_/(;)#|,=!>]{0,10}stock[^\\s_/(;)#|,=!>]{0,10}option|employee[^\\s_/(;)#|,=!>]{0,10}stock[^\\s_/(;)#|,=!>]{0,10}option[^\\s_/(;)#|,=!>]{0,10}scheme|restricted[^\\s_/(;)#|,=!>]{0,10}stock[^\\s_/(;)#|,=!>]{0,10}units|stock[^\\s_/(;)#|,=!>]{0,10}appreciation[^\\s_/(;)#|,=!>]{0,10}rights|phantom[^\\s_/(;)#|,=!>]{0,10}stocks|non[^\\s_/(;)#|,=!>]{0,10}qualified[^\\s_/(;)#|,=!>]{0,10}stock[^\\s_/(;)#|,=!>]{0,10}options|stock[^\\s_/(;)#|,=!>]{0,10}option[^\\s_/(;)#|,=!>]{0,10}grant|restricted[^\\s_/(;)#|,=!>]{0,10}stock[^\\s_/(;)#|,=!>]{0,10}awards)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -447,7 +447,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:salary[^\\s/(;)#|,=!>]{0,10}(?:details|detail|slip|pay)|employee[^\\s/(;)#|,=!>]{0,10}salary|basic[^\\s/(;)#|,=!>]{0,10}salary|(?:dearness|houserent)[^\\s/(;)#|,=!>]{0,10}allowance|salary)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:salary[^\\s_/(;)#|,=!>]{0,10}(?:details|detail|slip|pay)|employee[^\\s_/(;)#|,=!>]{0,10}salary|basic[^\\s_/(;)#|,=!>]{0,10}salary|(?:dearness|houserent)[^\\s_/(;)#|,=!>]{0,10}allowance|salary)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -458,7 +458,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:gym[^\\s/(;)#|,=!>]{0,10}membership|free[^\\s/(;)#|,=!>]{0,10}(?:lunch|snacks|breakfast|drinks|dinner)|employee[^\\s/(;)#|,=!>]{0,10}discount|employee[^\\s/(;)#|,=!>]{0,10}assistance[^\\s/(;)#|,=!>]{0,10}program|company[^\\s/(;)#|,=!>]{0,10}car|(?:retirement|pension)[^\\s/(;)#|,=!>]{0,10}plan|performance[^\\s/(;)#|,=!>]{0,10}bonus|(?:life|medical|dental|vision)[^\\s/(;)#|,=!>]{0,10}insurance|flexible[^\\s/(;)#|,=!>]{0,10}hours|company[^\\s/(;)#|,=!>]{0,10}shuttle|relocation[^\\s/(;)#|,=!>]{0,10}bonus|(?:paternity|maternity)[^\\s/(;)#|,=!>]{0,10}leave)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:gym[^\\s_/(;)#|,=!>]{0,10}membership|free[^\\s_/(;)#|,=!>]{0,10}(?:lunch|snacks|breakfast|drinks|dinner)|employee[^\\s_/(;)#|,=!>]{0,10}discount|employee[^\\s_/(;)#|,=!>]{0,10}assistance[^\\s_/(;)#|,=!>]{0,10}program|company[^\\s_/(;)#|,=!>]{0,10}car|(?:retirement|pension)[^\\s_/(;)#|,=!>]{0,10}plan|performance[^\\s_/(;)#|,=!>]{0,10}bonus|(?:life|medical|dental|vision)[^\\s_/(;)#|,=!>]{0,10}insurance|flexible[^\\s_/(;)#|,=!>]{0,10}hours|company[^\\s_/(;)#|,=!>]{0,10}shuttle|relocation[^\\s_/(;)#|,=!>]{0,10}bonus|(?:paternity|maternity)[^\\s_/(;)#|,=!>]{0,10}leave)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -469,7 +469,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:insurance[^\\s/(;)#|,=!>]*(?:policy|plan|card|claim)|(?:insurance)[^\\s/(;)#|,=!>]*(?:card|policy|claim|plan|company)|card[^\\s/(;)#|,=!>]*insurance|insurance[^\\s/(;)#|,=!>]*policy[^\\s/(;)#|,=!>]*(?:nbr|number|id|no)|insurance[^\\s/(;)#|,=!>]*claim[^\\s/(;)#|,=!>]*(?:nbr|number|id|no))(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:insurance[^\\s_/(;)#|,=!>]*(?:policy|plan|card|claim)|(?:insurance)[^\\s_/(;)#|,=!>]*(?:card|policy|claim|plan|company)|card[^\\s_/(;)#|,=!>]*insurance|insurance[^\\s_/(;)#|,=!>]*policy[^\\s_/(;)#|,=!>]*(?:nbr|number|id|no)|insurance[^\\s_/(;)#|,=!>]*claim[^\\s_/(;)#|,=!>]*(?:nbr|number|id|no))(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -480,7 +480,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:locomotor[^\\s/(;)#|,=!>]*disability|mental[^\\s/(;)#|,=!>]*illness|cerebral[^\\s/(;)#|,=!>]*palsy|hearing[^\\s/(;)#|,=!>]*impairment|muscular[^\\s/(;)#|,=!>]*dystrophy|multiple[^\\s/(;)#|,=!>]*sclerosis|hiv[^\\s/(;)#|,=!>]*aids|physical[^\\s/(;)#|,=!>]*disability|mental[^\\s/(;)#|,=!>]*disability|alzheimer|thalassemia|hemophilia|autism|cancer|dwarfism|blindness|handicapped|wheelchair|diabetic|dyslexia|epilepsy|schizophrenia|depression|physical[^\\s/(;)#|,=!>]*disorder)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:locomotor[^\\s_/(;)#|,=!>]*disability|mental[^\\s_/(;)#|,=!>]*illness|cerebral[^\\s_/(;)#|,=!>]*palsy|hearing[^\\s_/(;)#|,=!>]*impairment|muscular[^\\s_/(;)#|,=!>]*dystrophy|multiple[^\\s_/(;)#|,=!>]*sclerosis|hiv[^\\s_/(;)#|,=!>]*aids|physical[^\\s_/(;)#|,=!>]*disability|mental[^\\s_/(;)#|,=!>]*disability|alzheimer|thalassemia|hemophilia|autism|cancer|dwarfism|blindness|handicapped|wheelchair|diabetic|dyslexia|epilepsy|schizophrenia|depression|physical[^\\s_/(;)#|,=!>]*disorder)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -491,7 +491,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:health[^\\s/(;)#|,=!>]{0,10}record|medical[^\\s/(;)#|,=!>]{0,10}condition|(?:user|person|customer|employee)[^\\s/(;)#|,=!>]{0,10}health|illness[^\\s/(;)#|,=!>]{0,10}(?:record|name|data|type|date))(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:health[^\\s_/(;)#|,=!>]{0,10}record|medical[^\\s_/(;)#|,=!>]{0,10}condition|(?:user|person|customer|employee)[^\\s_/(;)#|,=!>]{0,10}health|illness[^\\s_/(;)#|,=!>]{0,10}(?:record|name|data|type|date))(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -502,7 +502,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])maternity[^\\s/(;)#|,=!>]{0,10}leave(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])maternity[^\\s_/(;)#|,=!>]{0,10}leave(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -513,7 +513,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])paternity[^\\s/(;)#|,=!>]{0,10}leave(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])paternity[^\\s_/(;)#|,=!>]{0,10}leave(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -524,7 +524,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:blood[^\\s/(;)#|,=!>]{0,10}report|medical[^\\s/(;)#|,=!>]{0,10}(?:report|test)|medical[^\\s/(;)#|,=!>]{0,10}certificate|blood[^\\s/(;)#|,=!>]{0,10}group)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:blood[^\\s_/(;)#|,=!>]{0,10}report|medical[^\\s_/(;)#|,=!>]{0,10}(?:report|test)|medical[^\\s_/(;)#|,=!>]{0,10}certificate|blood[^\\s_/(;)#|,=!>]{0,10}group)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -535,7 +535,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:gps[^\\s/(;)#|,=!>]{0,3}(?:location|position|trace)|user[^\\s/(;)#|,=!>]{0,5}location|latitude|longitude|geo[^\\s/(;)#|,=!>]{0,5}coordinates|lat|lon|latlng|latlon)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:gps[^\\s_/(;)#|,=!>]{0,3}(?:location|position|trace)|user[^\\s_/(;)#|,=!>]{0,5}location|latitude|longitude|geo[^\\s_/(;)#|,=!>]{0,5}coordinates|lat|lon|latlng|latlon)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -546,7 +546,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])passport[^\\s/(;)#|,=!>]{0,10}(?:no|number|id|expiry|validity|country)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])passport[^\\s_/(;)#|,=!>]{0,10}(?:no|number|id|expiry|validity|country)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -557,7 +557,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:(?:driving|driver)[^\\s/(;)#|,=!>]{0,5}(?:license|lisense|licence)[^\\s/(;)#|,=!>]{0,5}(?:no|number|id)|(?:driving|driver)[^\\s/(;)#|,=!>]{0,5}(?:license|lisense|licence))(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:(?:driving|driver)[^\\s_/(;)#|,=!>]{0,5}(?:license|lisense|licence)[^\\s_/(;)#|,=!>]{0,5}(?:no|number|id)|(?:driving|driver)[^\\s_/(;)#|,=!>]{0,5}(?:license|lisense|licence))(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -568,7 +568,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:social[^\\s/(;)#|,=!>]{0,5}security[^\\s/(;)#|,=!>]{0,5}(?:number|no|id)|_ssn|ssn)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:social[^\\s_/(;)#|,=!>]{0,5}security[^\\s_/(;)#|,=!>]{0,5}(?:number|no|id)|_ssn|ssn)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -579,7 +579,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:tax[^\\s/(;)#|,=!>]{0,3}payer[^\\s/(;)#|,=!>]{0,3}(?:identification|id)[^\\s/(;)#|,=!>]{0,3}(?:number|no)|tin|(?:i|a|p)tin)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:tax[^\\s_/(;)#|,=!>]{0,3}payer[^\\s_/(;)#|,=!>]{0,3}(?:identification|id)[^\\s_/(;)#|,=!>]{0,3}(?:number|no)|tin|(?:i|a|p)tin)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -590,7 +590,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:employer[^\\s/(;)#|,=!>]{0,3}(?:identification|id)[^\\s/(;)#|,=!>]{0,3}(?:number|no)|ein)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:employer[^\\s_/(;)#|,=!>]{0,3}(?:identification|id)[^\\s_/(;)#|,=!>]{0,3}(?:number|no)|ein)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -601,7 +601,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])cookie[s]?(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])cookie[s]?(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -612,7 +612,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:device[^\\s/(;)#|,=!>]{0,5}(?:id|info|details|token)|imei)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:device[^\\s_/(;)#|,=!>]{0,5}(?:id|info|details|token)|imei)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -623,7 +623,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:(?<!(?:sh|tr))ip|ipv4|ipv6)[^\\s/(;)#|,=!>]{0,10}address(?:$|[\\s/(;)#|,=!>])|(?:^|[\\s/(;)#|,=!>])machine[^\\s/(;)#|,=!>]{0,10}ip(?:$|[\\s/(;)#|,=!>])|(?:^|[\\s/(;)#|,=!>])ip(?:$|[\\s/(;)#|,=!>])|(?:^|[\\s/(;)#|,=!>])remoteip(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:(?<!(?:sh|tr))ip|ipv4|ipv6)[^\\s_/(;)#|,=!>]{0,10}address(?:$|[\\s_/(;)#|,=!>])|(?:^|[\\s_/(;)#|,=!>])machine[^\\s_/(;)#|,=!>]{0,10}ip(?:$|[\\s_/(;)#|,=!>])|(?:^|[\\s_/(;)#|,=!>])ip(?:$|[\\s_/(;)#|,=!>])|(?:^|[\\s_/(;)#|,=!>])remoteip(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -634,7 +634,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:(?:mac|ieee)[^\\s/(;)#|,=!>]{0,2}(?:address|ip)|ip[^\\s/(;)#|,=!>]{0,2}mac)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:(?:mac|ieee)[^\\s_/(;)#|,=!>]{0,2}(?:address|ip)|ip[^\\s_/(;)#|,=!>]{0,2}mac)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -645,7 +645,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:online[^\\s/(;)#|,=!>]{0,10}identifier|online[^\\s/(;)#|,=!>]{0,10}identity|(?:tracking|ad|advertising)[^\\s/(;)#|,=!>]{0,10}pixel)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:online[^\\s_/(;)#|,=!>]{0,10}identifier|online[^\\s_/(;)#|,=!>]{0,10}identity|(?:tracking|ad|advertising)[^\\s_/(;)#|,=!>]{0,10}pixel)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -656,7 +656,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:idfa|idfv|aaid|advertising[^\\s/(;)#|,=!>]{0,5}id|gps[^\\s/(;)#|,=!>]{0,5}adid)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:idfa|idfv|aaid|advertising[^\\s_/(;)#|,=!>]{0,5}id|gps[^\\s_/(;)#|,=!>]{0,5}adid)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -667,7 +667,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:marital|married|relationship[^\\s/(;)#|,=!>]{0,2}status)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:marital|married|relationship[^\\s_/(;)#|,=!>]{0,2}status)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -678,7 +678,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:nationality|nationalities)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:nationality|nationalities)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -689,7 +689,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:(?:racial|ethnic)[^\\s/(;)#|,=!>]{0,5}(?:origin|group)|ethnicity)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:(?:racial|ethnic)[^\\s_/(;)#|,=!>]{0,5}(?:origin|group)|ethnicity)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -700,7 +700,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:religion|religious[^\\s/(;)#|,=!>]{0,5}(?:group|community|practices|belief|beleifs))(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:religion|religious[^\\s_/(;)#|,=!>]{0,5}(?:group|community|practices|belief|beleifs))(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -711,7 +711,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])sexual[^\\s/(;)#|,=!>]{0,5}(?:orientation|nature|preference|inclination)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])sexual[^\\s_/(;)#|,=!>]{0,5}(?:orientation|nature|preference|inclination)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -722,7 +722,7 @@
     "sensitivity": "high",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:person|customer|user|buyer|seller|publisher|CEO|CFO)[^\\s/(;)#|,=!>]{0,5}signature(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:person|customer|user|buyer|seller|publisher|CEO|CFO)[^\\s_/(;)#|,=!>]{0,5}signature(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -733,7 +733,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:body[^\\s/(;)#|,=!>]{0,5}mass[^\\s/(;)#|,=!>]{0,5}index|body[^\\s/(;)#|,=!>]{0,5}weight|weight[^\\s/(;)#|,=!>]{0,5}(?:kg|kgs|pound|pounds)|(?:body|person|patient|baby|student|user|girl|boy|male|female)[^\\s/(;)#|,=!>]{0,5}weight)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:body[^\\s_/(;)#|,=!>]{0,5}mass[^\\s_/(;)#|,=!>]{0,5}index|body[^\\s_/(;)#|,=!>]{0,5}weight|weight[^\\s_/(;)#|,=!>]{0,5}(?:kg|kgs|pound|pounds)|(?:body|person|patient|baby|student|user|girl|boy|male|female)[^\\s_/(;)#|,=!>]{0,5}weight)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -744,7 +744,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:dob|(?:date[^\\s/(;)#|,=!>]{0,5}of[^\\s/(;)#|,=!>]{0,5}birth)|birth[^\\s/(;)#|,=!>]{0,5}(?:day|date|month|year)|birth[-_]{0,2}dt)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:dob|(?:date[^\\s_/(;)#|,=!>]{0,5}of[^\\s_/(;)#|,=!>]{0,5}birth)|birth[^\\s_/(;)#|,=!>]{0,5}(?:day|date|month|year)|birth[-_]{0,2}dt)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -755,7 +755,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:(?:first|given)[^\\s/(;)#|,=!>]{0,5}|full)name(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:(?:first|given)[^\\s_/(;)#|,=!>]{0,5}|full)name(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -766,7 +766,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:(?:gender)|is[_-]?male|is[_-]?female|sex)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:(?:gender)|is[_-]?male|is[_-]?female|sex)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -777,7 +777,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:last|sur(?!geon))[^\\s/(;)#|,=!>]{0,5}name(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:last|sur(?!geon))[^\\s_/(;)#|,=!>]{0,5}name(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -800,7 +800,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:employee|emp)[^\\s/(;)#|,=!>]{0,10}(?:no|number|code|id|nbr|num)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:employee|emp)[^\\s_/(;)#|,=!>]{0,10}(?:no|number|code|id|nbr|num)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -811,7 +811,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:profile|employee|user)[^\\s/(;)#|,=!>]{0,5}(?:picture|image|pic|photo)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:profile|employee|user)[^\\s_/(;)#|,=!>]{0,5}(?:picture|image|pic|photo)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -822,7 +822,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:applicant|candidate|job[^\\s/(;)#|,=!>]*applicant)[^\\s/(;)#|,=!>]*(?:experience|experiences)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:applicant|candidate|job[^\\s_/(;)#|,=!>]*applicant)[^\\s_/(;)#|,=!>]*(?:experience|experiences)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -833,7 +833,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:(?:employee|employment|employee[^\\s/(;)#|,=!>]*work)[^\\s/(;)#|,=!>]*(?:history|experience|experiences)|past[^\\s/(;)#|,=!>]*(?:experience|experiences)|previous[^\\s/(;)#|,=!>]*employers|(?:candidate|applicant)[^\\s/(;)#|,=!>]*past[^\\s/(;)#|,=!>]*company)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:(?:employee|employment|employee[^\\s_/(;)#|,=!>]*work)[^\\s_/(;)#|,=!>]*(?:history|experience|experiences)|past[^\\s_/(;)#|,=!>]*(?:experience|experiences)|previous[^\\s_/(;)#|,=!>]*employers|(?:candidate|applicant)[^\\s_/(;)#|,=!>]*past[^\\s_/(;)#|,=!>]*company)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -844,7 +844,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:past[^\\s/(;)#|,=!>]{0,5}role|(?:previous|past)[^\\s/(;)#|,=!>]{0,5}job[^\\s/(;)#|,=!>]{0,5}title)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:past[^\\s_/(;)#|,=!>]{0,5}role|(?:previous|past)[^\\s_/(;)#|,=!>]{0,5}job[^\\s_/(;)#|,=!>]{0,5}title)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -855,7 +855,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:past|previous)[^\\s/(;)#|,=!>]{0,5}salary(?:$|[\\s/(;)#|,=!>])|(?:^|[\\s/(;)#|,=!>])salary[^\\s/(;)#|,=!>]{0,5}history(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:past|previous)[^\\s_/(;)#|,=!>]{0,5}salary(?:$|[\\s_/(;)#|,=!>])|(?:^|[\\s_/(;)#|,=!>])salary[^\\s_/(;)#|,=!>]{0,5}history(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -866,7 +866,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:reason[^\\s/(;)#|,=!>]{0,5}leaving|job[^\\s/(;)#|,=!>]{0,5}change[^\\s/(;)#|,=!>]{0,5}reason|employment[^\\s/(;)#|,=!>]{0,5}change[^\\s/(;)#|,=!>]{0,5}reason)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:reason[^\\s_/(;)#|,=!>]{0,5}leaving|job[^\\s_/(;)#|,=!>]{0,5}change[^\\s_/(;)#|,=!>]{0,5}reason|employment[^\\s_/(;)#|,=!>]{0,5}change[^\\s_/(;)#|,=!>]{0,5}reason)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -877,7 +877,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:job[^\\s/(;)#|,=!>]{0,5}(?:from|to)[^\\s/(;)#|,=!>]{0,5}date|employment[^\\s/(;)#|,=!>]{0,5}date|employment[^\\s/(;)#|,=!>]{0,5}date[^\\s/(;)#|,=!>]{0,5}(?:start|end)|(?:start|end)[^\\s/(;)#|,=!>]{0,5}employment[^\\s/(;)#|,=!>]{0,5}date)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:job[^\\s_/(;)#|,=!>]{0,5}(?:from|to)[^\\s_/(;)#|,=!>]{0,5}date|employment[^\\s_/(;)#|,=!>]{0,5}date|employment[^\\s_/(;)#|,=!>]{0,5}date[^\\s_/(;)#|,=!>]{0,5}(?:start|end)|(?:start|end)[^\\s_/(;)#|,=!>]{0,5}employment[^\\s_/(;)#|,=!>]{0,5}date)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -888,7 +888,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:(?:last|previous|latest)[^\\s/(;)#|,=!>]{0,5})?salary[^\\s/(;)#|,=!>]{0,5}slip(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:(?:last|previous|latest)[^\\s_/(;)#|,=!>]{0,5})?salary[^\\s_/(;)#|,=!>]{0,5}slip(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -899,7 +899,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:purchase[^\\s/(;)#|,=!>]{0,5}(?:history|(?<!site|val)id)|past[^\\s/(;)#|,=!>]{0,5}(?:purchases|purchase)|previous[^\\s/(;)#|,=!>]{0,5}purchase)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:purchase[^\\s_/(;)#|,=!>]{0,5}(?:history|(?<!site|val)id)|past[^\\s_/(;)#|,=!>]{0,5}(?:purchases|purchase)|previous[^\\s_/(;)#|,=!>]{0,5}purchase)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -910,7 +910,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:return[^\\s/(;)#|,=!>]{0,5}(?:history|product)|cancel[^\\s/(;)#|,=!>]{0,5}(?:order|purchase)|exchange[^\\s/(;)#|,=!>]{0,5}product)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:return[^\\s_/(;)#|,=!>]{0,5}(?:history|product)|cancel[^\\s_/(;)#|,=!>]{0,5}(?:order|purchase)|exchange[^\\s_/(;)#|,=!>]{0,5}product)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -921,7 +921,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:(?:order|shipping|billing|invoice|total)(?:subscription|charge|charged)?[^\\s/(;)#|,=!>]{0,5}(?:number|code|num|no|id|amount))(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:(?:order|shipping|billing|invoice|total)(?:subscription|charge|charged)?[^\\s_/(;)#|,=!>]{0,5}(?:number|code|num|no|id|amount))(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -932,7 +932,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:(?:product|special)[^\\s/(;)#|,=!>]{0,5}offer|offer[^\\s/(;)#|,=!>]{0,5}(?:details|detail|applied|card|code|id|number)|coupon|cashback|product[^\\s/(;)#|,=!>]{0,5}discount|reward[^\\s/(;)#|,=!>]{0,5}(?:points|point))(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:(?:product|special)[^\\s_/(;)#|,=!>]{0,5}offer|offer[^\\s_/(;)#|,=!>]{0,5}(?:details|detail|applied|card|code|id|number)|coupon|cashback|product[^\\s_/(;)#|,=!>]{0,5}discount|reward[^\\s_/(;)#|,=!>]{0,5}(?:points|point))(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -943,7 +943,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:facebook|instagram|linkedin|twitter|youtube|whatsapp|reddit|snapchat|pinterest|medium|behance|dribble)[^\\s/(;)#|,=!>]*(?:account|profile)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:facebook|instagram|linkedin|twitter|youtube|whatsapp|reddit|snapchat|pinterest|medium|behance|dribble)[^\\s_/(;)#|,=!>]*(?:account|profile)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -954,7 +954,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:(?:facebook|instagram|linkedin|twitter|youtube|whatsapp|reddit|snapchat|pinterest|medium|behance|dribble)[^\\s/(;)#|,=!>]*(?:likes|comments|shares)|reddit[^\\s/(;)#|,=!>]*(?:upvote|downvote)|pinterest[^\\s/(;)#|,=!>]*pin|twitter[^\\s/(;)#|,=!>]*tweet)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:(?:facebook|instagram|linkedin|twitter|youtube|whatsapp|reddit|snapchat|pinterest|medium|behance|dribble)[^\\s_/(;)#|,=!>]*(?:likes|comments|shares)|reddit[^\\s_/(;)#|,=!>]*(?:upvote|downvote)|pinterest[^\\s_/(;)#|,=!>]*pin|twitter[^\\s_/(;)#|,=!>]*tweet)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -965,7 +965,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])social[^\\s/(;)#|,=!>]{0,10}account(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])social[^\\s_/(;)#|,=!>]{0,10}account(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -976,7 +976,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:(?:guardian|mother|father)[^\\s/(;)#|,=!>]{0,8}name|name[^\\s/(;)#|,=!>]{0,8}(?:guardian|mother|father))(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:(?:guardian|mother|father)[^\\s_/(;)#|,=!>]{0,8}name|name[^\\s_/(;)#|,=!>]{0,8}(?:guardian|mother|father))(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -987,7 +987,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:guardian|mother|father)[^\\s/(;)#|,=!>]{0,10}(?:contact|number|nbr|phone|mobile|landline|email|address|addr)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:guardian|mother|father)[^\\s_/(;)#|,=!>]{0,10}(?:contact|number|nbr|phone|mobile|landline|email|address|addr)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -998,7 +998,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:fiance|spouse|husband|wife)[^\\s/(;)#|,=!>]{0,8}name(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:fiance|spouse|husband|wife)[^\\s_/(;)#|,=!>]{0,8}name(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -1009,7 +1009,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:fiance|spouse|husband|wife)[^\\s/(;)#|,=!>]{0,4}(?:contact|number|nbr|phone|mobile|mob|landline|email|address|addr)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:fiance|spouse|husband|wife)[^\\s_/(;)#|,=!>]{0,4}(?:contact|number|nbr|phone|mobile|mob|landline|email|address|addr)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -1020,7 +1020,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:(?:dependant|dependent|daughter|children|wife|husband|fiance|grand[^\\s/(;)#|,=!>]{0,8}mother|grand[^\\s/(;)#|,=!>]{0,8}father)[^\\s/(;)#|,=!>]{0,8}name)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:(?:dependant|dependent|daughter|children|wife|husband|fiance|grand[^\\s_/(;)#|,=!>]{0,8}mother|grand[^\\s_/(;)#|,=!>]{0,8}father)[^\\s_/(;)#|,=!>]{0,8}name)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -1031,7 +1031,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:(?:dependant|dependent|daughter|children|wife|fiance|grand[^\\s/(;)#|,=!>]{0,10}mother|grand[^\\s/(;)#|,=!>]{0,10}father|family)[^\\s/(;)#|,=!>]{0,5}(?:contact|number|nbr|phone|mobile|landline|email|address|addr))(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:(?:dependant|dependent|daughter|children|wife|fiance|grand[^\\s_/(;)#|,=!>]{0,10}mother|grand[^\\s_/(;)#|,=!>]{0,10}father|family)[^\\s_/(;)#|,=!>]{0,5}(?:contact|number|nbr|phone|mobile|landline|email|address|addr))(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -1042,7 +1042,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])crash[^\\s/(;)#|,=!>]{0,5}(?:report|status|file|dump|table|log)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])crash[^\\s_/(;)#|,=!>]{0,5}(?:report|status|file|dump|table|log)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -1053,7 +1053,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])browsing[^\\s/(;)#|,=!>]*history(?:$|[\\s/(;)#|,=!>])|(?:^|[\\s/(;)#|,=!>])website[^\\s/(;)#|,=!>]*visited(?:$|[\\s/(;)#|,=!>])|(?:^|[\\s/(;)#|,=!>])web[^\\s/(;)#|,=!>]*pages[^\\s/(;)#|,=!>]*visited(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])browsing[^\\s_/(;)#|,=!>]*history(?:$|[\\s_/(;)#|,=!>])|(?:^|[\\s_/(;)#|,=!>])website[^\\s_/(;)#|,=!>]*visited(?:$|[\\s_/(;)#|,=!>])|(?:^|[\\s_/(;)#|,=!>])web[^\\s_/(;)#|,=!>]*pages[^\\s_/(;)#|,=!>]*visited(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -1064,7 +1064,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:(?:performance)[^\\s/(;)#|,=!>]{0,5}(?:report|dump|info|log)|(?:cpu|memory|disk)[^\\s/(;)#|,=!>]{0,5}(?:usage|freq|available|used))(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:(?:performance)[^\\s_/(;)#|,=!>]{0,5}(?:report|dump|info|log)|(?:cpu|memory|disk)[^\\s_/(;)#|,=!>]{0,5}(?:usage|freq|available|used))(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -1075,7 +1075,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])browsing[^\\s/(;)#|,=!>]{0,10}(?:time|duration)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])browsing[^\\s_/(;)#|,=!>]{0,10}(?:time|duration)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -1086,7 +1086,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:click(?:stream|track|log)|track{0,2}click|number[^\\s/(;)#|,=!>]{0,10}of[^\\s/(;)#|,=!>]{0,10}(?:clicks|click)|count[^\\s/(;)#|,=!>]{0,10}(?:clicks|click)|trackInteractions|trackFrustrations)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:click(?:stream|track|log)|track{0,2}click|number[^\\s_/(;)#|,=!>]{0,10}of[^\\s_/(;)#|,=!>]{0,10}(?:clicks|click)|count[^\\s_/(;)#|,=!>]{0,10}(?:clicks|click)|trackInteractions|trackFrustrations)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -1097,7 +1097,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:search[^\\s/(;)#|,=!>]{0,12}history|saved[^\\s/(;)#|,=!>]{0,12}search|past[^\\s/(;)#|,=!>]{0,12}searches)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:search[^\\s_/(;)#|,=!>]{0,12}history|saved[^\\s_/(;)#|,=!>]{0,12}search|past[^\\s_/(;)#|,=!>]{0,12}searches)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -1108,7 +1108,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:buttons[-_]?clicked|pages[-_]?viewed|event[-_]? (?:streaming|monitoring|analysis|tracking)[-_]?data)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:buttons[-_]?clicked|pages[-_]?viewed|event[-_]? (?:streaming|monitoring|analysis|tracking)[-_]?data)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -1119,7 +1119,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:(?:vehicle|truck|motorcycle|tractor)[^\\s/(;)#|,=!>]{0,5}registration(?:[^\\s/(;)#|,=!>]{0,5}(?:details|number|num|nbr|no))?|(?:car)[-_.]{0,3}registration[^\\s/(;)#|,=!>]{0,5}(?:details|number|num|nbr|no))(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:(?:vehicle|truck|motorcycle|tractor)[^\\s_/(;)#|,=!>]{0,5}registration(?:[^\\s_/(;)#|,=!>]{0,5}(?:details|number|num|nbr|no))?|(?:car)[-_.]{0,3}registration[^\\s_/(;)#|,=!>]{0,5}(?:details|number|num|nbr|no))(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -1130,7 +1130,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])license[^\\s/(;)#|,=!>]{0,5}plate(?:[^\\s/(;)#|,=!>]{0,5}(?:details|number|num|nbr|no))?(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])license[^\\s_/(;)#|,=!>]{0,5}plate(?:[^\\s_/(;)#|,=!>]{0,5}(?:details|number|num|nbr|no))?(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -1141,7 +1141,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:video|screen)[^\\s/(;)#|,=!>]{0,10}recording(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:video|screen)[^\\s_/(;)#|,=!>]{0,10}recording(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -1152,7 +1152,7 @@
     "sensitivity": "medium",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:(?:website|domain)[^\\s/(;)#|,=!>]{0,3}blocked|(?:whitelisted|blacklisted)[^\\s/(;)#|,=!>]{0,3}site)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:(?:website|domain)[^\\s_/(;)#|,=!>]{0,3}blocked|(?:whitelisted|blacklisted)[^\\s_/(;)#|,=!>]{0,3}site)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -1163,7 +1163,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])(?:access[^\\s/(;)#|,=!>]{0,10}card[^\\s/(;)#|,=!>]{0,10}number|access[^\\s/(;)#|,=!>]{0,10}card|employee[^\\s/(;)#|,=!>]{0,10}check[^\\s/(;)#|,=!>]{0,10}(?:out|in)|punch[^\\s/(;)#|,=!>]{0,10}card[^\\s/(;)#|,=!>]{0,10}time|punch[^\\s/(;)#|,=!>]{0,10}card)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])(?:access[^\\s_/(;)#|,=!>]{0,10}card[^\\s_/(;)#|,=!>]{0,10}number|access[^\\s_/(;)#|,=!>]{0,10}card|employee[^\\s_/(;)#|,=!>]{0,10}check[^\\s_/(;)#|,=!>]{0,10}(?:out|in)|punch[^\\s_/(;)#|,=!>]{0,10}card[^\\s_/(;)#|,=!>]{0,10}time|punch[^\\s_/(;)#|,=!>]{0,10}card)(?:$|[\\s_/(;)#|,=!>])"
     ]
   },
   {
@@ -1174,7 +1174,7 @@
     "sensitivity": "low",
     "law": "GDPR",
     "patterns": [
-      "(?:^|[\\s/(;)#|,=!>])app[^\\s/(;)#|,=!>]{0,3}(?:usage|stats|statistics)(?:$|[\\s/(;)#|,=!>])"
+      "(?:^|[\\s_/(;)#|,=!>])app[^\\s_/(;)#|,=!>]{0,3}(?:usage|stats|statistics)(?:$|[\\s_/(;)#|,=!>])"
     ]
   }
 ]
