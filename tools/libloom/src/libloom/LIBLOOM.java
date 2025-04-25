@@ -15,6 +15,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.charset.StandardCharsets;
 
 import com.google.gson.Gson;
@@ -33,9 +35,9 @@ public class LIBLOOM {
     Map<String, Map<String, Map<String, String>>> classPairs = new HashMap<>(); //[DEBUG] record km match class pairs <lp, <ap, <ac, lc>>>
     public static double THRESHOLD = 0.6;   // the similarity threshold of library detection
     public static double PKG_OVERLAP_THRESHOLD = 0.8;
-    private static final String STATE_PROFILES_PATH = "../../../results/libloom/profiles/progress.txt";
-    private static final String STATE_DETECTION_APKS_PATH = "../../../results/libloom/detection/progressAPKs.txt";
-    private static final String STATE_DETECTION_TPLS_PATH = "../../../results/libloom/detection/progressTPLs.txt";
+    private static final String STATE_PROFILES_PATH = "results/libloom/profiles/progress.txt";
+    private static final String STATE_DETECTION_APKS_PATH = "results/libloom/detection/progressAPKs.txt";
+    private static final String STATE_DETECTION_TPLS_PATH = "results/libloom/detection/progressTPLs.txt";
     private static final int BATCH_SIZE = 50;  // Tamaño del lote
 
     private int excludedLibs = 0;
@@ -70,10 +72,10 @@ public class LIBLOOM {
     }
 
     private void runDetection(LIBLOOM libloom) throws IOException, ClassHierarchyException {
-        File fileApkDir = new File("../../../results/libloom/profiles/apks");
+        File fileApkDir = new File(ABSOLUTEPATH, "results/libloom/profiles/apks");  
         File[] apks = findFilesRecursively(fileApkDir, ".txt");
 
-        File fileTplDir = new File("../../../results/libloom/profiles/tpls");
+        File fileTplDir = new File(ABSOLUTEPATH, "results/libloom/profiles/tpls");
         File[] tpls = fileTplDir.listFiles((dir, name) -> name.endsWith(".txt"));
 
         // Ordenar los archivos
@@ -119,8 +121,8 @@ public class LIBLOOM {
         double appStartDetectionTime = System.currentTimeMillis();
         DetectionResult dResult = new DetectionResult();
 
-        String relativePath = apk.getParentFile().getCanonicalPath().replace(new File("../../../results/libloom/profiles/apks").getCanonicalPath(), "");
-        String detectionDir = "../../../results/libloom/detection" + File.separator + relativePath;
+        String relativePath = apk.getParentFile().getCanonicalPath().replace(new File("../../results/libloom/profiles/apks").getCanonicalPath(), "");
+        String detectionDir = "../../results/libloom/detection" + File.separator + relativePath;
 
         libloom.excludedLibs = 0;
         Map<String, BitSet> pkgBitSetApp = new LinkedHashMap<>();
@@ -186,7 +188,7 @@ public class LIBLOOM {
 
     private void updateSocialJson(String appName, String libname, String version) throws IOException {
         try {
-            File socialJsonFile = new File("../../../results/hostAppsList/social.json");
+            File socialJsonFile = new File(ABSOLUTEPATH, "results/libloom/social.json"); 
             String content = new String(Files.readAllBytes(socialJsonFile.toPath()), StandardCharsets.UTF_8);
 
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -300,7 +302,10 @@ public class LIBLOOM {
         int lastProcessedIndex = readState(STATE_PROFILES_PATH);
         logger.info("Último índice leído del progreso: " + lastProcessedIndex);
 
-        processBlock(apks, tpls, "../../../results/libloom/profiles/apks", "../../../results/libloom/profiles/tpls", lastProcessedIndex);
+        File apkProfileDir = new File(ABSOLUTEPATH, "results/libloom/profiles/apks");
+        File tplProfileDir = new File(ABSOLUTEPATH, "results/libloom/profiles/tpls");
+
+        processBlock(apks, tpls, apkProfileDir.getAbsolutePath(), tplProfileDir.getAbsolutePath(), lastProcessedIndex);
 
         System.exit(0);
     }
@@ -369,24 +374,43 @@ public class LIBLOOM {
     }
 
     private void saveState(String path, int currentIndex) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(path))) {
+        File stateFile = new File(path);
+        File parentDir = stateFile.getParentFile();
+    
+        // Create parent directory if it doesn't exist
+        if (parentDir != null && !parentDir.exists()) {
+            logger.info("Parent directory " + parentDir.getPath() + " does not exist. Creating it.");
+            if (!parentDir.mkdirs()) {
+                logger.error("Failed to create parent directory: " + parentDir.getPath());
+                throw new RuntimeException("Cannot create directory: " + parentDir.getPath());
+            }
+        }
+    
+        try (PrintWriter writer = new PrintWriter(new FileWriter(stateFile))) {
             writer.println(currentIndex);
+            logger.debug("Saved state to " + path + ": index=" + currentIndex);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Failed to save state to " + path, e);
+            throw new RuntimeException("Error writing to state file: " + path, e);
         }
     }
 
     private void processFiles(File[] files, String type, String outputDir) throws IOException, ClassHierarchyException {
-        String baseInputDir = type.equals("APK") ? "../../../results/hostApks" : "../../../results/hostTpls";
+        String baseInputDir = type.equals("APK")
+        ? new File(ABSOLUTEPATH, "results/hostApks").getCanonicalPath()
+        : new File(new File(ABSOLUTEPATH).getParentFile().getParentFile().getParent(), "nfs/incibe/analisisAplicaciones/datasets/hostTpls").getCanonicalPath();
 
         for (File file : files) {
             double startConstructTime = System.currentTimeMillis();
             AppOrLibInfo info = CodeInfoCollector.getInfo(file.getPath(), ABSOLUTEPATH);
 
-            String relativePath = file.getParentFile().getCanonicalPath().replace(new File(baseInputDir).getCanonicalPath(), "");
+            File inputBaseDir = new File(baseInputDir).getCanonicalFile();
+            File fileParentDir = file.getParentFile().getCanonicalFile();
+            
+            Path relativePath = inputBaseDir.toPath().relativize(fileParentDir.toPath());
 
-            if (relativePath.startsWith(File.separator)) {
-                relativePath = relativePath.substring(1);
+            if (relativePath.toString().startsWith(File.separator)) {
+                relativePath = Paths.get(relativePath.toString().substring(1));
             }
 
             String newOutputDir = outputDir + File.separator + relativePath;
