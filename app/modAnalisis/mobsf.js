@@ -9,16 +9,17 @@
 
 const { exec } = require('child_process')
 const util = require('util')
-
-const execAsync = util.promisify(exec)
 const path = require('path')
 const fs = require('fs')
+
+const execAsync = util.promisify(exec)
+
 const { subirArchivoTemporal } = require('../utils/fileUtils')
+const { detectarCoincidencias } = require('../utils/regexMatcher')
 const APKS = require('../modMetadata/apks')
 const CRUD = require('../servicios/crud')
 const COLECCION = require('../servicios/modelos/analisis.model').estatico
 const CONFIG = require('../config.js')[process.env.NODE_ENV || 'development']
-const { detectarCoincidencias } = require('../utils/regexMatcher')
 
 /**
  * @description Procesa y analiza un archivo APK utilizando MobSF.
@@ -77,6 +78,8 @@ async function analizar (req, res) {
     } catch (readError) {
       throw new Error(`No se pudo realizar un análisis de forma correcta: ${readError}`)
     }
+
+    await ejecutarLibLoom(filePath, analisisData)
 
     const { BASE_DIRECTORY } = CONFIG
     const categoryDir = path.join(BASE_DIRECTORY, analisisData.playstore_details.genre.toLowerCase())
@@ -143,6 +146,78 @@ async function analizar (req, res) {
         console.log(`Archivo temporal ${filePath} eliminado.`)
       } catch (err) {
         console.error(`Error eliminando archivo temporal: ${err.message}`)
+      }
+    }
+  }
+}
+
+/**
+ * @description Ejecuta LibLoom para generar perfiles y detectar TPLs.
+ * @param {string} filePath - Ruta del archivo APK.
+ * @param {Object} analisisData - Objeto con los resultados del análisis actual.
+ * @returns {Promise<void>}
+ */
+async function ejecutarLibLoom(filePath, analisisData) {
+  const libloomDir = path.join(__dirname, '../../tools/libloom')
+  const classPath = `${path.join(libloomDir, 'out')}${process.platform === 'win32' ? ';' : ':'}${path.join(libloomDir, 'lib')}/*`
+  const hostApksDir = path.join(libloomDir, 'results', 'hostApks')
+  const profilesDir = path.join(libloomDir, 'results', 'libloom', 'profiles')
+  const resultDir = path.join(libloomDir, 'results', 'libloom', 'detection')
+  const apkCopiedPath = path.join(hostApksDir, path.basename(filePath))
+
+  fs.mkdirSync(hostApksDir, { recursive: true })
+  fs.mkdirSync(profilesDir, { recursive: true })
+  fs.mkdirSync(resultDir, { recursive: true })
+
+  try {
+    fs.copyFileSync(filePath, apkCopiedPath)
+    console.log('Ruta absoluta esperada por Node.js para hostApks:', hostApksDir)
+
+    console.log('🟡 Ejecutando LibLoom: Generando perfil del APK...')
+
+    const profileCmd = `java -cp "${classPath}" libloom.LIBLOOM profile`
+
+    const { stdout, stderr } = await execAsync(profileCmd, {
+      cwd: libloomDir,
+      maxBuffer: 1024 * 1024 * 10 // 10MB buffer para evitar errores por logs extensos
+    })
+
+    if (stdout) {
+      console.log('[LIBLOOM STDOUT]')
+      console.log(stdout)
+    }
+
+    if (stderr) {
+      console.error('[LIBLOOM STDERR]')
+      console.error(stderr)
+    }
+
+    console.log('Ejecutando LibLoom: Detectando TPLs...')
+    const detectCmd = `java -cp "${classPath}" libloom.LIBLOOM detect`
+    await execAsync(detectCmd, { cwd: libloomDir })
+
+    // Buscar el resultado JSON más reciente (si existiera)
+    const resultFiles = fs.readdirSync(resultDir)
+      .filter(f => f.endsWith('.json'))
+      .map(f => ({ name: f, time: fs.statSync(path.join(resultDir, f)).mtime }))
+      .sort((a, b) => b.time - a.time)
+
+    if (resultFiles.length > 0) {
+      const libloomResultPath = path.join(resultDir, resultFiles[0].name)
+      const libloomData = JSON.parse(fs.readFileSync(libloomResultPath, 'utf8'))
+      analisisData.libloom = libloomData
+    } else {
+      console.warn('No se encontró resultado JSON de LibLoom.')
+    }
+  } catch (error) {
+    console.error('Error ejecutando LibLoom:', error)
+  } finally {
+    if (fs.existsSync(apkCopiedPath)) {
+      try {
+        fs.unlinkSync(apkCopiedPath)
+        console.log(`APK temporal eliminado de LibLoom: ${apkCopiedPath}`)
+      } catch (err) {
+        console.error(`Error eliminando APK de LibLoom: ${err.message}`)
       }
     }
   }

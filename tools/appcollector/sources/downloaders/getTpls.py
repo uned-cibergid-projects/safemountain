@@ -118,16 +118,18 @@ async def main():
     tplsCollection = db['tpls']
     versionsCollection = db['versions']
 
-    logFilePath = "../logs/tpl.log"
-    exceptionLogFilePath = "../logs/tplException.log"
+    logDirectory = os.path.abspath(os.path.join(os.path.dirname(__file__), "../logs"))
 
-    configureLogger(logFilePath, "a", "logger")
-    configureLogger(exceptionLogFilePath, "a", "exceptionLogger")
+    logFilePath = os.path.join(logDirectory, "hostAppsMetadata.log")
+    exceptionLogFilePath = os.path.join(logDirectory, "hostAppsMetadataException.log")
+
+    configureLogger(logFilePath, "w", "logger")
+    configureLogger(exceptionLogFilePath, "w", "exceptionLogger")
 
     logger = logging.getLogger("logger")
     exceptionLogger = logging.getLogger("exceptionLogger")
 
-    nfsSaveFolder = "/home/ciber/projects/SafeMountain/nfs/incibePro/analisisAplicaciones/datasets/tpls/"
+    nfsSaveFolder = "/home/dblancoaza/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostTpls/"
     checkFolder(nfsSaveFolder)
 
     semaphore = asyncio.Semaphore(3)
