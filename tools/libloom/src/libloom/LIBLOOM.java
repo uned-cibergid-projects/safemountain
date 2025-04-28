@@ -852,6 +852,7 @@ public class LIBLOOM {
      */
     public void addPKGBFVectors(AppOrLibInfo info, Map<String, BitSet> BFVectors) throws IOException{
         Map<String, List<ClassFeatures>> pkgClassFeatures = info.getFeatures();
+        logger.info(">>> Nº de paquetes con características en addPKGBFVectors: " + pkgClassFeatures.keySet().size());
         for(String pkg : pkgClassFeatures.keySet()) {
             List<String> list = new LinkedList<>();
             for(ClassFeatures cf : pkgClassFeatures.get(pkg)) {
@@ -881,6 +882,7 @@ public class LIBLOOM {
 
     public void addClazzBFVectors(AppOrLibInfo info, Map<String, Map<String, BloomBitSet>> bitSetList) {
         Map<String, List<ClassFeatures>> pkgClassFeatures = info.getFeatures();
+        logger.info(">>> Nº de paquetes con características en addClazzBFVectors: " + pkgClassFeatures.keySet().size());
         for(String pkg : pkgClassFeatures.keySet()){
             for(ClassFeatures cf : pkgClassFeatures.get(pkg)){
                 //if(cf.getMethods().size()+cf.getMemtypes().size() > MAX_FEATRUES_IN_CLASS) //ignore class that features > 50
