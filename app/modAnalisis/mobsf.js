@@ -159,7 +159,10 @@ async function analizar (req, res) {
  */
 async function ejecutarLibLoom(filePath, analisisData) {
   const libloomDir = path.join(__dirname, '../../tools/libloom')
-  const classPath = `${path.join(libloomDir, 'out')}${process.platform === 'win32' ? ';' : ':'}${path.join(libloomDir, 'lib')}/*`
+  const classPath = [
+    path.join(libloomDir, 'out', 'libloom'),
+    path.join(libloomDir, 'lib', '*')
+  ].join(process.platform === 'win32' ? ';' : ':')
   const hostApksDir = path.join(libloomDir, 'results', 'hostApks')
   const profilesDir = path.join(libloomDir, 'results', 'libloom', 'profiles')
   const resultDir = path.join(libloomDir, 'results', 'libloom', 'detection')
@@ -176,6 +179,9 @@ async function ejecutarLibLoom(filePath, analisisData) {
     console.log('🟡 Ejecutando LibLoom: Generando perfil del APK...')
 
     const profileCmd = `java -cp "${classPath}" libloom.LIBLOOM profile`
+
+    console.log('🛠  Ejecutando LibLoom en cwd:', libloomDir)
+    console.log('🛠  ClassPath:', classPath)
 
     const { stdout, stderr } = await execAsync(profileCmd, {
       cwd: libloomDir,

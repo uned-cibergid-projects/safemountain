@@ -4,6 +4,8 @@
     "uploads/**",
     "*.log",
     "*.tmp",
-    "tools/mobsf/results/**/*.json"
+    "tools/libloom/**",
+    "results/**",
+    "temp/**"
   ]
 }
