@@ -271,6 +271,7 @@ const { analisisConnection } = require('../mongoose')
  * @property {string[]} [receivers] - Lista de Broadcast Receivers.
  * @property {string[]} [providers] - Lista de Content Providers.
  * @property {string[]} [services] - Lista de Servicios declarados.
+ * @property {Mixed} [libloom] - Información detallada de análisis hecho con LIBLOOM.
  * @property {string[]} [libraries] - Lista de librerías nativas.
  * @property {string} [target_sdk] - SDK de destino.
  * @property {string} [max_sdk] - SDK máxima soportada.
@@ -316,6 +317,7 @@ const estaticoSchema = new Schema(
     receivers: [String],
     providers: [String],
     services: [String],
+    libloom: { type: Schema.Types.Mixed },
     libraries: [String],
     target_sdk: String,
     max_sdk: String,
