@@ -48,7 +48,7 @@ async function analizar (req, res) {
 
     const pythonEnv = path.join(mobSFDir, 'mobsf_env', 'bin', 'python3')
 
-    const cmd = `"${pythonEnv}" main.py --source="${filePath}" --result="${resultDir}"`
+    const cmd = `"${pythonEnv}" -d main.py --source="${filePath}" --result="${resultDir}"`
 
     const { stderr } = await execAsync(cmd, { cwd: mobSFDir })
 
@@ -125,7 +125,21 @@ async function analizar (req, res) {
         console.log('Documento insertado correctamente en la colección Apks:')
       }
     } else {
-      console.log('Ya existe un documento con el mismo package_name en la BD. No se inserta.')
+      console.log('Ya existe un documento con el mismo package_name en la BD. Actualizando campo libloom...')
+
+      if (analisisData.libloom) {
+        const { ok: okUpdate } = await CRUD.modificarUno(
+          { package_name: analisisData.package_name }, // filtro
+          { libloom: analisisData.libloom },            // actualización
+          COLECCION
+        )
+      
+        if (okUpdate) {
+          console.log('Campo libloom actualizado correctamente en la BD.')
+        } else {
+          console.log('⚠️ No se pudo actualizar el campo libloom en la BD.')
+        }
+      }
     }
 
     return {

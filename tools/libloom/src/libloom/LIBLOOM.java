@@ -67,16 +67,39 @@ public class LIBLOOM {
         ABSOLUTEPATH = new File("").getAbsolutePath();
         if(! loadParameters())
             logger.error("Loading parameters.properties error !!! Checking");
+
+            logger.info(String.format(
+              "PARAMETERS: CLASS_LEVEL_M=%d, PKG_LEVEL_K=%d, PKG_LEVEL_M=%d, PKG_LEVEL_K=%d, PKG_OVERLAP_THRESHOLD=%.3f, THRESHOLD=%.3f",
+              CLASS_LEVEL_M, CLASS_LEVEL_K, PKG_LEVEL_M, PKG_LEVEL_K,
+              PKG_OVERLAP_THRESHOLD, THRESHOLD
+            ));
         
         logger.info("Ruta base de ejecución: " + ABSOLUTEPATH);
     }
 
     private void runDetection(LIBLOOM libloom) throws IOException, ClassHierarchyException {
+        logger.info(">>> ENTRO EN runDetection");
         File fileApkDir = new File(ABSOLUTEPATH, "results/libloom/profiles/apks");  
         File[] apks = findFilesRecursively(fileApkDir, ".txt");
+        if (apks != null && apks.length > 0) {
+            logger.info(">>> APKS DETECTADOS:");
+            for (File apk : apks) {
+                logger.info("    - " + apk.getAbsolutePath());
+            }
+        } else {
+            logger.warn(">>> No se encontraron APKs en: " + fileApkDir.getAbsolutePath());
+        }
 
         File fileTplDir = new File(ABSOLUTEPATH, "results/libloom/profiles/tpls");
-        File[] tpls = fileTplDir.listFiles((dir, name) -> name.endsWith(".txt"));
+        File[] tpls = findFilesRecursively(fileTplDir, ".txt");
+        if (tpls != null && tpls.length > 0) {
+            logger.info(">>> TPLS DETECTADOS:");
+            for (File tpl : tpls) {
+                logger.info("    - " + tpl.getAbsolutePath());
+            }
+        } else {
+            logger.warn(">>> No se encontraron TPLs en: " + fileTplDir.getAbsolutePath());
+        }
 
         // Ordenar los archivos
         assert apks != null;
@@ -118,11 +141,17 @@ public class LIBLOOM {
 
     private void processDetectionBatch(File apk, File[] tpls, LIBLOOM libloom, File fileApkDir) throws IOException {
 
+        logger.info(">>> ENTRO EN processDetectionBatch");
         double appStartDetectionTime = System.currentTimeMillis();
         DetectionResult dResult = new DetectionResult();
 
-        String relativePath = apk.getParentFile().getCanonicalPath().replace(new File("../../results/libloom/profiles/apks").getCanonicalPath(), "");
-        String detectionDir = "../../results/libloom/detection" + File.separator + relativePath;
+        Path profilesApksBase = Paths.get(ABSOLUTEPATH, "results", "libloom", "profiles", "apks");
+        Path thisApkDir      = apk.getParentFile().toPath();
+        Path relative         = profilesApksBase.relativize(thisApkDir);
+        Path detectionDirPath = Paths.get(ABSOLUTEPATH, "results", "libloom", "detection")
+                             .resolve(relative);
+
+        File detectionDir = detectionDirPath.toFile();
 
         libloom.excludedLibs = 0;
         Map<String, BitSet> pkgBitSetApp = new LinkedHashMap<>();
@@ -135,10 +164,9 @@ public class LIBLOOM {
 
             libloom.readProfile(pkgBitSetApp, bitSetApp, apk.toString(), "app");
 
-            File dir = new File(detectionDir);
-            if (!dir.exists()) {
-                logger.info("Folder " + detectionDir + " does not exist. Create it.");
-                dir.mkdirs();
+            if (!detectionDir.exists()) {
+                logger.info("Folder " + detectionDir + " does not exist. Creating it...");
+                detectionDir.mkdirs();
             }
 
             // Procesar todas las TPLs para la APK actual
@@ -180,8 +208,7 @@ public class LIBLOOM {
         double appDetectionTime = (System.currentTimeMillis() - appStartDetectionTime) / 1000;
         dResult.setTime(appDetectionTime);
 
-        // Guardar el resultado de la detección para la APK actual
-        saveDetectionResult(dResult, detectionDir, apk.getName());
+        saveDetectionResult(dResult, detectionDir.getAbsolutePath(), apk.getName());
 
         logger.info("Procesamiento de " + apk.getName() + " completado en " + appDetectionTime + " segundos.");
     }
@@ -246,9 +273,11 @@ public class LIBLOOM {
     }
 
     private void saveDetectionResult(DetectionResult dResult, String detectionDir, String appName) throws IOException {
+        logger.info("DIRECCION JSON: " + detectionDir);
         String fname = appName.substring(0, appName.length() - 4) + ".json";
         File matchResultFile = new File(detectionDir, fname);
         try (PrintWriter pWriter = new PrintWriter(matchResultFile)) {
+            logger.info("Resultado de detección para " + appName + ": " + dResult.prettyJSON());
             pWriter.write(dResult.prettyJSON());
         }
     }
@@ -400,9 +429,14 @@ public class LIBLOOM {
         ? new File(ABSOLUTEPATH, "results/hostApks").getCanonicalPath()
         : new File(new File(ABSOLUTEPATH).getParentFile().getParentFile().getParent(), "nfs/incibe/analisisAplicaciones/datasets/hostTpls").getCanonicalPath();
 
+        logger.info("ABSOLUTEPATH " + ABSOLUTEPATH);
+
         for (File file : files) {
             double startConstructTime = System.currentTimeMillis();
             AppOrLibInfo info = CodeInfoCollector.getInfo(file.getPath(), ABSOLUTEPATH);
+            logger.info("H_r_pkg para " + file.getName() + ": " + info.H_r_pkg);
+            logger.info("FilePath de " + file.getName() + ": " + file.getPath());
+
 
             File inputBaseDir = new File(baseInputDir).getCanonicalFile();
             File fileParentDir = file.getParentFile().getCanonicalFile();
@@ -448,12 +482,14 @@ public class LIBLOOM {
             dir.mkdirs();
         }
         File profile = new File(dir.getPath(), fileName + ".txt");
+        List<String> flattenPkgs = info.getParentWithSinglePkg().get(info.H_f_pkg);
         PrintWriter printWriter = new PrintWriter(profile.getPath());
         String result = "{";
         result += "H_r:" + info.H_r + ";";
         result += "H_r_pkg:" + info.H_r_pkg + ";";
         result += "H_f:" + info.H_f + ";";
-        result += "H_f_pkg_list:" + info.getParentWithSinglePkg().get(info.H_f_pkg);
+        String flattenListStr = (flattenPkgs != null ? flattenPkgs.toString() : "[]");
+        result += "H_f_pkg_list:" + flattenListStr;
         result += "}";
         printWriter.println(result);
         printWriter.close();
@@ -509,6 +545,8 @@ public class LIBLOOM {
         Map<String, Double> partition = new HashMap<>();
         partition = partitioning(candidate, packageLinking);
         similarity = simLibInApp(partition, libBFVector);
+
+        logger.info("Similarity: " + similarity);
 
         if(similarity < THRESHOLD){
             packageLinking.clear();
@@ -852,7 +890,7 @@ public class LIBLOOM {
      */
     public void addPKGBFVectors(AppOrLibInfo info, Map<String, BitSet> BFVectors) throws IOException{
         Map<String, List<ClassFeatures>> pkgClassFeatures = info.getFeatures();
-        logger.info(">>> Nº de paquetes con características en addPKGBFVectors: " + pkgClassFeatures.keySet().size());
+        logger.info("Nº de paquetes con características: " + pkgClassFeatures.keySet().size());
         for(String pkg : pkgClassFeatures.keySet()) {
             List<String> list = new LinkedList<>();
             for(ClassFeatures cf : pkgClassFeatures.get(pkg)) {
@@ -882,7 +920,6 @@ public class LIBLOOM {
 
     public void addClazzBFVectors(AppOrLibInfo info, Map<String, Map<String, BloomBitSet>> bitSetList) {
         Map<String, List<ClassFeatures>> pkgClassFeatures = info.getFeatures();
-        logger.info(">>> Nº de paquetes con características en addClazzBFVectors: " + pkgClassFeatures.keySet().size());
         for(String pkg : pkgClassFeatures.keySet()){
             for(ClassFeatures cf : pkgClassFeatures.get(pkg)){
                 //if(cf.getMethods().size()+cf.getMemtypes().size() > MAX_FEATRUES_IN_CLASS) //ignore class that features > 50
@@ -977,74 +1014,128 @@ public class LIBLOOM {
         return result;
     }
 
-    private void readProfile(Map<String, BitSet> pkgBitSet,
-                             Map<String, Map<String, BloomBitSet>> bitSetList,
-                             String file,
-                             String category) {
-        ArrayList<String> lines = new ArrayList<>();
-        try {
-            InputStreamReader inputReader = new InputStreamReader(new FileInputStream(file));
-            BufferedReader bf = new BufferedReader(inputReader);
-            String str;
-            while ((str = bf.readLine()) != null) {
-                lines.add(str);
-            }
-            bf.close();
-            inputReader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+private void readProfile(Map<String, BitSet> pkgBitSet,
+                         Map<String, Map<String, BloomBitSet>> bitSetList,
+                         String file,
+                         String category) {
+    List<String> lines = new ArrayList<>();
+    try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+        String str;
+        while ((str = reader.readLine()) != null) {
+            lines.add(str.trim());
+        }
+    } catch (IOException e) {
+        logger.error("Error leyendo el archivo de perfil: " + file, e);
+        return;
+    }
+
+    for (String line : lines) {
+        if (line.isEmpty()) {
+            continue; // Saltar líneas vacías
         }
 
-        for(String line : lines){
-            System.out.println(line);
-            String[] sections = line.split("&&");
-            if (line.length() < 2) {
-                logger.error("Formato incorrecto en el archivo de perfil para: " + file);
-            } else if(sections.length == 2){                   // pkg level bf vectors
-                BitSet bitSet = new BitSet(PKG_LEVEL_M);
-                if(sections[1].equals("{}"))
+        if (line.startsWith("{") && line.endsWith("}")) {  // Información de entropía
+            if (!category.equals("app")) {
+                logger.warn("Se encontró información de entropía en un perfil no 'app': " + file);
+                continue;
+            }
+
+            String[] sections = line.substring(1, line.length() - 1).split(";");
+            for (String section : sections) {
+                String[] sub = section.split(":");
+                if (sub.length != 2) {
+                    logger.warn("Sección malformada en entropía: " + section);
                     continue;
-                String[] bitIdxArray = sections[1].substring(1,sections[1].length()-1).split(", ");
-                for(String idx : bitIdxArray){
-                    bitSet.set(Integer.parseInt(idx), true);
                 }
-                pkgBitSet.put(sections[0], bitSet);
-            } else if(sections.length == 4){            //class level bf vectors
-                if(! bitSetList.containsKey(sections[0])){
-                    Map<String, BloomBitSet> classBitSet = new LinkedHashMap<>();
-                    bitSetList.put(sections[0], classBitSet);
-                }
-                BitSet bitSet = new BitSet(CLASS_LEVEL_M);
-                String[] bitIdxArray = sections[2].substring(1, sections[2].length()-1).split(", ");
-                for(String idx : bitIdxArray){
-                    bitSet.set(Integer.parseInt(idx), true);
-                }
-                bitSetList.get(sections[0]).put(sections[1], new BloomBitSet(bitSet, Integer.parseInt(sections[3])));
-            } else{                                     //entorpy information
-                if(category.equals("app")){
-                    sections = line.substring(1, line.length()-1).split(";");
-                    for(String section : sections){
-                        String[] sub = section.split(":");
-                        if(sub.length != 2){
-                            continue;
+                switch (sub[0]) {
+                    case "H_r":
+                        H_r = sub[1].isEmpty() ? 0 : Double.parseDouble(sub[1]);
+                        break;
+                    case "H_r_pkg":
+                        potential_re_pkg = sub[1];
+                        break;
+                    case "H_f":
+                        H_f = sub[1].isEmpty() ? 0 : Double.parseDouble(sub[1]);
+                        break;
+                    case "H_f_pkg_list":
+                        String listStr = sub[1];
+                        if (listStr.equals("null") || !listStr.startsWith("[")) {
+                            break;
                         }
-                        if(sub[0].equals("H_r")){
-                            H_r = sub[1].equals("") ? 0 : Double.parseDouble(sub[1]);
-                        } else if(sub[0].equals("H_r_pkg")){
-                            potential_re_pkg = sub[1];
-                        } else if(sub[0].equals("H_f")){
-                            H_f = sub[1].equals("") ? 0 : Double.parseDouble(sub[1]);
-                        } else if(sub[0].equals("H_f_pkg_list")){
-                            String[] pkgs = sub[1].substring(1, sub[1].length()-1).split(", ");
-                            for(String pkg : pkgs){
-                                potential_flatten_pkg_list.add(pkg.trim());
+                        if (sub[1].startsWith("[") && sub[1].endsWith("]")) {
+                            String[] pkgs = sub[1].substring(1, sub[1].length() - 1).split(", ");
+                            for (String pkg : pkgs) {
+                                if (!pkg.trim().isEmpty()) {
+                                    potential_flatten_pkg_list.add(pkg.trim());
+                                }
                             }
+                        } else {
+                            logger.warn("Formato incorrecto en H_f_pkg_list: " + sub[1]);
+                        }
+                        break;
+                    default:
+                        logger.warn("Clave desconocida en entropía: " + sub[0]);
+                }
+            }
+        } else {  // BitSets de paquetes o clases
+            String[] sections = line.split("&&");
+            if (sections.length == 2) {  // Package-level bloom filters
+                String pkgName = sections[0];
+                String bits = sections[1];
+                if (bits.equals("{}")) {
+                    continue; // No hay bits activos
+                }
+                BitSet bitSet = new BitSet(PKG_LEVEL_M);
+                try {
+                    String[] bitIdxArray = bits.substring(1, bits.length() - 1).split(", ");
+                    for (String idx : bitIdxArray) {
+                        if (!idx.isEmpty()) {
+                            bitSet.set(Integer.parseInt(idx));
                         }
                     }
+                    pkgBitSet.put(pkgName, bitSet);
+                } catch (Exception e) {
+                    logger.error("Error procesando BitSet de paquete en línea: " + line, e);
                 }
+            } else if (sections.length == 4) {  // Class-level bloom filters
+                String pkgName = sections[0];
+                String className = sections[1];
+                String bits = sections[2];
+                String sizeStr = sections[3];
+
+                try {
+                    BitSet bitSet = new BitSet(CLASS_LEVEL_M);
+                    String[] bitIdxArray = bits.substring(1, bits.length() - 1).split(", ");
+                    for (String idx : bitIdxArray) {
+                        if (!idx.isEmpty()) {
+                            bitSet.set(Integer.parseInt(idx));
+                        }
+                    }
+                    int size = Integer.parseInt(sizeStr);
+                    bitSetList.computeIfAbsent(pkgName, k -> new LinkedHashMap<>())
+                              .put(className, new BloomBitSet(bitSet, size));
+                } catch (Exception e) {
+                    logger.error("Error procesando BitSet de clase en línea: " + line, e);
+                }
+            } else {
+                logger.warn("Línea malformada ignorada: " + line);
             }
         }
     }
+
+    // Validaciones mínimas al terminar
+    if (category.equals("app") && (H_r == 0 && H_f == 0)) {
+        logger.error("Entropía H_r y H_f no fueron correctamente inicializadas en: " + file);
+    }
+    if (pkgBitSet.isEmpty()) {
+        logger.warn("pkgBitSet vacío después de leer el perfil: " + file);
+    }
+    if (bitSetList.isEmpty()) {
+        logger.warn("bitSetList vacío después de leer el perfil: " + file);
+    }
+}
+
+
 
     /**
      * whether set1 represented by bitSet1 is superset of set2 represented by bitSet2
@@ -1123,7 +1214,7 @@ public class LIBLOOM {
      */
     private boolean loadParameters(){
         try {
-            InputStream in = new FileInputStream("config/parameters.properties");
+            InputStream in = new FileInputStream(ABSOLUTEPATH + File.separator + "config" + File.separator + "parameters.properties");
             Properties p = new Properties();
             p.load(in);
             CLASS_LEVEL_M = Integer.parseInt(p.getProperty("CLASS_LEVEL_M"));
