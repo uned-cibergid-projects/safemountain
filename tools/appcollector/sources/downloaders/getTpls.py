@@ -7,6 +7,7 @@ from sources.fileSystemUtils import checkFolder
 from datetime import datetime, timezone
 from bson.objectid import ObjectId
 import aiohttp
+import shutil
 
 
 async def downloadTpl(versionDoc, tplSaveFolder, semaphore, versionsCollection, maxRetries=3):
@@ -131,6 +132,12 @@ async def main():
 
     nfsSaveFolder = "/home/dblancoaza/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostTpls/"
     checkFolder(nfsSaveFolder)
+
+    total, used, free = shutil.disk_usage(nfsSaveFolder)
+    min_required_gb = 5
+    if free < min_required_gb * 1024**3:
+        writeLog("warning", logger, f"Espacio insuficiente en disco: solo {free / (1024**3):.2f} GB libres.")
+        return
 
     semaphore = asyncio.Semaphore(3)
 
