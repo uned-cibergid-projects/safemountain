@@ -1,0 +1,70 @@
+{
+  "appname":"instagram-lite",
+  "libraries": [
+    {
+      "name":"won-utils-tls",
+      "version": [
+        "0.9"
+      ],
+      "similarity":1.0
+    },
+    {
+      "name":"biz.aQute.aggregate.test.main",
+      "version": [
+        "1.10.0"
+      ],
+      "similarity":1.0
+    },
+    {
+      "name":"biz.aQute.trace.tester6",
+      "version": [
+        "1.10.0"
+      ],
+      "similarity":1.0
+    },
+    {
+      "name":"org.eclipse.ot.rsa.example.api",
+      "version": [
+        "1.0.0"
+      ],
+      "similarity":1.0
+    },
+    {
+      "name":"br",
+      "version": [
+        "0.5.0"
+      ],
+      "similarity":1.0
+    },
+    {
+      "name":"senior-erpx-plugg-to-integration",
+      "version": [
+        "0.0.7-alpha"
+      ],
+      "similarity":1.0
+    },
+    {
+      "name":"annotation",
+      "version": [
+        "2.1.0"
+      ],
+      "similarity":1.0
+    },
+    {
+      "name":"nimbus-compose-annotation",
+      "version": [
+        "1.0.0-beta1"
+      ],
+      "similarity":1.0
+    },
+    {
+      "name":"voyager-livedata",
+      "version": [
+        "1.0.0-rc08",
+        "1.1.0-beta03"
+      ],
+      "similarity":1.0
+    }
+  ],
+  "time":"52.791"
+}

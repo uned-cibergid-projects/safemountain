@@ -47,6 +47,9 @@ public class LIBLOOM {
     private Path PROFILE_APK_PATH;
     private Path PROFILE_TPL_PATH;
 
+    /* Carpeta de salida definitiva para JSON detect */
+    private Path DETECT_OUTPUT_PATH;  // se lee de parameters.properties
+
     // Máximo de binarios (APK + TPL) a procesar por ejecución
     private static final int BATCH_SIZE = 50;  
 
@@ -101,201 +104,75 @@ public class LIBLOOM {
         logger.info("Ruta HOST_TPL_PATH: " + HOST_TPL_PATH);
     }
 
+    /* ----------------------------------------------------------------------
+     *                           DETECTION
+     * --------------------------------------------------------------------*/
     private void runDetection(LIBLOOM libloom) throws IOException, ClassHierarchyException {
-        logger.info("===== DEBUG runDetection =====");
-        logger.info("Usando APK profiles dir: " + PROFILE_APK_PATH);
-        logger.info("Usando TPL profiles dir: " + PROFILE_TPL_PATH);
-        File fileApkDir = PROFILE_APK_PATH.toFile();
-        File[] apks = findFilesRecursively(fileApkDir, ".txt");
-        if (apks != null && apks.length > 0) {
-            logger.info(">>> Perfiles APK encontrados: " + apks.length + " en " + fileApkDir.getAbsolutePath());
-            for (File apk : apks) {
-                logger.info("    - " + apk.getAbsolutePath());
-            }
-        } else {
-            logger.warn(">>> No se encontraron perfiles APK en: " + fileApkDir.getAbsolutePath());
-        }
+        logger.info("===== runDetection =====");
+        File fileApkDir = Paths.get("/home/dblancoaza/SafeMountain/API/tools/libloom/tmpSingleApkProfiles").toFile();
+        File[] apks = findFilesRecursively(fileApkDir, ".txt"); // perfiles APK
+        File[] tpls = findFilesRecursively(PROFILE_TPL_PATH.toFile(), ".txt"); // perfiles TPL
 
-        File fileTplDir = PROFILE_TPL_PATH.toFile();
-        File[] tpls = findFilesRecursively(fileTplDir, ".txt");
-        if (tpls != null && tpls.length > 0) {
-            logger.info(">>> Perfiles TPL encontrados: " + tpls.length + " en " + fileTplDir.getAbsolutePath());
-            for (File tpl : tpls) {
-                logger.info("    - " + tpl.getAbsolutePath());
-            }
-        } else {
-            logger.warn(">>> No se encontraron perfiles TPL en: " + fileTplDir.getAbsolutePath());
-        }
-
-        // Ordenar los archivos
-        assert apks != null;
-        assert tpls != null;
-        Arrays.sort(apks);
-        Arrays.sort(tpls);
-
-        // Abortamos si no hay perfiles suficientes
         if (apks == null || apks.length == 0 || tpls == null || tpls.length == 0) {
             logger.error("No hay perfiles suficientes para ejecutar la detección. Proceso cancelado.");
             return;
         }
-
-        // Preparamos batch: un APK vs todas las TPLs
         Arrays.sort(apks);
         Arrays.sort(tpls);
 
+        // Procesamos SOLO el primer APK (o modificable vía ArgsParser)
         File apkToProcess = apks[0];
         logger.info("Procesando perfil APK: " + apkToProcess.getAbsolutePath());
         logger.info("Total TPLs a comparar: " + tpls.length);
 
-        processDetectionBatch(apkToProcess, tpls, libloom, fileApkDir);
+        processDetectionBatch(apkToProcess, tpls, libloom);
         logger.info("===== Fin de runDetection =====");
-
     }
 
-    private void processDetectionBatch(File apk, File[] tpls, LIBLOOM libloom, File fileApkDir) throws IOException {
-
-        logger.info(">>> ENTRO EN processDetectionBatch");
+    /**
+     * Detecta TPLs para un APK (perfil .txt) contra TODOS los perfiles TPL.
+     * Guarda el JSON en DETECT_OUTPUT_PATH con nombre <apk>.json
+     */
+    private void processDetectionBatch(File apkProfile, File[] tplProfiles, LIBLOOM libloom) throws IOException {
         double appStartDetectionTime = System.currentTimeMillis();
-        DetectionResult dResult = new DetectionResult();
+        DetectionResult dResult      = new DetectionResult();
 
-        Path profilesApksBase = Paths.get(ABSOLUTEPATH, "results", "libloom", "profiles", "apks");
-        Path thisApkDir      = apk.getParentFile().toPath();
-        Path relative         = profilesApksBase.relativize(thisApkDir);
-        Path detectionDirPath = Paths.get(ABSOLUTEPATH, "results", "libloom", "detection")
-                             .resolve(relative);
+        // Nombre del APK sin extensión .txt
+        String appName = apkProfile.getName().replaceFirst("\\.txt$", "");
+        dResult.setAppname(appName);
 
-        File detectionDir = detectionDirPath.toFile();
+        /* --- Cargar perfil APK --- */
+        Map<String, BitSet> pkgBitSetApp                    = new LinkedHashMap<>();
+        Map<String, Map<String, BloomBitSet>> bitSetApp     = new LinkedHashMap<>();
+        libloom.readProfile(pkgBitSetApp, bitSetApp, apkProfile.toString(), "app");
 
-        libloom.excludedLibs = 0;
-        Map<String, BitSet> pkgBitSetApp = new LinkedHashMap<>();
-        Map<String, Map<String, BloomBitSet>> bitSetApp = new LinkedHashMap<>();
+        /* --- Directorio de salida final (NFS) --- */
+        if (!Files.exists(DETECT_OUTPUT_PATH)) Files.createDirectories(DETECT_OUTPUT_PATH);
 
-        if (apk.isFile()) {
-            String appName = apk.getName();
-            appName = appName.substring(0, appName.length() - 4);
-            dResult.setAppname(appName);
+        /* --- Comparación frente a TODAS las TPLs --- */
+        for (File tpl : tplProfiles) {
+            if (!tpl.isFile()) continue;
+            Map<String, BitSet> pkgBitSetLib                    = new LinkedHashMap<>();
+            Map<String, Map<String, BloomBitSet>> bitSetLib     = new LinkedHashMap<>();
+            libloom.readProfile(pkgBitSetLib, bitSetLib, tpl.toString(), "lib");
 
-            libloom.readProfile(pkgBitSetApp, bitSetApp, apk.toString(), "app");
-
-            if (!detectionDir.exists()) {
-                logger.info("Folder " + detectionDir + " does not exist. Creating it...");
-                detectionDir.mkdirs();
-            }
-
-            // Procesar todas las TPLs para la APK actual
-            for (File tpl : tpls) {
-                if (tpl.isFile()) {
-                    double startSimilarityTime = System.currentTimeMillis();
-                    Map<String, BitSet> pkgBitSetLib = new LinkedHashMap<>();
-                    Map<String, Map<String, BloomBitSet>> bitSetLib = new LinkedHashMap<>();
-                    libloom.readProfile(pkgBitSetLib, bitSetLib, tpl.toString(), "lib");
-
-                    // Calcular la similitud entre <app, lib>
-                    double similarity = libloom.calculateSimScore(pkgBitSetApp, pkgBitSetLib, bitSetApp, bitSetLib);
-                    double similarityTime = (System.currentTimeMillis() - startSimilarityTime) / 1000;
-
-                    if (similarity >= LIBLOOM.THRESHOLD) {
-                        System.out.println(apk.getName() + "(app) : " + tpl.getName() + "(lib)");
-                        System.out.println("Sim: " + similarity + "\t Time-consuming:" + similarityTime + "s");
-
-                        // Guardar en DetectionResult
-                        // String library = tpl.getName();
-                        // library = library.substring(0, library.length() - 4);  // remove .txt
-                        // int idx = getLibSplitIndex(library);
-                        // String libname = library.substring(0, idx);
-                        // String version = "";
-                        // if (idx < library.length()) {
-                        //     version = library.substring(idx + 1);
-                        // }
-
-                        String libname  = tpl.getParentFile().getName();
-                        String version  = FilenameUtils.getBaseName(tpl.getName());
-
-                        if (similarity == 1.0) {
-                            updateSocialJson(appName, libname, version);
-                        }
-
-                        dResult.updateLibraries(libname, version, similarity);
-                    }
-                }
+            double similarity = libloom.calculateSimScore(pkgBitSetApp, pkgBitSetLib, bitSetApp, bitSetLib);
+            if (similarity == THRESHOLD) { // THRESHOLD == 1.0
+                String libname = tpl.getParentFile().getName();
+                String version = FilenameUtils.getBaseName(tpl.getName());
+                dResult.updateLibraries(libname, version, similarity);
             }
         }
 
-        double appDetectionTime = (System.currentTimeMillis() - appStartDetectionTime) / 1000;
-        dResult.setTime(appDetectionTime);
+        /* --- Persistir JSON --- */
+        double detectionTime = (System.currentTimeMillis() - appStartDetectionTime) / 1000d;
+        dResult.setTime(detectionTime);
 
-        saveDetectionResult(dResult, detectionDir.getAbsolutePath(), apk.getName());
-
-        logger.info("Procesamiento de " + apk.getName() + " completado en " + appDetectionTime + " segundos.");
-    }
-
-    private void updateSocialJson(String appName, String libname, String version) throws IOException {
-        try {
-            File socialJsonFile = new File(ABSOLUTEPATH, "results/libloom/social.json"); 
-            String content = new String(Files.readAllBytes(socialJsonFile.toPath()), StandardCharsets.UTF_8);
-
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            Type mapType = new TypeToken<Map<String, Map<String, Object>>>() {}.getType();
-            Map<String, Map<String, Object>> socialJson = gson.fromJson(content, mapType);
-
-            if (socialJson.containsKey(appName)) {
-                Map<String, Object> appObject = socialJson.get(appName);
-
-                List<Map<String, Object>> tplsJson;
-                if (appObject.containsKey("tpls")) {
-                    tplsJson = (List<Map<String, Object>>) appObject.get("tpls");
-                } else {
-                    tplsJson = new ArrayList<>();
-                }
-
-                boolean tplExists = false;
-                Map<String, Object> tplEntry = null;
-
-                for (Map<String, Object> tplJson : tplsJson) {
-                    if (tplJson.containsKey(libname)) {
-                        tplEntry = tplJson;
-                        tplExists = true;
-                        break;
-                    }
-                }
-
-                if (tplExists && tplEntry != null) {
-                    Map<String, Object> tplDetails = (Map<String, Object>) tplEntry.get(libname);
-                    List<String> versions = (List<String>) tplDetails.get("versions");
-
-                    if (!versions.contains(version)) {
-                        versions.add(version);
-                    }
-                } else {
-                    Map<String, Object> tplDetails = new LinkedHashMap<>();
-                    tplDetails.put("name", libname);
-                    List<String> versions = new ArrayList<>();
-                    versions.add(version);
-                    tplDetails.put("versions", versions);
-
-                    Map<String, Object> newTplEntry = new LinkedHashMap<>();
-                    newTplEntry.put(libname, tplDetails);
-                    tplsJson.add(newTplEntry);
-                }
-
-                appObject.put("tpls", tplsJson);
-
-                Files.write(socialJsonFile.toPath(), gson.toJson(socialJson).getBytes(StandardCharsets.UTF_8));
-                System.out.println("Updated social.json with tpl details for app: " + libname);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        Path jsonOut = DETECT_OUTPUT_PATH.resolve(appName + ".json");
+        try (PrintWriter pw = new PrintWriter(jsonOut.toFile())) {
+            pw.write(dResult.prettyJSON());
         }
-    }
-
-    private void saveDetectionResult(DetectionResult dResult, String detectionDir, String appName) throws IOException {
-        logger.info("DIRECCION JSON: " + detectionDir);
-        String fname = appName.substring(0, appName.length() - 4) + ".json";
-        File matchResultFile = new File(detectionDir, fname);
-        try (PrintWriter pWriter = new PrintWriter(matchResultFile)) {
-            logger.info("Resultado de detección para " + appName + ": " + dResult.prettyJSON());
-            pWriter.write(dResult.prettyJSON());
-        }
+        logger.info("JSON guardado en " + jsonOut);
     }
 
     /**
@@ -1225,20 +1102,23 @@ private void readProfile(Map<String, BitSet> pkgBitSet,
      * Load parameters from configuration ("parameters.properties")
      * @return true if load success, otherwize false if fail
      */
-    private boolean loadParameters(){
-        try {
-            InputStream in = new FileInputStream(ABSOLUTEPATH + File.separator + "config" + File.separator + "parameters.properties");
+    private boolean loadParameters() {
+        try (InputStream in = new FileInputStream(ABSOLUTEPATH + File.separator + "config" + File.separator + "parameters.properties")) {
             Properties p = new Properties();
             p.load(in);
-            CLASS_LEVEL_M = Integer.parseInt(p.getProperty("CLASS_LEVEL_M"));
-            CLASS_LEVEL_K = Integer.parseInt(p.getProperty("CLASS_LEVEL_K"));
-            PKG_LEVEL_M = Integer.parseInt(p.getProperty("PKG_LEVEL_M"));
-            PKG_LEVEL_K = Integer.parseInt(p.getProperty("PKG_LEVEL_K"));
-            PKG_OVERLAP_THRESHOLD = Double.parseDouble(p.getProperty("PKG_OVERLAP_THRESHOLD"));
-            THRESHOLD = Double.parseDouble(p.getProperty("SIMILARITY_THRESHOLD"));
+            CLASS_LEVEL_M          = Integer.parseInt(p.getProperty("CLASS_LEVEL_M"));
+            CLASS_LEVEL_K          = Integer.parseInt(p.getProperty("CLASS_LEVEL_K"));
+            PKG_LEVEL_M            = Integer.parseInt(p.getProperty("PKG_LEVEL_M"));
+            PKG_LEVEL_K            = Integer.parseInt(p.getProperty("PKG_LEVEL_K"));
+            PKG_OVERLAP_THRESHOLD  = Double.parseDouble(p.getProperty("PKG_OVERLAP_THRESHOLD"));
+            THRESHOLD              = Double.parseDouble(p.getProperty("SIMILARITY_THRESHOLD"));
+
+            String outPath = p.getProperty("DETECT_OUTPUT_FOLDER",
+                    Paths.get(ABSOLUTEPATH, "results", "libloom", "detection").toString());
+            DETECT_OUTPUT_PATH = Paths.get(outPath);
             return true;
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Error cargando parameters.properties", e);
             return false;
         }
     }
