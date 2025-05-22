@@ -14,12 +14,25 @@ const fs = require('fs')
 
 const execAsync = util.promisify(exec)
 
+// Utils & servicios
 const { subirArchivoTemporal } = require('../utils/fileUtils')
 const { detectarCoincidencias } = require('../utils/regexMatcher')
 const APKS = require('../modMetadata/apks')
 const CRUD = require('../servicios/crud')
 const COLECCION = require('../servicios/modelos/analisis.model').estatico
 const CONFIG = require('../config.js')[process.env.NODE_ENV || 'development']
+
+
+// --------------------------------------------------------- //
+//  CONSTANTES DE RUTAS (mantener en sync con despliegue NFS)//
+// --------------------------------------------------------- //
+const NFS_BASE           = '/home/dblancoaza/SafeMountain/nfs/incibe/analisisAplicaciones/datasets'
+const BASE_HOST_APKS     = path.join(NFS_BASE, 'hostApks')           // árbol completo de APKs
+const BASE_PROFILES      = path.join(NFS_BASE, 'profiles')           // raíz de perfiles
+const PROFILE_APK_DIR    = path.join(BASE_PROFILES, 'apks', 'social')
+const PROFILE_TPL_DIR    = path.join(BASE_PROFILES, 'tpls')
+const DETECTS_DIR        = path.join(NFS_BASE, 'detects')            // destino final de JSON detect
+
 
 /**
  * @description Procesa y analiza un archivo APK utilizando MobSF.
@@ -32,115 +45,42 @@ const CONFIG = require('../config.js')[process.env.NODE_ENV || 'development']
  * @throws {Error} Si ocurre un error durante la ejecución del análisis, lectura del archivo de resultados o almacenamiento del APK.
  */
 
+// Carpeta local donde vive LibLoom dentro del repo
+const LIBLOOM_DIR        = path.join(__dirname, '../../tools/libloom')
+const LIBLOOM_CP         = [
+  path.join(LIBLOOM_DIR, 'out'),
+  path.join(LIBLOOM_DIR, 'lib', '*')
+].join(process.platform === 'win32' ? ';' : ':')
+
+// Directorios temporales internos a tools/libloom
+const TMP_HOST_APKS      = path.join(LIBLOOM_DIR, 'tmpHostApks')           // para generar perfil puntual
+const TMP_SINGLE_APK_DIR = path.join(LIBLOOM_DIR, 'tmpSingleApkProfiles')  // para detect
+const DETECT_OUTPUT_DIR  = path.join(LIBLOOM_DIR, 'results', 'libloom', 'detection') // lo usa LibLoom por defecto
+
+// Aseguramos que existan los temporales y destino de detects
+for (const d of [ TMP_HOST_APKS, TMP_SINGLE_APK_DIR, DETECT_OUTPUT_DIR, DETECTS_DIR ]) {
+  if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true })
+}
+
+/* -----------------------
+ * API principal exportado
+ * -----------------------*/
 async function analizar (req, res) {
-  let filePath
+  let tmpFilePath // ruta de la APK subida al tmp de subidaArchivoTemporal
 
   try {
+    /* SUBIDA TEMPORAL DEL APK ORIGEN */
     const uploadResult = await subirArchivoTemporal(req, res)
-    filePath = uploadResult.datos.filePath
+    tmpFilePath = uploadResult.datos.filePath
 
-    const mobSFDir = path.join(__dirname, '../../tools/mobsf')
-    const resultDir = path.join(mobSFDir, 'results')
+    /* Lanzamos MobSF (sin cambios) y obtenemos analisisData */
+    const analisisData = await ejecutarMobSF(tmpFilePath)
 
-    if (!fs.existsSync(resultDir)) {
-      fs.mkdirSync(resultDir, { recursive: true })
-    }
+    /* === NUEVO: integrar LibLoom === */
+    await ejecutarLibLoom(tmpFilePath, analisisData)
 
-    const pythonEnv = path.join(mobSFDir, 'mobsf_env', 'bin', 'python3')
-
-    const cmd = `"${pythonEnv}" -d main.py --source="${filePath}" --result="${resultDir}"`
-
-    const { stderr } = await execAsync(cmd, { cwd: mobSFDir })
-
-    if (stderr) {
-      console.error('stderr:', stderr)
-    }
-
-    const baseName = path.basename(filePath)
-    const jsonFile = path.join(resultDir, `${baseName}.json`)
-
-    let analisisData
-    try {
-      const fileContent = await fs.promises.readFile(jsonFile, 'utf8')
-      analisisData = JSON.parse(fileContent)
-      analisisData.name = path.parse(analisisData.file_name).name
-      const coincidencias = detectarCoincidencias(analisisData.strings)
-
-      const ppiFiltrado = {}
-      for (const [key, valores] of Object.entries(coincidencias)) {
-        const filtrados = valores.filter((item) => Array.isArray(item.matches) && item.matches.length > 0)
-        if (filtrados.length > 0) {
-          ppiFiltrado[key] = filtrados
-        }
-      }
-    
-      analisisData.ppi = ppiFiltrado
-    } catch (readError) {
-      throw new Error(`No se pudo realizar un análisis de forma correcta: ${readError}`)
-    }
-
-    await ejecutarLibLoom(filePath, analisisData)
-
-    const { BASE_DIRECTORY } = CONFIG
-    const categoryDir = path.join(BASE_DIRECTORY, analisisData.playstore_details.genre.toLowerCase())
-    const finalDir = path.join(categoryDir, analisisData.package_name)
-    const finalPath = path.join(finalDir, analisisData.file_name)
-
-    if (!fs.existsSync(finalDir)) {
-      fs.mkdirSync(finalDir, { recursive: true })
-    }
-
-    if (fs.existsSync(finalPath)) {
-      console.log(`La APK ya estaba guardada previamente en ${finalPath}.`)
-    } else {
-      fs.copyFileSync(filePath, finalPath)
-      fs.unlinkSync(filePath)
-      console.log(`La APK se ha guardado con éxito en ${finalPath}.`)
-    }
-
-    const { ok: okApk, datos: datosApk } = await APKS.leerCampo(
-      {
-        filtro: { name: analisisData.name },
-        limite: 1
-      }
-    )
-
-    if (!okApk || !datosApk) {
-      await APKS.guardarMetadata(analisisData)
-    }
-
-    const { ok: okCrud, datos: datosCrud } = await CRUD.leerCampo(
-      {
-        filtro: { package_name: analisisData.package_name },
-        limite: 1
-      },
-      COLECCION
-    )
-
-    if (!okCrud || !datosCrud) {
-      const { ok: okNuevo } = await CRUD.nuevo(analisisData, COLECCION)
-      if (!okNuevo) {
-        console.log('No se pudo insertar el documento en la colección Apks.')
-      } else {
-        console.log('Documento insertado correctamente en la colección Apks:')
-      }
-    } else {
-      console.log('Ya existe un documento con el mismo package_name en la BD. Actualizando campo libloom...')
-
-      if (analisisData.libloom) {
-        const { ok: okUpdate } = await CRUD.modificarUno(
-          { package_name: analisisData.package_name }, // filtro
-          { libloom: analisisData.libloom },            // actualización
-          COLECCION
-        )
-      
-        if (okUpdate) {
-          console.log('Campo libloom actualizado correctamente en la BD.')
-        } else {
-          console.log('⚠️ No se pudo actualizar el campo libloom en la BD.')
-        }
-      }
-    }
+    /* Guarda APK definitiva en NFS y metadatos en Mongo (sin cambios) */
+    await persistirResultados(tmpFilePath, analisisData)
 
     return {
       ok: true,
@@ -151,159 +91,187 @@ async function analizar (req, res) {
         name: analisisData.file_name
       }
     }
-  } catch (error) {
-    throw new Error(`Error al analizar el archivo con MobSF: ${error.message}`)
-  } finally {
-    if (filePath && fs.existsSync(filePath)) {
-      try {
-        fs.unlinkSync(filePath)
-        console.log(`Archivo temporal ${filePath} eliminado.`)
-      } catch (err) {
-        console.error(`Error eliminando archivo temporal: ${err.message}`)
-      }
-    }
-  }
-}
-
-/**
- * @description Ejecuta LibLoom para generar perfiles y detectar TPLs.
- * @param {string} filePath     - Ruta al APK en hostApks.
- * @param {Object} analisisData - Resultados previos (incluye package_name y name).
- */
-async function ejecutarLibLoom(filePath, analisisData) {
-  const libloomDir = path.join(__dirname, '../../tools/libloom')
-  const classPath  = [
-    path.join(libloomDir, 'out', 'libloom'),
-    path.join(libloomDir, 'lib', '*')
-  ].join(process.platform === 'win32' ? ';' : ':')
-
-  // 1) Rutas fijas en tu NFS
-  const baseHostApks    = '/home/dblancoaza/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks'
-  const baseProfiles    = '/home/dblancoaza/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/profiles'
-  const tplProfilesDir  = path.join(baseProfiles, 'tpls')
-  const apkProfilesDir  = path.join(baseProfiles, 'apks', 'social')
-
-  // 2) Temporal dentro de tools/libloom
-  const tmpHostApks = path.join(libloomDir, 'tmpHostApks')
-  const resultDir   = path.join(libloomDir, 'results', 'libloom', 'detection')
-
-  // Aseguramos tmpHostApks y resultDir
-  for (const d of [ tmpHostApks, resultDir ]) {
-    if (!fs.existsSync(d)) {
-      console.log(`Creando directorio: ${d}`)
-      fs.mkdirSync(d, { recursive: true })
-    }
-  }
-
-  // Función auxiliar para contar ficheros .ext recursivamente
-  function countFilesRecursively(dir, ext) {
-    let count = 0
-    if (!fs.existsSync(dir)) return 0
-    for (const name of fs.readdirSync(dir)) {
-      const full = path.join(dir, name)
-      if (fs.statSync(full).isDirectory()) {
-        count += countFilesRecursively(full, ext)
-      } else if (name.endsWith(ext)) {
-        count++
-      }
-    }
-    return count
-  }
-
-  // 3) Debug inicial: conteos
-  console.log('=== DEBUG RUTAS Y CONTEOS ===')
-  console.log('Base hostApks:', baseHostApks)
-  console.log('Base apkProfilesDir:', apkProfilesDir)
-  console.log('Base tplProfilesDir:', tplProfilesDir)
-
-  const totalHostApks       = countFilesRecursively(path.join(baseHostApks, 'social'), '.apk')
-  const totalApkProfiles    = countFilesRecursively(apkProfilesDir, '.txt')
-  const totalTplProfiles    = countFilesRecursively(tplProfilesDir, '.txt')
-
-  console.log(`Total APKs en hostApks/social: ${totalHostApks}`)
-  console.log(`Total perfiles APK bajo profiles/apks/social: ${totalApkProfiles}`)
-  console.log(`Total perfiles TPL bajo profiles/tpls: ${totalTplProfiles}`)
-  console.log('=============================')
-
-  try {
-    // 4) Copiar APK a tmpHostApks
-    const apkName     = analisisData.name               // nombre sin extensión
-    const tmpCopyPath = path.join(tmpHostApks, `${apkName}.apk`)
-    console.log(`Copiando APK a temporal: ${tmpCopyPath}`)
-    fs.copyFileSync(filePath, tmpCopyPath)
-
-    // 5) Preparamos ruta definitiva de perfil:
-    //    /profiles/apks/social/<package_name>/<name>.txt
-    const profileDir    = path.join(apkProfilesDir, analisisData.package_name)
-    const targetProfile = path.join(profileDir, `${apkName}.txt`)
-
-    console.log('Ruta de perfil APK:', targetProfile)
-    if (!fs.existsSync(targetProfile)) {
-      console.log(`🟡 Perfil de ${apkName} no existe: generando en '${profileDir}'…`)
-      fs.mkdirSync(profileDir, { recursive: true })
-
-      const profileCmd = [
-        `java -cp "${classPath}"`,
-        'libloom.LIBLOOM profile',
-        `-d "${tmpHostApks}"`,
-        `-o "${apkProfilesDir}"`
-      ].join(' ')
-      console.log('Comando profile:', profileCmd)
-      await execAsync(profileCmd, { cwd: libloomDir, maxBuffer: 10 * 1024 * 1024 })
-    } else {
-      console.log(`✅ Perfil de ${apkName} ya existe, omitiendo.`)
-    }
-
-    // 6) Volvemos a contar perfiles APK tras posible generación
-    const newApkProfiles = countFilesRecursively(apkProfilesDir, '.txt')
-    console.log(`Perfiles APK tras generación: ${newApkProfiles}`)
-
-    // 7) Detección contra todos los TPLs
-    console.log('🟡 Ejecutando LibLoom detect sobre TODOS los TPLs…')
-    const detectCmd = [
-      `java -cp "${classPath}"`,
-      'libloom.LIBLOOM detect',
-      `-ad "${apkProfilesDir}"`,
-      `-ld "${tplProfilesDir}"`,
-      `-o  "${resultDir}"`
-    ].join(' ')
-    console.log('Comando detect:', detectCmd)
-    const { stdout, stderr } = await execAsync(detectCmd, { cwd: libloomDir, maxBuffer: 10 * 1024 * 1024 })
-    if (stdout) console.log('[LIBLOOM STDOUT]\n', stdout)
-    if (stderr) console.error('[LIBLOOM STDERR]\n', stderr)
-
-    // 8) Contar resultados JSON generados
-    const jsonCount = countFilesRecursively(resultDir, '.json')
-    console.log(`Total JSON de detección en ${resultDir}: ${jsonCount}`)
-
-    // 9) Cargar el JSON más reciente
-    const files = fs.readdirSync(resultDir)
-      .filter(f => f.endsWith('.json'))
-      .map(f => ({ f, m: fs.statSync(path.join(resultDir, f)).mtime }))
-      .sort((a,b) => b.m - a.m)
-
-    if (files.length) {
-      console.log('JSON seleccionado:', files[0].f)
-      analisisData.libloom = JSON.parse(
-        fs.readFileSync(path.join(resultDir, files[0].f), 'utf8')
-      )
-    } else {
-      console.warn('⚠️ No se encontró JSON de detección de LibLoom.')
-    }
-
   } catch (err) {
-    console.error('Error ejecutando LibLoom:', err)
+    throw new Error(`Error en analizar(): ${err.message}`)
   } finally {
-    // 10) Limpiar copia temporal
-    const tmpAPK = path.join(tmpHostApks, `${analisisData.name}.apk`)
-    if (fs.existsSync(tmpAPK)) {
-      console.log(`Eliminando APK temporal: ${tmpAPK}`)
-      try { fs.unlinkSync(tmpAPK) } catch (e) { /* ignore */ }
+    if (tmpFilePath && fs.existsSync(tmpFilePath)) {
+      fs.unlinkSync(tmpFilePath)
     }
   }
 }
 
+/* --------------------------------------------------------------------------
+ *                       1) Ejecución de MobSF
+ * ------------------------------------------------------------------------*/
+async function ejecutarMobSF (apkTmpPath) {
+  // (Copiado en esencia de la versión original, simplificado)
+  const mobSFDir  = path.join(__dirname, '../../tools/mobsf')
+  const resultDir = path.join(mobSFDir, 'results')
+  if (!fs.existsSync(resultDir)) fs.mkdirSync(resultDir, { recursive: true })
+
+  const pythonEnv = path.join(mobSFDir, 'mobsf_env', 'bin', 'python3')
+  const cmd = `"${pythonEnv}" -d main.py --source="${apkTmpPath}" --result="${resultDir}"`
+  await execAsync(cmd, { cwd: mobSFDir, maxBuffer: 10 * 1024 * 1024 })
+
+  /* Parseamos JSON de MobSF */
+  const jsonFile = path.join(resultDir, `${path.basename(apkTmpPath)}.json`)
+  const raw      = await fs.promises.readFile(jsonFile, 'utf8')
+  const data     = JSON.parse(raw)
+  data.name      = path.parse(data.file_name).name
+
+  // Extraemos coincidencias regex (sin cambios)
+  const coincidencias   = detectarCoincidencias(data.strings)
+  const ppiFiltrado     = {}
+  for (const [k, vals] of Object.entries(coincidencias)) {
+    const filtrados = vals.filter(v => Array.isArray(v.matches) && v.matches.length)
+    if (filtrados.length) ppiFiltrado[k] = filtrados
+  }
+  data.ppi = ppiFiltrado
+  return data
+}
+
+/* --------------------------------------------------------------------------
+ *                       2) Ejecución de LibLoom
+ * ------------------------------------------------------------------------*/
+async function ejecutarLibLoom (apkTmpPath, analisisData) {
+  const apkNameNoExt   = analisisData.name              // p.ej. com.foo.bar_123
+  const packageName    = analisisData.package_name      // del Play Store / MobSF
+
+  /* 2.1) ¿Existe perfil de la APK? */
+  const apkProfileDir  = path.join(PROFILE_APK_DIR, packageName)
+  const apkProfilePath = path.join(apkProfileDir, `${apkNameNoExt}.txt`)
+  const profileExists  = fs.existsSync(apkProfilePath)
+
+  if (profileExists) {
+    console.log(`✅ Perfil de ${apkNameNoExt} YA existe — se usará directamente.`)
+  } else {
+    console.log(`🟡 Generando perfil para ${apkNameNoExt}…`)
+    // Copia temporal a TMP_HOST_APKS
+    const tmpCopy = path.join(TMP_HOST_APKS, `${apkNameNoExt}.apk`)
+    fs.copyFileSync(apkTmpPath, tmpCopy)
+
+    // Comando: java -cp … libloom.LIBLOOM profile
+    const profileCmd = [
+      `java -cp "${LIBLOOM_CP}"`,
+      'libloom.LIBLOOM', 'profile'
+    ].join(' ')
+
+    // LIBLOOM usa rutas absolutas definidas en parameters.properties, por lo que
+    // simplemente lanzar "profile" procesará TODO tmpHostApks. Crearemos un
+    // symlink dentro de hostApks/social para mantener la estructura esperada.
+    const socialDir = path.join(BASE_HOST_APKS, 'social', packageName)
+    fs.mkdirSync(socialDir, { recursive: true })
+    const finalDst = path.join(socialDir, `${apkNameNoExt}.apk`)
+    if (!fs.existsSync(finalDst)) fs.copyFileSync(apkTmpPath, finalDst)
+
+    await execAsync(profileCmd, { cwd: LIBLOOM_DIR, maxBuffer: 20 * 1024 * 1024 })
+
+    if (!fs.existsSync(apkProfilePath)) {
+      throw new Error('LibLoom no generó el perfil esperado.')
+    }
+  }
+
+  /* 2.2) Preparar detect con UN SOLO perfil APK (copiarlo a TMP_SINGLE_APK_DIR) */
+  const singleProfile = path.join(TMP_SINGLE_APK_DIR, `${apkNameNoExt}.txt`)
+  // Limpiamos dir temporal
+  for (const f of fs.readdirSync(TMP_SINGLE_APK_DIR)) {
+    fs.unlinkSync(path.join(TMP_SINGLE_APK_DIR, f))
+  }
+  fs.copyFileSync(apkProfilePath, singleProfile)
+
+  /* 2.3) Ejecutar detect */
+  console.log('🟡 Ejecutando LibLoom detect para la APK…')
+  const detectCmd = [
+    `java -cp "${LIBLOOM_CP}"`,
+    'libloom.LIBLOOM', 'detect', "--debug"
+  ].join(' ')
+
+  await execAsync(detectCmd, { cwd: LIBLOOM_DIR, maxBuffer: 20 * 1024 * 1024 })
+
+  /* 2.4) Localizar JSON generado (debería estar en DETECT_OUTPUT_DIR bajo root) */
+  const detectJsonPath = path.join(DETECT_OUTPUT_DIR, `${apkNameNoExt}.json`)
+  if (!fs.existsSync(detectJsonPath)) {
+    console.warn('⚠️ No se encontró JSON de detección para la APK.')
+    return
+  }
+
+  // Copiar al directorio final /datasets/detects
+  const finalDetectPath = path.join(DETECTS_DIR, `${apkNameNoExt}.json`)
+  fs.copyFileSync(detectJsonPath, finalDetectPath)
+  console.log(`JSON de detección guardado en ${finalDetectPath}`)
+
+  /* 2.5) Filtrar librerías con similarity == 1.0 y anexar a analisisData */
+  try {
+    const detectData = JSON.parse(fs.readFileSync(detectJsonPath, 'utf8'))
+    const filtered   = {}
+
+    // El formato puede variar. Recorremos genéricamente.
+    //   {
+    //      "libraries": {
+    //         "libname": { "version": similarity, ... }, ...
+    //      }
+    //   }
+    const libsObj = detectData.libraries || detectData.libs || {}
+    for (const [lib, versions] of Object.entries(libsObj)) {
+      for (const [ver, sim] of Object.entries(versions)) {
+        if (Number(sim) === 1) {
+          if (!filtered[lib]) filtered[lib] = []
+          filtered[lib].push(ver)
+        }
+      }
+    }
+
+    if (Object.keys(filtered).length) {
+      analisisData.libloom = filtered
+    } else {
+      console.log('LibLoom no encontró TPLs con similitud 1.0.')
+    }
+
+  } catch (e) {
+    console.error('Error leyendo/parsing JSON de LibLoom:', e)
+  }
+}
+
+/* --------------------------------------------------------------------------
+ *                  3) Persistencia en NFS y Mongo
+ * ------------------------------------------------------------------------*/
+async function persistirResultados(tmpApkPath, analisisData) {
+  const { BASE_DIRECTORY } = CONFIG
+  const categoryDir = path.join(BASE_DIRECTORY, analisisData.playstore_details.genre.toLowerCase())
+  const finalDir    = path.join(categoryDir, analisisData.package_name)
+  const finalPath   = path.join(finalDir, analisisData.file_name)
+
+  if (!fs.existsSync(finalDir)) fs.mkdirSync(finalDir, { recursive: true })
+  if (!fs.existsSync(finalPath)) {
+    fs.copyFileSync(tmpApkPath, finalPath)
+  }
+
+  // Guardar metadatos en Mongo (idéntico a la versión previa)
+  const { ok: okApk, datos: datosApk } = await APKS.leerCampo({
+    filtro: { name: analisisData.name },
+    limite: 1
+  })
+  if (!okApk || !datosApk) {
+    await APKS.guardarMetadata(analisisData)
+  }
+
+  const { ok: okCrud, datos: datosCrud } = await CRUD.leerCampo({
+    filtro: { package_name: analisisData.package_name },
+    limite: 1
+  }, COLECCION)
+
+  if (!okCrud || !datosCrud) {
+    await CRUD.nuevo(analisisData, COLECCION)
+  } else if (analisisData.libloom) {
+    await CRUD.modificarUno(
+      { package_name: analisisData.package_name },
+      { libloom: analisisData.libloom },
+      COLECCION
+    )
+  }
+}
 
 module.exports = {
   analizar
 }
+
