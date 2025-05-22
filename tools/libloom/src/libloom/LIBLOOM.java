@@ -13,7 +13,7 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import java.util.stream.Collectors;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,19 +26,29 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 
 public class LIBLOOM {
+    /* ------------------------------
+     *              CONSTANTES
+     * ------------------------------ */
     private int CLASS_LEVEL_M = 256;
     private int CLASS_LEVEL_K = 3;
-    private int PKG_LEVEL_M = 0;
-    private int PKG_LEVEL_K = 3;
+    private int PKG_LEVEL_M   = 0;
+    private int PKG_LEVEL_K   = 3;
     private String ABSOLUTEPATH = "";
     private ArgsParser argsParser;
     Map<String, Map<String, Map<String, String>>> classPairs = new HashMap<>(); //[DEBUG] record km match class pairs <lp, <ap, <ac, lc>>>
     public static double THRESHOLD = 0.6;   // the similarity threshold of library detection
     public static double PKG_OVERLAP_THRESHOLD = 0.8;
-    private static final String STATE_PROFILES_PATH = "results/libloom/profiles/progress.txt";
-    private static final String STATE_DETECTION_APKS_PATH = "results/libloom/detection/progressAPKs.txt";
-    private static final String STATE_DETECTION_TPLS_PATH = "results/libloom/detection/progressTPLs.txt";
-    private static final int BATCH_SIZE = 50;  // Tamaño del lote
+
+    /*
+     *  Rutas (se mantienen exactamente igual)
+     */
+    private Path HOST_APK_PATH;
+    private Path HOST_TPL_PATH;
+    private Path PROFILE_APK_PATH;
+    private Path PROFILE_TPL_PATH;
+
+    // Máximo de binarios (APK + TPL) a procesar por ejecución
+    private static final int BATCH_SIZE = 50;  
 
     private int excludedLibs = 0;
     Set<String> potential_flatten_pkg_list = new HashSet<String>();
@@ -46,6 +56,9 @@ public class LIBLOOM {
     double H_r, H_f;
     private static Logger logger = LoggerFactory.getLogger(LIBLOOM.class);
 
+    /* ----------------------------------------------------------------------
+     *                             MÉTODO MAIN
+     * --------------------------------------------------------------------*/
     public static void main(String[] args) throws IOException, ClassHierarchyException {
         double startTime = System.currentTimeMillis();
         LIBLOOM libloom = new LIBLOOM();
@@ -63,8 +76,17 @@ public class LIBLOOM {
         System.out.println("Total Runtime: " + runTime + "s");
     }
 
+    /* ----------------------------------------------------------------------
+     *                           CONSTRUCTOR
+     * --------------------------------------------------------------------*/
     public LIBLOOM(){
         ABSOLUTEPATH = new File("").getAbsolutePath();
+
+        HOST_APK_PATH = Paths.get(ABSOLUTEPATH).getParent().getParent().getParent().resolve("nfs/incibe/analisisAplicaciones/datasets/hostApks");
+        HOST_TPL_PATH = Paths.get(ABSOLUTEPATH).getParent().getParent().getParent().resolve("nfs/incibe/analisisAplicaciones/datasets/hostTpls");
+        PROFILE_APK_PATH = Paths.get(ABSOLUTEPATH).getParent().getParent().getParent().resolve("nfs/incibe/analisisAplicaciones/datasets/profiles/apks");
+        PROFILE_TPL_PATH = Paths.get(ABSOLUTEPATH).getParent().getParent().getParent().resolve("nfs/incibe/analisisAplicaciones/datasets/profiles/tpls");        
+
         if(! loadParameters())
             logger.error("Loading parameters.properties error !!! Checking");
 
@@ -75,30 +97,34 @@ public class LIBLOOM {
             ));
         
         logger.info("Ruta base de ejecución: " + ABSOLUTEPATH);
+        logger.info("Ruta HOST_APK_PATH: " + HOST_APK_PATH);
+        logger.info("Ruta HOST_TPL_PATH: " + HOST_TPL_PATH);
     }
 
     private void runDetection(LIBLOOM libloom) throws IOException, ClassHierarchyException {
-        logger.info(">>> ENTRO EN runDetection");
-        File fileApkDir = new File(ABSOLUTEPATH, "results/libloom/profiles/apks");  
+        logger.info("===== DEBUG runDetection =====");
+        logger.info("Usando APK profiles dir: " + PROFILE_APK_PATH);
+        logger.info("Usando TPL profiles dir: " + PROFILE_TPL_PATH);
+        File fileApkDir = PROFILE_APK_PATH.toFile();
         File[] apks = findFilesRecursively(fileApkDir, ".txt");
         if (apks != null && apks.length > 0) {
-            logger.info(">>> APKS DETECTADOS:");
+            logger.info(">>> Perfiles APK encontrados: " + apks.length + " en " + fileApkDir.getAbsolutePath());
             for (File apk : apks) {
                 logger.info("    - " + apk.getAbsolutePath());
             }
         } else {
-            logger.warn(">>> No se encontraron APKs en: " + fileApkDir.getAbsolutePath());
+            logger.warn(">>> No se encontraron perfiles APK en: " + fileApkDir.getAbsolutePath());
         }
 
-        File fileTplDir = new File(ABSOLUTEPATH, "results/libloom/profiles/tpls");
+        File fileTplDir = PROFILE_TPL_PATH.toFile();
         File[] tpls = findFilesRecursively(fileTplDir, ".txt");
         if (tpls != null && tpls.length > 0) {
-            logger.info(">>> TPLS DETECTADOS:");
+            logger.info(">>> Perfiles TPL encontrados: " + tpls.length + " en " + fileTplDir.getAbsolutePath());
             for (File tpl : tpls) {
                 logger.info("    - " + tpl.getAbsolutePath());
             }
         } else {
-            logger.warn(">>> No se encontraron TPLs en: " + fileTplDir.getAbsolutePath());
+            logger.warn(">>> No se encontraron perfiles TPL en: " + fileTplDir.getAbsolutePath());
         }
 
         // Ordenar los archivos
@@ -107,36 +133,23 @@ public class LIBLOOM {
         Arrays.sort(apks);
         Arrays.sort(tpls);
 
-        // Leer el progreso actual
-        int progressApk = readState(STATE_DETECTION_APKS_PATH);
-
-        // Verificar si el progreso es mayor que el número de APKs
-        if (progressApk >= apks.length) {
-            logger.info("El progreso de APKs (" + progressApk + ") es mayor o igual que el número total de APKs disponibles (" + apks.length + "). No hay más APKs para procesar.");
+        // Abortamos si no hay perfiles suficientes
+        if (apks == null || apks.length == 0 || tpls == null || tpls.length == 0) {
+            logger.error("No hay perfiles suficientes para ejecutar la detección. Proceso cancelado.");
             return;
         }
 
-        // Definir el lote de 1 APK
-        int endAppIndex = Math.min(progressApk + 1, apks.length);
-        File apkToProcess = apks[progressApk];
-        File[] tplBatch = Arrays.copyOfRange(tpls, 0, tpls.length);  // Todas las TPLs
+        // Preparamos batch: un APK vs todas las TPLs
+        Arrays.sort(apks);
+        Arrays.sort(tpls);
 
-        // Log para mostrar el progreso de la APK actual sobre el total
-        logger.info("Procesando APK " + apkToProcess.getName() + " (" + (progressApk + 1) + " de un total de " + apks.length + ") con todas las TPLs.");
+        File apkToProcess = apks[0];
+        logger.info("Procesando perfil APK: " + apkToProcess.getAbsolutePath());
+        logger.info("Total TPLs a comparar: " + tpls.length);
 
-        // Procesar la APK con todas las TPLs
-        processDetectionBatch(apkToProcess, tplBatch, libloom, fileApkDir);
+        processDetectionBatch(apkToProcess, tpls, libloom, fileApkDir);
+        logger.info("===== Fin de runDetection =====");
 
-        // Guardar el progreso actual (incrementamos el índice de APK)
-        saveState(STATE_DETECTION_APKS_PATH, endAppIndex);
-
-        // Mensaje de progreso
-        if (endAppIndex >= apks.length) {
-            logger.info("Se ha completado el procesamiento de todas las APKs.");
-        } else {
-            logger.info("Se procesó la APK " + apkToProcess.getName() + ". Progreso guardado. Continuará con la siguiente APK en la siguiente ejecución.");
-            System.exit(0);  // Terminar el proceso después de procesar la APK actual
-        }
     }
 
     private void processDetectionBatch(File apk, File[] tpls, LIBLOOM libloom, File fileApkDir) throws IOException {
@@ -186,14 +199,17 @@ public class LIBLOOM {
                         System.out.println("Sim: " + similarity + "\t Time-consuming:" + similarityTime + "s");
 
                         // Guardar en DetectionResult
-                        String library = tpl.getName();
-                        library = library.substring(0, library.length() - 4);  // remove .txt
-                        int idx = getLibSplitIndex(library);
-                        String libname = library.substring(0, idx);
-                        String version = "";
-                        if (idx < library.length()) {
-                            version = library.substring(idx + 1);
-                        }
+                        // String library = tpl.getName();
+                        // library = library.substring(0, library.length() - 4);  // remove .txt
+                        // int idx = getLibSplitIndex(library);
+                        // String libname = library.substring(0, idx);
+                        // String version = "";
+                        // if (idx < library.length()) {
+                        //     version = library.substring(idx + 1);
+                        // }
+
+                        String libname  = tpl.getParentFile().getName();
+                        String version  = FilenameUtils.getBaseName(tpl.getName());
 
                         if (similarity == 1.0) {
                             updateSocialJson(appName, libname, version);
@@ -301,139 +317,136 @@ public class LIBLOOM {
         return idx;
     }
 
+    /* =====================================================================
+     *              1. NUEVA LÓGICA DE GENERACIÓN DE PERFILES               
+     * ===================================================================*/
+    /**
+     * Revisión completa del flujo:
+     *   • Escaneamos los árboles hostApks y hostTpls.
+     *   • Filtramos los binarios que YA tienen un perfil generado.
+     *   • Procesamos un máximo de BATCH_SIZE binarios por ejecución.
+     *   • No necesitamos ficheros de estado porque el perfil mismo es la prueba
+     *     de que el fichero fue procesado.
+     */
     private void generateProfile() throws IOException, ClassHierarchyException {
-        File apkDir = new File(ABSOLUTEPATH, "results/hostApks");
-        logger.info("Ruta absoluta esperada de hostApks (según LIBLOOM.java): " + apkDir.getAbsolutePath());
+        /* 1. Obtener listas completas de binarios */
+        File apkDir = HOST_APK_PATH.toFile();
+        File tplDir = HOST_TPL_PATH.toFile();
 
         if (!apkDir.isDirectory()) {
-            logger.info("El directorio de APKs no es válido: " + apkDir.getPath());
+            logger.error("hostApks directory is invalid: " + apkDir.getAbsolutePath());
             return;
         }
-        File[] apks = findFilesRecursively(apkDir, ".apk");
-        Arrays.sort(apks);
-        logger.info("APKs detectadas en hostApks: " + apks.length);
-
-        File tplDir = new File(ABSOLUTEPATH, "../../../nfs/incibe/analisisAplicaciones/datasets/hostTpls");   
         if (!tplDir.isDirectory()) {
-            logger.info("El directorio de TPLs no es válido: " + tplDir.getPath());
+            logger.error("hostTpls directory is invalid: " + tplDir.getAbsolutePath());
             return;
         }
-        List<File> tplList = new ArrayList<>();
-        tplList.addAll(Arrays.asList(findFilesRecursively(tplDir, ".jar")));
-        tplList.addAll(Arrays.asList(findFilesRecursively(tplDir, ".aar")));
-        File[] tpls = tplList.toArray(new File[0]);
 
-        logger.info("TPLs detectadas en hostTpls: " + tpls.length);
-        logger.info("APPS: " + apks.length);
-        logger.info("LIBS: " + tpls.length);
-        Arrays.sort(tpls);
+        List<File> allApks = Arrays.asList(findFilesRecursively(apkDir, ".apk"));
+        List<File> allTpls = new ArrayList<>();
+        allTpls.addAll(Arrays.asList(findFilesRecursively(tplDir, ".jar")));
+        allTpls.addAll(Arrays.asList(findFilesRecursively(tplDir, ".aar")));
 
-        int lastProcessedIndex = readState(STATE_PROFILES_PATH);
-        logger.info("Último índice leído del progreso: " + lastProcessedIndex);
+        logger.info("APKs totales detectadas: " + allApks.size());
+        logger.info("TPLs totales detectadas: " + allTpls.size());
 
-        File apkProfileDir = new File(ABSOLUTEPATH, "results/libloom/profiles/apks");
-        File tplProfileDir = new File(ABSOLUTEPATH, "results/libloom/profiles/tpls");
+        /* 2. Filtrar los que ya tienen perfil */
+        List<File> apksPending = allApks.stream()
+                .filter(f -> !profileExists(f, "APK"))
+                .sorted()
+                .collect(Collectors.toList());
 
-        processBlock(apks, tpls, apkProfileDir.getAbsolutePath(), tplProfileDir.getAbsolutePath(), lastProcessedIndex);
+        List<File> tplsPending = allTpls.stream()
+                .filter(f -> !profileExists(f, "TPL"))
+                .sorted()
+                .collect(Collectors.toList());
 
-        System.exit(0);
+        logger.info("APKs pendientes    : " + apksPending.size());
+        logger.info("TPLs pendientes    : " + tplsPending.size());
+
+        if (apksPending.isEmpty() && tplsPending.isEmpty()) {
+            logger.info("No hay binarios pendientes de perfilar. Fin del proceso.");
+            return;
+        }
+
+        /* 3. Procesar un máximo de BATCH_SIZE binarios */
+        int slotsLeft = BATCH_SIZE;
+
+        if (!apksPending.isEmpty() && slotsLeft > 0) {
+            int n = Math.min(slotsLeft, apksPending.size());
+            logger.info("Procesando " + n + " APK(s) este lote …");
+            processFiles(apksPending.subList(0, n).toArray(new File[0]), "APK", PROFILE_APK_PATH.toFile().getAbsolutePath());
+            slotsLeft -= n;
+        }
+
+        if (!tplsPending.isEmpty() && slotsLeft > 0) {
+            int n = Math.min(slotsLeft, tplsPending.size());
+            logger.info("Procesando " + n + " TPL(s) este lote …");
+            processFiles(tplsPending.subList(0, n).toArray(new File[0]), "TPL", PROFILE_TPL_PATH.toFile().getAbsolutePath());
+        }
+
+        logger.info("—— Lote de generación de perfiles completado ——");
     }
 
-    private void processBlock(File[] apks, File[] tpls, String apkOutputDir, String tplOutputDir, int startIndex) throws IOException, ClassHierarchyException {
-        int totalApks = apks.length;
-        int totalTpls = tpls.length;
-        int maxLength = Math.max(totalApks, totalTpls);
-
-        // Si el índice de inicio es mayor que el número de APKs y el de TPLs, se termina el proceso.
-        if (startIndex >= maxLength) {
-            logger.info("The Profile process has been successfully completed. ");
-            logger.info(totalApks + " APK profiles and " + totalTpls + " TPL profiles have been generated.");
-        }
-        // Si el índice de inicio es mayor que el número de APKs, solo procesa TPLs
-        else if (startIndex >= totalApks && startIndex < totalTpls) {
-            int endIndexTpls = Math.min(startIndex + BATCH_SIZE, totalTpls);
-            logger.info("APK processing complete. Continuing with TPLs...");
-            logger.info("Processing block: " + (startIndex + 1) + " to " + endIndexTpls + " TPLs");
-            File[] tplBlock = Arrays.copyOfRange(tpls, startIndex, Math.min(startIndex + BATCH_SIZE, totalTpls));
-            processFiles(tplBlock, "TPL", tplOutputDir);
-            saveState(STATE_PROFILES_PATH, Math.min(startIndex + BATCH_SIZE, totalTpls));
-        }
-        // Si el índice de inicio es mayor que el número de TPLs, solo procesa APKs
-        else if (startIndex >= totalTpls && startIndex < totalApks) {
-            int endIndexApks = Math.min(startIndex + BATCH_SIZE, totalApks);
-            logger.info("TPL processing complete. Continuing with APKs...");
-            logger.info("Processing block: " + (startIndex + 1) + " to " + endIndexApks + " APKs");
-            File[] apkBlock = Arrays.copyOfRange(apks, startIndex, Math.min(startIndex + BATCH_SIZE, totalApks));
-            processFiles(apkBlock, "APK", apkOutputDir);
-            saveState(STATE_PROFILES_PATH, Math.min(startIndex + BATCH_SIZE, totalApks));
-        }
-        // Si ambas listas son más largas que el índice de inicio, procesar ambos bloques
-        else {
-            int endIndexApks = Math.min(startIndex + BATCH_SIZE, totalApks);
-            int endIndexTpls = Math.min(startIndex + BATCH_SIZE, totalTpls);
-
-            logger.info("Processing block: " + (startIndex + 1) + " to " + endIndexApks + " APKs and " + endIndexTpls + " TPLs");
-
-            if (startIndex < totalApks) {
-                File[] apkBlock = Arrays.copyOfRange(apks, startIndex, endIndexApks);
-                processFiles(apkBlock, "APK", apkOutputDir);
-            }
-            if (startIndex < totalTpls) {
-                File[] tplBlock = Arrays.copyOfRange(tpls, startIndex, endIndexTpls);
-                processFiles(tplBlock, "TPL", tplOutputDir);
-            }
-
-            saveState(STATE_PROFILES_PATH, Math.max(endIndexApks, endIndexTpls)); // Guardar el menor de ambos índices
-        }
-    }
-
-    private int readState(String path) {
-        File stateFile = new File(path);
-        if (!stateFile.exists()) {
-            return 0;
-        }
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(stateFile))) {
-            String line = reader.readLine();
-            return Integer.parseInt(line);
-        } catch (IOException | NumberFormatException e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
-
-    private void saveState(String path, int currentIndex) {
-        File stateFile = new File(path);
-        File parentDir = stateFile.getParentFile();
     
-        // Create parent directory if it doesn't exist
-        if (parentDir != null && !parentDir.exists()) {
-            logger.info("Parent directory " + parentDir.getPath() + " does not exist. Creating it.");
-            if (!parentDir.mkdirs()) {
-                logger.error("Failed to create parent directory: " + parentDir.getPath());
-                throw new RuntimeException("Cannot create directory: " + parentDir.getPath());
-            }
-        }
-    
-        try (PrintWriter writer = new PrintWriter(new FileWriter(stateFile))) {
-            writer.println(currentIndex);
-            logger.debug("Saved state to " + path + ": index=" + currentIndex);
+    /**
+     * Devuelve true si el perfil correspondiente al fichero <file> YA existe.
+     * La lógica para calcular la ruta exacta replica la de processFiles(),
+     * garantizando coherencia.
+     */
+    private boolean profileExists(File file, String type) {
+        try {
+            File profileFile = buildProfileFile(file, type);
+            return profileFile.exists();
         } catch (IOException e) {
-            logger.error("Failed to save state to " + path, e);
-            throw new RuntimeException("Error writing to state file: " + path, e);
+            logger.warn("No se pudo comprobar existencia de perfil para " + file.getName(), e);
+            return false;
         }
+    }
+
+    /**
+     * Calcula la ruta de perfil que se generaría para un binario dado
+     * (sin crearlo). Permite reutilizar esta función tanto en processFiles()
+     * como en profileExists().
+     */
+    private File buildProfileFile(File file, String type) throws IOException {
+        String baseInputDir = type.equals("APK")
+                ? HOST_APK_PATH.toFile().getCanonicalPath()
+                : HOST_TPL_PATH.toFile().getCanonicalPath();
+
+        File inputBaseDir   = new File(baseInputDir).getCanonicalFile();
+        File fileParentDir  = file.getParentFile().getCanonicalFile();
+        Path relativePath   = inputBaseDir.toPath().relativize(fileParentDir.toPath());
+
+        if (relativePath.toString().startsWith(File.separator)) {
+            relativePath = Paths.get(relativePath.toString().substring(1));
+        }
+
+        String newOutputDir = (type.equals("APK") ? PROFILE_APK_PATH : PROFILE_TPL_PATH).toFile().getCanonicalPath()
+                           + File.separator + relativePath;
+
+        return new File(newOutputDir, FilenameUtils.getBaseName(file.getName()) + ".txt");
     }
 
     private void processFiles(File[] files, String type, String outputDir) throws IOException, ClassHierarchyException {
         String baseInputDir = type.equals("APK")
-        ? new File(ABSOLUTEPATH, "results/hostApks").getCanonicalPath()
-        : new File(new File(ABSOLUTEPATH).getParentFile().getParentFile().getParent(), "nfs/incibe/analisisAplicaciones/datasets/hostTpls").getCanonicalPath();
+        ? HOST_APK_PATH.toFile().getCanonicalPath()
+        : HOST_TPL_PATH.toFile().getCanonicalPath();
 
         logger.info("ABSOLUTEPATH " + ABSOLUTEPATH);
 
         for (File file : files) {
             double startConstructTime = System.currentTimeMillis();
-            AppOrLibInfo info = CodeInfoCollector.getInfo(file.getPath(), ABSOLUTEPATH);
+            AppOrLibInfo info;
+            try {
+                info = CodeInfoCollector.getInfo(file.getPath(), ABSOLUTEPATH);
+            } catch (SecurityException | com.ibm.wala.util.debug.UnimplementedError e) {
+                logger.warn("❌ Saltando archivo con error de firma o clase no soportada: " + file.getName(), e);
+                continue;
+            } catch (Exception e) {
+                logger.error("❌ Error inesperado al procesar archivo: " + file.getName(), e);
+                continue;
+            }
             logger.info("H_r_pkg para " + file.getName() + ": " + info.H_r_pkg);
             logger.info("FilePath de " + file.getName() + ": " + file.getPath());
 

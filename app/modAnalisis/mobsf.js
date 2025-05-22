@@ -167,81 +167,142 @@ async function analizar (req, res) {
 
 /**
  * @description Ejecuta LibLoom para generar perfiles y detectar TPLs.
- * @param {string} filePath - Ruta del archivo APK.
- * @param {Object} analisisData - Objeto con los resultados del análisis actual.
- * @returns {Promise<void>}
+ * @param {string} filePath     - Ruta al APK en hostApks.
+ * @param {Object} analisisData - Resultados previos (incluye package_name y name).
  */
 async function ejecutarLibLoom(filePath, analisisData) {
   const libloomDir = path.join(__dirname, '../../tools/libloom')
-  const classPath = [
+  const classPath  = [
     path.join(libloomDir, 'out', 'libloom'),
     path.join(libloomDir, 'lib', '*')
   ].join(process.platform === 'win32' ? ';' : ':')
-  const hostApksDir = path.join(libloomDir, 'results', 'hostApks')
-  const profilesDir = path.join(libloomDir, 'results', 'libloom', 'profiles')
-  const resultDir = path.join(libloomDir, 'results', 'libloom', 'detection')
-  const apkCopiedPath = path.join(hostApksDir, path.basename(filePath))
 
-  fs.mkdirSync(hostApksDir, { recursive: true })
-  fs.mkdirSync(profilesDir, { recursive: true })
-  fs.mkdirSync(resultDir, { recursive: true })
+  // 1) Rutas fijas en tu NFS
+  const baseHostApks    = '/home/dblancoaza/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks'
+  const baseProfiles    = '/home/dblancoaza/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/profiles'
+  const tplProfilesDir  = path.join(baseProfiles, 'tpls')
+  const apkProfilesDir  = path.join(baseProfiles, 'apks', 'social')
+
+  // 2) Temporal dentro de tools/libloom
+  const tmpHostApks = path.join(libloomDir, 'tmpHostApks')
+  const resultDir   = path.join(libloomDir, 'results', 'libloom', 'detection')
+
+  // Aseguramos tmpHostApks y resultDir
+  for (const d of [ tmpHostApks, resultDir ]) {
+    if (!fs.existsSync(d)) {
+      console.log(`Creando directorio: ${d}`)
+      fs.mkdirSync(d, { recursive: true })
+    }
+  }
+
+  // Función auxiliar para contar ficheros .ext recursivamente
+  function countFilesRecursively(dir, ext) {
+    let count = 0
+    if (!fs.existsSync(dir)) return 0
+    for (const name of fs.readdirSync(dir)) {
+      const full = path.join(dir, name)
+      if (fs.statSync(full).isDirectory()) {
+        count += countFilesRecursively(full, ext)
+      } else if (name.endsWith(ext)) {
+        count++
+      }
+    }
+    return count
+  }
+
+  // 3) Debug inicial: conteos
+  console.log('=== DEBUG RUTAS Y CONTEOS ===')
+  console.log('Base hostApks:', baseHostApks)
+  console.log('Base apkProfilesDir:', apkProfilesDir)
+  console.log('Base tplProfilesDir:', tplProfilesDir)
+
+  const totalHostApks       = countFilesRecursively(path.join(baseHostApks, 'social'), '.apk')
+  const totalApkProfiles    = countFilesRecursively(apkProfilesDir, '.txt')
+  const totalTplProfiles    = countFilesRecursively(tplProfilesDir, '.txt')
+
+  console.log(`Total APKs en hostApks/social: ${totalHostApks}`)
+  console.log(`Total perfiles APK bajo profiles/apks/social: ${totalApkProfiles}`)
+  console.log(`Total perfiles TPL bajo profiles/tpls: ${totalTplProfiles}`)
+  console.log('=============================')
 
   try {
-    fs.copyFileSync(filePath, apkCopiedPath)
-    console.log('Ruta absoluta esperada por Node.js para hostApks:', hostApksDir)
+    // 4) Copiar APK a tmpHostApks
+    const apkName     = analisisData.name               // nombre sin extensión
+    const tmpCopyPath = path.join(tmpHostApks, `${apkName}.apk`)
+    console.log(`Copiando APK a temporal: ${tmpCopyPath}`)
+    fs.copyFileSync(filePath, tmpCopyPath)
 
-    console.log('🟡 Ejecutando LibLoom: Generando perfil del APK...')
+    // 5) Preparamos ruta definitiva de perfil:
+    //    /profiles/apks/social/<package_name>/<name>.txt
+    const profileDir    = path.join(apkProfilesDir, analisisData.package_name)
+    const targetProfile = path.join(profileDir, `${apkName}.txt`)
 
-    const profileCmd = `java -cp "${classPath}" libloom.LIBLOOM profile`
+    console.log('Ruta de perfil APK:', targetProfile)
+    if (!fs.existsSync(targetProfile)) {
+      console.log(`🟡 Perfil de ${apkName} no existe: generando en '${profileDir}'…`)
+      fs.mkdirSync(profileDir, { recursive: true })
 
-    console.log('🛠  Ejecutando LibLoom en cwd:', libloomDir)
-    console.log('🛠  ClassPath:', classPath)
-
-    const { stdout, stderr } = await execAsync(profileCmd, {
-      cwd: libloomDir,
-      maxBuffer: 1024 * 1024 * 10 // 10MB buffer para evitar errores por logs extensos
-    })
-
-    if (stdout) {
-      console.log('[LIBLOOM STDOUT]')
-      console.log(stdout)
-    }
-
-    if (stderr) {
-      console.error('[LIBLOOM STDERR]')
-      console.error(stderr)
-    }
-
-    console.log('Ejecutando LibLoom: Detectando TPLs...')
-    const detectCmd = `java -cp "${classPath}" libloom.LIBLOOM detect`
-    await execAsync(detectCmd, { cwd: libloomDir })
-
-    // Buscar el resultado JSON más reciente (si existiera)
-    const resultFiles = fs.readdirSync(resultDir)
-      .filter(f => f.endsWith('.json'))
-      .map(f => ({ name: f, time: fs.statSync(path.join(resultDir, f)).mtime }))
-      .sort((a, b) => b.time - a.time)
-
-    if (resultFiles.length > 0) {
-      const libloomResultPath = path.join(resultDir, resultFiles[0].name)
-      const libloomData = JSON.parse(fs.readFileSync(libloomResultPath, 'utf8'))
-      analisisData.libloom = libloomData
+      const profileCmd = [
+        `java -cp "${classPath}"`,
+        'libloom.LIBLOOM profile',
+        `-d "${tmpHostApks}"`,
+        `-o "${apkProfilesDir}"`
+      ].join(' ')
+      console.log('Comando profile:', profileCmd)
+      await execAsync(profileCmd, { cwd: libloomDir, maxBuffer: 10 * 1024 * 1024 })
     } else {
-      console.warn('No se encontró resultado JSON de LibLoom.')
+      console.log(`✅ Perfil de ${apkName} ya existe, omitiendo.`)
     }
-  } catch (error) {
-    console.error('Error ejecutando LibLoom:', error)
+
+    // 6) Volvemos a contar perfiles APK tras posible generación
+    const newApkProfiles = countFilesRecursively(apkProfilesDir, '.txt')
+    console.log(`Perfiles APK tras generación: ${newApkProfiles}`)
+
+    // 7) Detección contra todos los TPLs
+    console.log('🟡 Ejecutando LibLoom detect sobre TODOS los TPLs…')
+    const detectCmd = [
+      `java -cp "${classPath}"`,
+      'libloom.LIBLOOM detect',
+      `-ad "${apkProfilesDir}"`,
+      `-ld "${tplProfilesDir}"`,
+      `-o  "${resultDir}"`
+    ].join(' ')
+    console.log('Comando detect:', detectCmd)
+    const { stdout, stderr } = await execAsync(detectCmd, { cwd: libloomDir, maxBuffer: 10 * 1024 * 1024 })
+    if (stdout) console.log('[LIBLOOM STDOUT]\n', stdout)
+    if (stderr) console.error('[LIBLOOM STDERR]\n', stderr)
+
+    // 8) Contar resultados JSON generados
+    const jsonCount = countFilesRecursively(resultDir, '.json')
+    console.log(`Total JSON de detección en ${resultDir}: ${jsonCount}`)
+
+    // 9) Cargar el JSON más reciente
+    const files = fs.readdirSync(resultDir)
+      .filter(f => f.endsWith('.json'))
+      .map(f => ({ f, m: fs.statSync(path.join(resultDir, f)).mtime }))
+      .sort((a,b) => b.m - a.m)
+
+    if (files.length) {
+      console.log('JSON seleccionado:', files[0].f)
+      analisisData.libloom = JSON.parse(
+        fs.readFileSync(path.join(resultDir, files[0].f), 'utf8')
+      )
+    } else {
+      console.warn('⚠️ No se encontró JSON de detección de LibLoom.')
+    }
+
+  } catch (err) {
+    console.error('Error ejecutando LibLoom:', err)
   } finally {
-    if (fs.existsSync(apkCopiedPath)) {
-      try {
-        fs.unlinkSync(apkCopiedPath)
-        console.log(`APK temporal eliminado de LibLoom: ${apkCopiedPath}`)
-      } catch (err) {
-        console.error(`Error eliminando APK de LibLoom: ${err.message}`)
-      }
+    // 10) Limpiar copia temporal
+    const tmpAPK = path.join(tmpHostApks, `${analisisData.name}.apk`)
+    if (fs.existsSync(tmpAPK)) {
+      console.log(`Eliminando APK temporal: ${tmpAPK}`)
+      try { fs.unlinkSync(tmpAPK) } catch (e) { /* ignore */ }
     }
   }
 }
+
 
 module.exports = {
   analizar

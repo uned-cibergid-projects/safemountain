@@ -20,7 +20,7 @@ echo "[$DATE] Iniciando ejecución de perfilado LIBLOOM..." >> "$LOG_FILE"
 LIBLOOM_DIR="/home/dblancoaza/SafeMountain/API/tools/libloom"
 
 # Construir classpath (incluye carpeta out y dependencias)
-CLASSPATH="$LIBLOOM_DIR/out/libloom:$LIBLOOM_DIR/lib/*"
+CLASSPATH="$LIBLOOM_DIR/out:$LIBLOOM_DIR/lib/*"
 
 # Comando de ejecución del perfilado
 CMD="java -cp \"$CLASSPATH\" libloom.LIBLOOM profile"
