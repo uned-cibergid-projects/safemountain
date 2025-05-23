@@ -162,7 +162,7 @@ public class LIBLOOM {
                 String version = FilenameUtils.getBaseName(tpl.getName());
                 Path hostTplPath = HOST_TPL_PATH;
                 Path relative = hostTplPath.relativize(tpl.getParentFile().toPath());
-                Path trimmed = relative.subpath(0, relative.getNameCount() - 1);
+                Path trimmed = relative.subpath(3, relative.getNameCount() - 1);
                 String packageName = trimmed.toString().replace(File.separator, ".");
                 if (packageName.startsWith("...")) {
                     packageName = packageName.substring(3);

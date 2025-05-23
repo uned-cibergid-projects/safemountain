@@ -2,7 +2,7 @@
   "appname":"instagram-lite",
   "libraries": [
     {
-      "package":"profiles.tpls.at.researchstudio.sat",
+      "package":"at.researchstudio.sat",
       "name":"won-utils-tls",
       "version": [
         "0.9"
@@ -10,7 +10,7 @@
       "similarity":1.0
     },
     {
-      "package":"profiles.tpls.biz.aQute",
+      "package":"biz.aQute",
       "name":"biz.aQute.aggregate.test.main",
       "version": [
         "1.10.0"
@@ -18,7 +18,7 @@
       "similarity":1.0
     },
     {
-      "package":"profiles.tpls.biz.aQute",
+      "package":"biz.aQute",
       "name":"biz.aQute.trace.tester6",
       "version": [
         "1.10.0"
@@ -26,7 +26,7 @@
       "similarity":1.0
     },
     {
-      "package":"profiles.tpls.biz.aQute",
+      "package":"biz.aQute",
       "name":"org.eclipse.ot.rsa.example.api",
       "version": [
         "1.0.0"
@@ -34,7 +34,7 @@
       "similarity":1.0
     },
     {
-      "package":"profiles.tpls.br.com.objectos.jabuticava",
+      "package":"br.com.objectos.jabuticava",
       "name":"br",
       "version": [
         "0.5.0"
@@ -42,7 +42,7 @@
       "similarity":1.0
     },
     {
-      "package":"profiles.tpls.br.com.senior",
+      "package":"br.com.senior",
       "name":"senior-erpx-plugg-to-integration",
       "version": [
         "0.0.7-alpha"
@@ -50,7 +50,7 @@
       "similarity":1.0
     },
     {
-      "package":"profiles.tpls.br.com.zup.beagle",
+      "package":"br.com.zup.beagle",
       "name":"annotation",
       "version": [
         "2.1.0"
@@ -58,7 +58,7 @@
       "similarity":1.0
     },
     {
-      "package":"profiles.tpls.br.com.zup.nimbus",
+      "package":"br.com.zup.nimbus",
       "name":"nimbus-compose-annotation",
       "version": [
         "1.0.0-beta1"
@@ -66,7 +66,7 @@
       "similarity":1.0
     },
     {
-      "package":"profiles.tpls.ca.gosyer",
+      "package":"ca.gosyer",
       "name":"voyager-livedata",
       "version": [
         "1.0.0-rc08"
@@ -74,7 +74,7 @@
       "similarity":1.0
     },
     {
-      "package":"profiles.tpls.cafe.adriel.voyager",
+      "package":"cafe.adriel.voyager",
       "name":"voyager-livedata",
       "version": [
         "1.1.0-beta03"
@@ -82,7 +82,7 @@
       "similarity":1.0
     },
     {
-      "package":"profiles.tpls.ch.exense.step",
+      "package":"ch.exense.step",
       "name":"step-plans-runners",
       "version": [
         "3.26.2"
@@ -90,5 +90,5 @@
       "similarity":1.0
     }
   ],
-  "time":"27.85"
+  "time":"27.942"
 }
