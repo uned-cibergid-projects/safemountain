@@ -203,25 +203,18 @@ async function ejecutarLibLoom (apkTmpPath, analisisData) {
   /* 2.5) Filtrar librerías con similarity == 1.0 y anexar a analisisData */
   try {
     const detectData = JSON.parse(fs.readFileSync(detectJsonPath, 'utf8'))
-    const filtered   = {}
+    const libsArray  = Array.isArray(detectData.libraries) ? detectData.libraries : []
 
-    // El formato puede variar. Recorremos genéricamente.
-    //   {
-    //      "libraries": {
-    //         "libname": { "version": similarity, ... }, ...
-    //      }
-    //   }
-    const libsObj = detectData.libraries || detectData.libs || {}
-    for (const [lib, versions] of Object.entries(libsObj)) {
-      for (const [ver, sim] of Object.entries(versions)) {
-        if (Number(sim) === 1) {
-          if (!filtered[lib]) filtered[lib] = []
-          filtered[lib].push(ver)
-        }
-      }
-    }
+  // Filtramos solo los que tienen similarity == 1.0
+  const filtered = libsArray
+    .filter(lib => lib.similarity === 1.0)
+    .map(lib => ({
+      package: lib.package,
+      name: lib.name,
+      version: lib.version
+    }))
 
-    if (Object.keys(filtered).length) {
+    if (filtered.length > 0) {
       analisisData.libloom = filtered
     } else {
       console.log('LibLoom no encontró TPLs con similitud 1.0.')

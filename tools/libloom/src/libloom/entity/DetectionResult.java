@@ -39,17 +39,17 @@ public class DetectionResult {
         this.time = time;
     }
 
-    public void updateLibraries(String libname, String p_version, double similarity){
+    public void updateLibraries(String packageName, String libname, String p_version, double similarity){
         boolean isExist = false;
         for(DetectionLib lib : libraries){
-            if(lib.getName().equals(libname)){
+            if(lib.getName().equals(libname) && lib.getPackage().equals(packageName)){
                 isExist = true;
                 lib.update(p_version, similarity);
                 break;
             }
         }
         if(!isExist) {
-            DetectionLib lib = new DetectionLib(libname,p_version, similarity);
+            DetectionLib lib = new DetectionLib(packageName, libname, p_version, similarity);
             libraries.add(lib);
         }
     }
@@ -61,6 +61,7 @@ public class DetectionResult {
             buff += indent(2) + "\"libraries\": [" + "\n";
             for(DetectionLib lib : libraries){
                 buff += indent(4) + "{" + "\n";
+                buff += indent(6) + "\"package\":" + "\"" + lib.getPackage() + "\"," + "\n";
                 buff += indent(6) + "\"name\":" + "\"" + lib.getName() + "\"," + "\n";
                 buff += indent(6) + "\"version\": [" + "\n";
                 for (String potential_v : lib.getVersion()){

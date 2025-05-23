@@ -8,11 +8,13 @@ import java.util.List;
  */
 public class DetectionLib {
     private String name;
+    private String packageName;
     private List<String> version;
     private double similarity;
 
-    public DetectionLib(String name, String p_version, double sim){
+    public DetectionLib(String packageName, String name, String p_version, double sim){
         this.name = name;
+        this.packageName = packageName;
         this.version = new ArrayList<>();
         this.version.add(p_version);
         this.similarity = sim;
@@ -24,6 +26,14 @@ public class DetectionLib {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPackage() {
+        return packageName;
+    }
+
+    public void setPackage(String packageName) {
+        this.packageName = packageName;
     }
 
     public List<String> getVersion() {
