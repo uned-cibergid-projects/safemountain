@@ -102,6 +102,7 @@ def downloadHostApk(downloadUrl, hostAppName, apkSaveFolder):
 
             try:
                 downloadedApk = download_info.value
+                writeLog("debug", logger, f"[{hostAppName}] APK download started successfully.")
             except PlaywrightTimeoutError:
                 writeLog("exception", exceptionLogger, f'Timeout while waiting for download from {downloadUrl}')
                 page.screenshot(path=os.path.join(apkSaveFolder, f"{hostAppName}_download_timeout.png"), full_page=True)

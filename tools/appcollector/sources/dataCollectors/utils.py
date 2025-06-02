@@ -16,15 +16,18 @@ def scrollDownAndLoad(page, scrollPauseTime=1.0, maxScrolls=50):
    :return: None
    :rtype: None
    """
+    print("[scrollDownAndLoad] Iniciando scroll dinámico...")
     lastHeight = page.evaluate("document.body.scrollHeight")
 
-    for _ in range(maxScrolls):
+    for i in range(maxScrolls):
+        print(f"[scrollDownAndLoad] Scroll #{i+1}")
         page.evaluate("window.scrollTo(0, document.body.scrollHeight);")
         time.sleep(scrollPauseTime)
 
         newHeight = page.evaluate("document.body.scrollHeight")
 
         if newHeight == lastHeight:
+            print("[scrollDownAndLoad] Fin del scroll, altura estable.")
             break
         lastHeight = newHeight
 
@@ -41,14 +44,17 @@ def scrollUpUntilVisible(page, selector):
     :rtype: playwright.sync_api.ElementHandle
     :raises Exception: If the element with the specified selector is not visible after scrolling.
     """
+    print(f"[scrollUpUntilVisible] Buscando visibilidad del selector: {selector}")
     element = None
 
     while True:
         try:
             element = page.wait_for_selector(selector, timeout=2000, state='visible')
             if element:
+                print("[scrollUpUntilVisible] Elemento visible.")
                 break
         except Exception:
+            print("[scrollUpUntilVisible] Aún no visible, subiendo...")
             pass
 
         previousScrollPosition = page.evaluate("window.scrollY")
@@ -59,6 +65,7 @@ def scrollUpUntilVisible(page, selector):
         currentScrollPosition = page.evaluate("window.scrollY")
 
         if currentScrollPosition == previousScrollPosition:
+            print("[scrollUpUntilVisible] No se pudo desplazar más arriba.")
             break
 
     if not element:
@@ -75,7 +82,9 @@ def getPathUrlsAppbrain(url):
     :return: A list of unique path URLs extracted from the page.
     :rtype: list[str]
     """
+    print(f"[getPathUrlsAppbrain] Obteniendo URLs desde: {url}")
     html = getExpandedHtml(url)
+    print("[getPathUrlsAppbrain] HTML expandido obtenido, parseando...")
     soup = BeautifulSoup(html, 'html.parser')
 
     pathUrls = []
@@ -85,7 +94,7 @@ def getPathUrlsAppbrain(url):
             pathUrls.append(link['href'])
 
     pathUrls = list(set(pathUrls))
-
+    print(f"[getPathUrlsAppbrain] {len(pathUrls)} enlaces únicos encontrados.")
     return pathUrls
 
 def getHrefs(url):
@@ -97,14 +106,17 @@ def getHrefs(url):
     :return: A list of href links found on the page.
     :rtype: list[str]
     """
+    print(f"[getHrefs] Obteniendo hrefs desde: {url}")
     html = getExpandedHtml(url)
     soup = BeautifulSoup(html, 'html.parser')
 
     hrefs = []
 
     for link in soup.find_all('a', href=True):
-        hrefs.append(link['href'])
-
+        href = link['href']
+        hrefs.append(href)
+        print(f"[getHrefs] Href encontrado: {href}")
+    print(f"[getHrefs] {len(hrefs)} hrefs extraídos.")
     return hrefs
 
 def getExpandedHtml(url):
@@ -134,11 +146,13 @@ def getExpandedHtml(url):
                        'AppleWebKit/537.36 (KHTML, like Gecko) '
                        'Chrome/112.0.0.0 Safari/537.36'
         )
-
+        print("[getExpandedHtml] Creando nueva página...")
         page = context.new_page()
+        print("[getExpandedHtml] Navegando a la URL...")
         page.goto(url)
+        print("[getExpandedHtml] Página cargada. Iniciando scroll...")
         scrollDownAndLoad(page)
-
+        print("[getExpandedHtml] Esperando carga final (5s)...")
         page.wait_for_timeout(5000)
         html = BeautifulSoup(page.content(), 'html.parser')
         browser.close()
@@ -154,6 +168,7 @@ def reorderListId(list):
     :return: A new list with reordered dictionaries.
     :rtype: list[dict]
     """
+    print("[reorderListId] Reordenando lista de diccionarios...")
     reorderedHostAppsList = []
 
     for element in list:
@@ -165,4 +180,5 @@ def reorderListId(list):
         reorderedHostApp.update(
             {fieldName: fieldValue for fieldName, fieldValue in element.items() if fieldName != "_id"})
         reorderedHostAppsList.append(reorderedHostApp)
+    print(f"[reorderListId] {len(reorderedHostAppsList)} elementos reordenados.")
     return reorderedHostAppsList

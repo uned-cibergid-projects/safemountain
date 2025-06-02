@@ -5,7 +5,7 @@ from pymongo import MongoClient
 from sources.logger import writeLog, configureLogger
 from sources.fileSystemUtils import checkFolder
 from utils import downloadHostApk
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 
 def processDocument(document, apksCollection, logger, exceptionLogger, nfsSaveFolder, lastDownloadTryDate, batchLimit,
@@ -110,8 +110,10 @@ def main():
     db = client['metadata']
     apksCollection = db['apks']
 
-    logFilePath = "../logs/apk.log"
-    exceptionLogFilePath = "../logs/apkException.log"
+    logDirectory = os.path.abspath(os.path.join(os.path.dirname(__file__), "../logs"))
+
+    logFilePath = os.path.join(logDirectory, "apk.log")
+    exceptionLogFilePath = os.path.join(logDirectory, "apkException.log")
 
     configureLogger(logFilePath, "w", "logger")
     configureLogger(exceptionLogFilePath, "w", "exceptionLogger")
@@ -119,7 +121,7 @@ def main():
     logger = logging.getLogger("logger")
     exceptionLogger = logging.getLogger("exceptionLogger")
 
-    nfsSaveFolder = "/home/ciber/projects/SafeMountain/nfs/incibePro/analisisAplicaciones/datasets/hostApks/"
+    nfsSaveFolder = "/home/dblancoaza/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks/"
     checkFolder(nfsSaveFolder)
 
     batchLimit = 5
@@ -130,7 +132,10 @@ def main():
 
         documents = apksCollection.find(
             {
-                "lastDownloadTryDate": {"$ne": lastDownloadTryDate}
+                "$or": [
+                    {"lastDownloadTryDate": {"$exists": False}},
+                    {"lastDownloadTryDate": {"$lt": (datetime.now(timezone.utc) - timedelta(days=30)).strftime("%Y%m%d")}}
+                ]
             },
             no_cursor_timeout=True,
             session=session

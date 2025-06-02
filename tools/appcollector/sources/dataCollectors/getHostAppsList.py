@@ -89,8 +89,10 @@ def main():
     db = client['metadata']
     collection = db['apks']
 
-    logFilePath = "../logs/hostAppsList.log"
-    exceptionLogFilePath = "../logs/hostAppsListException.log"
+    logDirectory = os.path.abspath(os.path.join(os.path.dirname(__file__), "../logs"))
+
+    logFilePath = os.path.join(logDirectory, "hostAppsList.log")
+    exceptionLogFilePath = os.path.join(logDirectory, "hostAppsListException.log")
 
     configureLogger(logFilePath, "w", "logger")
     configureLogger(exceptionLogFilePath, "w", "exceptionLogger")

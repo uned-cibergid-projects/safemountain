@@ -100,8 +100,8 @@ def addMetadata(document, apksCollection, versionsCollection, logger, exceptionL
     # Si se pudo obtener metadata con éxito
     if appMetadata and versionMetadata:
 
-        apkSaveFolder = "../../results/hostAppsList/"
-        versionSaveFolder = "../../results/versionsList/"
+        apkSaveFolder = "/home/dblancoaza/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostAppsList/"
+        versionSaveFolder = "/home/dblancoaza/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/versionsList/"
 
         # Actualizar mongo con la metadata de la aplicación
         apksCollection.update_one(
