@@ -111,7 +111,15 @@ async function ejecutarMobSF (apkTmpPath) {
 
   const pythonEnv = path.join(mobSFDir, 'mobsf_env', 'bin', 'python3')
   const cmd = `"${pythonEnv}" -d main.py --source="${apkTmpPath}" --result="${resultDir}"`
-  await execAsync(cmd, { cwd: mobSFDir, maxBuffer: 10 * 1024 * 1024 })
+
+  try {
+    const { stdout, stderr } = await execAsync(cmd, { cwd: mobSFDir, maxBuffer: 10 * 1024 * 1024 })
+    console.log('✔️ MobSF stdout:', stdout)
+    if (stderr) console.warn('⚠️ MobSF stderr:', stderr)
+  } catch (e) {
+    console.error('❌ Error al ejecutar MobSF:', e)
+    throw new Error(`Fallo al ejecutar MobSF: ${e.message}`)
+  }
 
   /* Parseamos JSON de MobSF */
   const jsonFile = path.join(resultDir, `${path.basename(apkTmpPath)}.json`)
@@ -164,7 +172,14 @@ async function ejecutarLibLoom (apkTmpPath, analisisData) {
     const finalDst = path.join(socialDir, `${apkNameNoExt}.apk`)
     if (!fs.existsSync(finalDst)) fs.copyFileSync(apkTmpPath, finalDst)
 
-    await execAsync(profileCmd, { cwd: LIBLOOM_DIR, maxBuffer: 20 * 1024 * 1024 })
+    try {
+      const { stdout, stderr } = await execAsync(profileCmd, { cwd: LIBLOOM_DIR, maxBuffer: 20 * 1024 * 1024 })
+      console.log('✔️ LIBLOOM profile stdout:', stdout)
+      if (stderr) console.warn('⚠️ LIBLOOM profile stderr:', stderr)
+    } catch (e) {
+      console.error('❌ Error al ejecutar LIBLOOM profile:', e)
+      throw new Error(`Fallo al ejecutar LIBLOOM profile: ${e.message}`)
+    }
 
     if (!fs.existsSync(apkProfilePath)) {
       throw new Error('LibLoom no generó el perfil esperado.')
@@ -186,7 +201,18 @@ async function ejecutarLibLoom (apkTmpPath, analisisData) {
     'libloom.LIBLOOM', 'detect', "--debug"
   ].join(' ')
 
-  await execAsync(detectCmd, { cwd: LIBLOOM_DIR, maxBuffer: 20 * 1024 * 1024 })
+  try {
+    const { stdout, stderr } = await execAsync(detectCmd, { cwd: LIBLOOM_DIR, maxBuffer: 20 * 1024 * 1024 })
+    console.log('✔️ LIBLOOM detect stdout:', stdout)
+    if (stderr) console.warn('⚠️ LIBLOOM detect stderr:', stderr)
+  } catch (e) {
+    console.error('❌ Error al ejecutar LIBLOOM detect:', e)
+    throw new Error(`Fallo al ejecutar LIBLOOM detect: ${e.message}`)
+  }
+
+if (!fs.existsSync(apkProfilePath)) {
+  throw new Error('LibLoom no generó el perfil esperado.')
+}
 
   /* 2.4) Localizar JSON generado (debería estar en DETECT_OUTPUT_DIR bajo root) */
   const detectJsonPath = path.join(DETECT_OUTPUT_DIR, `${apkNameNoExt}.json`)

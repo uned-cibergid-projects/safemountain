@@ -88,7 +88,63 @@
         "3.26.2"
       ],
       "similarity":1.0
+    },
+    {
+      "package":"ch.qos.cal10n",
+      "name":"maven-cal10n-plugin-smoke",
+      "version": [
+        "0.8.1"
+      ],
+      "similarity":1.0
+    },
+    {
+      "package":"cloud.agileframework",
+      "name":"agile-context",
+      "version": [
+        "2.2.0"
+      ],
+      "similarity":1.0
+    },
+    {
+      "package":"cn.94zichao",
+      "name":"zzcserver-spring-boot-starter",
+      "version": [
+        "1.0.0"
+      ],
+      "similarity":1.0
+    },
+    {
+      "package":"cn.exces",
+      "name":"protecter",
+      "version": [
+        "1.0.0"
+      ],
+      "similarity":1.0
+    },
+    {
+      "package":"cn.herodotus.engine",
+      "name":"event-core-local",
+      "version": [
+        "2.7.0.Beta2"
+      ],
+      "similarity":1.0
+    },
+    {
+      "package":"cn.jbone",
+      "name":"jbone-errors",
+      "version": [
+        "1.0.0"
+      ],
+      "similarity":1.0
+    },
+    {
+      "package":"cn.org.opendfl",
+      "name":"opendfl-spring-boot-starter",
+      "version": [
+        "1.7"
+      ],
+      "similarity":1.0
     }
   ],
-  "time":"27.942"
+  "time":"135.814"
 }
