@@ -79,6 +79,11 @@ async function analizar (req, res) {
     /* === NUEVO: integrar LibLoom === */
     await ejecutarLibLoom(tmpFilePath, analisisData)
 
+    if (!analisisData.playstore_details || !analisisData.playstore_details.genre) {
+      console.warn('[WARN] APK sin categoría definida — playstore_details incompleto.');
+      analisisData.playstore_details = { genre: 'unknown' };
+    }
+
     /* Guarda APK definitiva en NFS y metadatos en Mongo (sin cambios) */
     await persistirResultados(tmpFilePath, analisisData)
 
@@ -271,6 +276,7 @@ async function persistirResultados(tmpApkPath, analisisData) {
     limite: 1
   })
   if (!okApk || !datosApk) {
+    console.log('[INFO] Guardando metadata con:', dataBasica);
     await APKS.guardarMetadata(analisisData)
   }
 
