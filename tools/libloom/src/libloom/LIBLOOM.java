@@ -109,6 +109,11 @@ public class LIBLOOM {
         File[] apks = findFilesRecursively(fileApkDir, ".txt"); // perfiles APK
         File[] tpls = findFilesRecursively(PROFILE_TPL_PATH.toFile(), ".txt"); // perfiles TPL
 
+        logger.debug("fileApkDir path        : {}", fileApkDir.getAbsolutePath());
+        logger.debug("exists()?              : {}", fileApkDir.exists());
+        logger.debug("isDirectory()?         : {}", fileApkDir.isDirectory());
+        logger.debug("canRead()?             : {}", fileApkDir.canRead());
+
         if (apks == null || apks.length == 0 || tpls == null || tpls.length == 0) {
             logger.error("No hay perfiles suficientes para ejecutar la detección. Proceso cancelado.");
             return;
