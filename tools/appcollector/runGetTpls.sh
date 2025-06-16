@@ -4,11 +4,11 @@
 # Script para lanzar getTpls.py
 # =============================
 
-PYTHON_PATH="/home/dblancoaza/SafeMountain/API/tools/appcollector/appcollector_env/bin/python3"
-SCRIPT_PATH="/home/dblancoaza/SafeMountain/API/tools/appcollector/sources/downloaders/getTpls.py"
-PROJECT_ROOT="/home/dblancoaza/SafeMountain/API/tools/appcollector"
-CRON_LOG="/home/dblancoaza/SafeMountain/API/tools/appcollector/logs/cronOutput.log"
-TEMP_LOG_FILE="/home/dblancoaza/SafeMountain/API/tools/appcollector/logs/temp_cronOutput.log"
+PYTHON_PATH="/home/ciber/projects/SafeMountain/API/tools/appcollector/appcollector_env/bin/python3"
+SCRIPT_PATH="/home/ciber/projects/SafeMountain/API/tools/appcollector/sources/downloaders/getTpls.py"
+PROJECT_ROOT="/home/ciber/projects/SafeMountain/API/tools/appcollector"
+CRON_LOG="/home/ciber/projects/SafeMountain/API/tools/appcollector/logs/cronOutput.log"
+TEMP_LOG_FILE="/home/ciber/projects/SafeMountain/API/tools/appcollector/logs/temp_cronOutput.log"
 
 mkdir -p "$(dirname "$CRON_LOG")"
 NOW=$(date "+%Y-%m-%d %H:%M:%S")

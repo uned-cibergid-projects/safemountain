@@ -1,29 +1,25 @@
 package libloom;
 
 import com.ibm.wala.ipa.cha.ClassHierarchyException;
-import org.apache.commons.io.FilenameUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import libloom.preprocess.AppOrLibInfo;
-import libloom.preprocess.ClassFeatures;
-import libloom.preprocess.CodeInfoCollector;
-import libloom.entity.DetectionResult;
-
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.charset.StandardCharsets;
+import libloom.entity.DetectionResult;
+import libloom.preprocess.AppOrLibInfo;
+import libloom.preprocess.ClassFeatures;
+import libloom.preprocess.CodeInfoCollector;
+import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
+
 
 public class LIBLOOM {
     /* ------------------------------
@@ -109,7 +105,7 @@ public class LIBLOOM {
      * --------------------------------------------------------------------*/
     private void runDetection(LIBLOOM libloom) throws IOException, ClassHierarchyException {
         logger.info("===== runDetection =====");
-        File fileApkDir = Paths.get("/home/dblancoaza/SafeMountain/API/tools/libloom/tmpSingleApkProfiles").toFile();
+        File fileApkDir = Paths.get("/home/ciber/projects/SafeMountain/API/tools/libloom/tmpSingleApkProfiles").toFile();
         File[] apks = findFilesRecursively(fileApkDir, ".txt"); // perfiles APK
         File[] tpls = findFilesRecursively(PROFILE_TPL_PATH.toFile(), ".txt"); // perfiles TPL
 

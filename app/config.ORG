@@ -53,7 +53,7 @@ module.exports = {
             pass: '',
             port: 49016
         },
-        BASE_DIRECTORY: '/home/dblancoaza/SafeMountain/prueba/incibePro/analisisAplicaciones/datasets/hostApks',
+        BASE_DIRECTORY: '/home/ciber/projects/SafeMountain/prueba/incibePro/analisisAplicaciones/datasets/hostApks',
         CARPETAS: CARPETAS,
         DEBUG: DEBUG,
         EXPORTACION: EXPORTACION,
