@@ -79,7 +79,7 @@ public class LIBLOOM {
      *                           CONSTRUCTOR
      * --------------------------------------------------------------------*/
     public LIBLOOM(){
-        ABSOLUTEPATH = new File("").getAbsolutePath();
+        ABSOLUTEPATH = Paths.get(LIBLOOM.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().toFile().getAbsolutePath();
 
         HOST_APK_PATH = Paths.get(ABSOLUTEPATH).getParent().getParent().getParent().resolve("nfs/incibe/analisisAplicaciones/datasets/hostApks");
         HOST_TPL_PATH = Paths.get(ABSOLUTEPATH).getParent().getParent().getParent().resolve("nfs/incibe/analisisAplicaciones/datasets/hostTpls");
