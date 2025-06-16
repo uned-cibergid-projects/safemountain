@@ -1095,17 +1095,35 @@ private void readProfile(Map<String, BitSet> pkgBitSet,
         return classesInCandidatePairs / (double)allClasses < THRESHOLD ? true : false;
     }
 
+    // LIBLOOM.java
     private static File[] findFilesRecursively(File dir, String extension) {
-        List<File> fileList = new ArrayList<>();
-        for (File file : dir.listFiles()) {
-            if (file.isDirectory()) {
-                fileList.addAll(Arrays.asList(findFilesRecursively(file, extension)));
-            } else if (file.getName().endsWith(extension)) {
-                fileList.add(file);
+    
+        // 1️⃣  Comprobación rápida del argumento
+        if (dir == null || !dir.isDirectory() || !dir.canRead()) {
+            return new File[0];
+        }
+    
+        // 2️⃣  Intentamos listar
+        File[] children = dir.listFiles();
+    
+        // 3️⃣  Si el SO devolvió error/permiso denegado => evitamos NPE
+        if (children == null) {
+            logger.warn("No se pudo listar: {}", dir.getAbsolutePath());
+            return new File[0];
+        }
+    
+        // 4️⃣  Recorrido “seguro”
+        List<File> out = new ArrayList<>();
+        for (File f : children) {
+            if (f.isDirectory()) {
+                out.addAll(Arrays.asList(findFilesRecursively(f, extension)));
+            } else if (f.getName().endsWith(extension)) {
+                out.add(f);
             }
         }
-        return fileList.toArray(new File[0]);
+        return out.toArray(new File[0]);
     }
+
 
     /**
      * Load parameters from configuration ("parameters.properties")
