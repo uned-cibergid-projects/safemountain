@@ -2,6 +2,7 @@ package libloom;
 
 import com.ibm.wala.ipa.cha.ClassHierarchyException;
 import java.io.*;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,6 +18,8 @@ import libloom.preprocess.CodeInfoCollector;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.net.URISyntaxException;
+
 
 
 
@@ -79,7 +82,13 @@ public class LIBLOOM {
      *                           CONSTRUCTOR
      * --------------------------------------------------------------------*/
     public LIBLOOM(){
-        ABSOLUTEPATH = Paths.get(LIBLOOM.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().toFile().getAbsolutePath();
+        try {
+            ABSOLUTEPATH = Paths
+                .get(LIBLOOM.class.getProtectionDomain().getCodeSource().getLocation().toURI())
+                .getParent().toFile().getAbsolutePath();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("Error al obtener ABSOLUTEPATH", e);
+        }
 
         HOST_APK_PATH = Paths.get(ABSOLUTEPATH).getParent().getParent().getParent().resolve("nfs/incibe/analisisAplicaciones/datasets/hostApks");
         HOST_TPL_PATH = Paths.get(ABSOLUTEPATH).getParent().getParent().getParent().resolve("nfs/incibe/analisisAplicaciones/datasets/hostTpls");
