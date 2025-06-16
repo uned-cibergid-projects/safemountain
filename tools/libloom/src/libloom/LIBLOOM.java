@@ -109,11 +109,6 @@ public class LIBLOOM {
         File[] apks = findFilesRecursively(fileApkDir, ".txt"); // perfiles APK
         File[] tpls = findFilesRecursively(PROFILE_TPL_PATH.toFile(), ".txt"); // perfiles TPL
 
-        logger.debug("fileApkDir path        : {}", fileApkDir.getAbsolutePath());
-        logger.debug("exists()?              : {}", fileApkDir.exists());
-        logger.debug("isDirectory()?         : {}", fileApkDir.isDirectory());
-        logger.debug("canRead()?             : {}", fileApkDir.canRead());
-
         if (apks == null || apks.length == 0 || tpls == null || tpls.length == 0) {
             logger.error("No hay perfiles suficientes para ejecutar la detección. Proceso cancelado.");
             return;
@@ -1095,35 +1090,17 @@ private void readProfile(Map<String, BitSet> pkgBitSet,
         return classesInCandidatePairs / (double)allClasses < THRESHOLD ? true : false;
     }
 
-    // LIBLOOM.java
     private static File[] findFilesRecursively(File dir, String extension) {
-    
-        // 1️⃣  Comprobación rápida del argumento
-        if (dir == null || !dir.isDirectory() || !dir.canRead()) {
-            return new File[0];
-        }
-    
-        // 2️⃣  Intentamos listar
-        File[] children = dir.listFiles();
-    
-        // 3️⃣  Si el SO devolvió error/permiso denegado => evitamos NPE
-        if (children == null) {
-            logger.warn("No se pudo listar: {}", dir.getAbsolutePath());
-            return new File[0];
-        }
-    
-        // 4️⃣  Recorrido “seguro”
-        List<File> out = new ArrayList<>();
-        for (File f : children) {
-            if (f.isDirectory()) {
-                out.addAll(Arrays.asList(findFilesRecursively(f, extension)));
-            } else if (f.getName().endsWith(extension)) {
-                out.add(f);
+        List<File> fileList = new ArrayList<>();
+        for (File file : dir.listFiles()) {
+            if (file.isDirectory()) {
+                fileList.addAll(Arrays.asList(findFilesRecursively(file, extension)));
+            } else if (file.getName().endsWith(extension)) {
+                fileList.add(file);
             }
         }
-        return out.toArray(new File[0]);
+        return fileList.toArray(new File[0]);
     }
-
 
     /**
      * Load parameters from configuration ("parameters.properties")
