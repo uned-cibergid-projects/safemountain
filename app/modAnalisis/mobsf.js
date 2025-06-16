@@ -276,7 +276,7 @@ async function persistirResultados(tmpApkPath, analisisData) {
     limite: 1
   })
   if (!okApk || !datosApk) {
-    console.log('[INFO] Guardando metadata con:', dataBasica);
+    console.log('[INFO] Guardando metadata con:', analisisData);
     await APKS.guardarMetadata(analisisData)
   }
 
