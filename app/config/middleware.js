@@ -43,7 +43,7 @@ module.exports = (app) => {
         scriptSrc: ['\'self\'', '\'unsafe-inline\''], // Solo scripts internos (ajusta según necesidad)
         styleSrc: ['\'self\'', '\'unsafe-inline\''], // Permite estilos internos y en línea (útil para frameworks CSS)
         imgSrc: ['\'self\'', 'data:'], // Permite imágenes internas y datos embebidos (base64)
-        connectSrc: ['*'], // Permite conexiones a APIs específicas
+        connectSrc: ['\'self\'', 'https://api.mi-dominio.com'], // Permite conexiones a APIs específicas
         fontSrc: ['\'self\'', 'https://fonts.googleapis.com'], // Permite fuentes externas de confianza
         objectSrc: ['\'none\''], // Bloquea contenido embebido de Flash y otros plugins inseguros
         upgradeInsecureRequests: [] // Convierte HTTP a HTTPS automáticamente
@@ -72,15 +72,7 @@ module.exports = (app) => {
 	  }))
 
   // Configurar CORS para permitir solicitudes desde cualquier origen
-  app.use(cors({
-    origin: '*', 
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-    exposedHeaders: ['Content-Length', 'X-Knowledge-Base'],
-    credentials: false 
-  }))
-
-  app.options('*', cors())
+  app.use(cors())
 
   app.use(express.urlencoded({ extended: true }))
   app.use(express.json({ limit: '5Mb' }))
