@@ -1,5 +1,15 @@
 {
   "ok": "Aceptar",
   "cancel": "Cancelar",
-  "loading": "Cargando…"
+  "loading": "Cargando…",
+  "financiacion": "Financiado por",
+  "buscar-app": "Buscar App",
+  "apps-instaladas": "Apps Instaladas",
+  "wiki": "Wiki",
+  "mi-cuenta": "Mi cuenta",
+  "analizar-politicas": "Analizar Políticas",
+  "privacidad": "Privacidad",
+  "acerca-de": "Acerca de",
+  "ajustes": "Ajustes",
+  "home": "Inicio"
 }
