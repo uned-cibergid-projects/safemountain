@@ -1,0 +1,9 @@
+{
+  "title": "SafeMountain",
+  "subtitle": "#ProyectosCiber",
+  "buttons": {
+    "search": "Buscar App",
+    "installed": "Apps Instaladas"
+  },
+  "disclaimer": "Esta actividad es parte del proyecto \"Análisis de aplicaciones móviles desde la perspectiva de la protección de datos: Ciberprotección y ciber-riesgos de la información ciudadana\", financiado/a por la \"Unión Europea NextGeneration-EU, Plan de Recuperación, Transformación y Resiliencia, a través de INCIBE\"."
+}
