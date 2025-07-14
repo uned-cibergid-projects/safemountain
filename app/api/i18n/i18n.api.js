@@ -14,7 +14,7 @@ const fs   = require('fs').promises;
 
 /** ✏️ Mantén sincronizado con tu frontend (src/i18n/config.js) */
 const ALLOWED_LANGS = ['es', 'en'];
-const ALLOWED_NS    = ['common', 'about', 'home'];
+const ALLOWED_NS    = ['common', 'about', 'home', 'settings'];
 
 /**
  * @param {import('express').Application} app  — instancia de Express
