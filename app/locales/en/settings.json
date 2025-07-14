@@ -1,0 +1,11 @@
+{
+  "title": "Settings",
+  "theme": {
+    "title": "Theme",
+    "placeholder": "Theme Selector",
+  },
+  "notifications": {
+    "title": "Notifications",
+    "placeholder": "Notification Settings",
+  }
+}
