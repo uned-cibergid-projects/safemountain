@@ -3,10 +3,10 @@
   "language": "Language Selector",
   "theme": {
     "title": "Theme",
-    "placeholder": "Theme Selector (in progress)",
+    "placeholder": "Theme Selector (in progress)"
   },
   "notifications": {
     "title": "Notifications",
-    "placeholder": "Notification Settings (in progress)",
+    "placeholder": "Notification Settings (in progress)"
   }
 }
