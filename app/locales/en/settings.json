@@ -1,11 +1,12 @@
 {
   "title": "Settings",
+  "language": "Language Selector",
   "theme": {
     "title": "Theme",
-    "placeholder": "Theme Selector",
+    "placeholder": "Theme Selector (in progress)",
   },
   "notifications": {
     "title": "Notifications",
-    "placeholder": "Notification Settings",
+    "placeholder": "Notification Settings (in progress)",
   }
 }
