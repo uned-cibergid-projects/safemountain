@@ -2,10 +2,10 @@
   "title": "Ajustes",
   "theme": {
     "title": "Tema",
-    "placeholder": "Selector de Tema",
+    "placeholder": "Selector de Tema (en proceso)"
   },
   "notifications": {
     "title": "Notificaciones",
-    "placeholder": "Configuración de Notificaciones",
+    "placeholder": "Configuración de Notificaciones (en proceso)"
   }
 }
