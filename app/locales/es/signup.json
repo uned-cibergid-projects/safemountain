@@ -1,0 +1,20 @@
+{
+  "title": "Crear cuenta",
+  "fullName": "Nombre real",
+  "username": "Nombre de usuario",
+  "email": "Correo electrónico",
+  "password": "Contraseña",
+  "passwordHint": "Debe tener al menos 8 caracteres, una mayúscula, una minúscula, un dígito y un carácter especial.",
+  "buttons": {
+    "signUp": "REGISTRARSE"
+  },
+  "links": {
+    "haveAccount": "¿Ya tienes una cuenta? Iniciar sesión"
+  },
+  "errors": {
+    "unknown": "Error desconocido",
+    "network": "Error de red. Vuelve a intentarlo.",
+    "emailInUse": "Ese correo ya está registrado.",
+    "usernameInUse": "Ese nombre de usuario ya está en uso."
+  }
+}

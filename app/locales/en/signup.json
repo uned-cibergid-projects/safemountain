@@ -1,0 +1,20 @@
+{
+  "title": "Create account",
+  "fullName": "Full name",
+  "username": "Username",
+  "email": "Email",
+  "password": "Password",
+  "passwordHint": "Must be at least 8 characters long and include an uppercase letter, a lowercase letter, a digit, and a special character.",
+  "buttons": {
+    "signUp": "SIGN UP"
+  },
+  "links": {
+    "haveAccount": "Already have an account? Sign in"
+  },
+  "errors": {
+    "unknown": "Unknown error",
+    "network": "Network error. Please try again.",
+    "emailInUse": "That email is already registered.",
+    "usernameInUse": "That username is already taken."
+  }
+}
