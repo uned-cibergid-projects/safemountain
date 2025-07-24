@@ -1,0 +1,17 @@
+{
+  "title": "Inicio de sesión",
+  "emailOrUsername": "Correo electrónico o nombre de usuario",
+  "password": "Contraseña",
+  "buttons": {
+    "signIn": "INICIAR SESIÓN",
+    "forgotAlt": "¿Olvidaste tu contraseña?"
+  },
+  "links": {
+    "noAccount": "¿No tienes una cuenta? Regístrate"
+  },
+  "errors": {
+    "unknown": "Error desconocido",
+    "network": "Error de red. Vuelve a intentarlo.",
+    "invalidCredentials": "Correo/usuario o contraseña incorrectos."
+  }
+}

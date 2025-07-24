@@ -1,0 +1,17 @@
+{
+  "title": "Sign in",
+  "emailOrUsername": "Email or username",
+  "password": "Password",
+  "buttons": {
+    "signIn": "SIGN IN",
+    "forgotAlt": "Forgot your password?"
+  },
+  "links": {
+    "noAccount": "Don't have an account? Sign up"
+  },
+  "errors": {
+    "unknown": "Unknown error",
+    "network": "Network error. Please try again.",
+    "invalidCredentials": "Incorrect email/username or password."
+  }
+}
