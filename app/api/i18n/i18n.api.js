@@ -17,7 +17,7 @@ const ALLOWED_LANGS = ['es', 'en'];
 const ALLOWED_NS    = [
   'common', 'about', 'home', 'settings', 
   'signin', 'signup', 'passwordRecovery',
-  'resetPassword',
+  'resetPassword', 'privacy',
 ];
 
 /**
