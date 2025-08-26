@@ -2,6 +2,8 @@
 
 const CONFIG = require('../config')[process.env.NODE_ENV || 'development']
 const debug = require('debug')(`${CONFIG.APP}:middleware`)
+const path = require('path')
+const fs   = require('fs')
 
 const serveIndex = require('serve-index')
 const logger = require('morgan')
@@ -19,6 +21,15 @@ const specs = require('./swagger')
 
 module.exports = (app) => {
   var app = express()
+
+  // --- Raíz del proyecto: .../SafeMountain/API
+  const ROOT_DIR  = path.resolve(__dirname, '..', '..')
+  const PUBLIC_DIR = path.join(ROOT_DIR, 'public')
+  const LEGAL_DIR  = path.join(PUBLIC_DIR, 'legal')
+  const LOGS_DIR   = path.join(PUBLIC_DIR, 'logs')
+  const PROC_DIR   = path.join(PUBLIC_DIR, 'procesos')
+  const BACKUP_DIR = path.join(PUBLIC_DIR, 'backup')
+  debug('STATIC ROOT_DIR:', ROOT_DIR)
 
   app.use(helmet({
     // Evita que la aplicación sea incrustada en iframes (protección contra Clickjacking)
@@ -81,7 +92,7 @@ module.exports = (app) => {
   // create a rotating write stream
   const accessLogStream = rfs.createStream('access.log', {
     interval: '1d', // rotate daily
-    path: `${process.cwd()}/public/logs`
+    path: LOGS_DIR
   })
 
   // setup the logger
@@ -89,19 +100,34 @@ module.exports = (app) => {
 
   const errorLogStream = rfs.createStream('error.log', {
     interval: '1d', // rotate daily
-    path: `${process.cwd()}/public/logs`
+    path: LOGS_DIR
   })
 
   app.use(logger('combined', { stream: errorLogStream, skip: (req, res) => res.statusCode < 400 }))
 
-  // logs
-  app.use('/logs', express.static(`${process.cwd()}/public/logs`), serveIndex('app/public/logs', { icons: true }))
+  // logs / procesos / backup
+  app.use('/logs',     express.static(LOGS_DIR),    serveIndex(LOGS_DIR,  { icons: true }))
+  app.use('/procesos', express.static(PROC_DIR),    serveIndex(PROC_DIR,  { icons: true }))
+  app.use('/backup',   express.static(BACKUP_DIR),  serveIndex(BACKUP_DIR,{ icons: true }))
 
-  // procesos
-  app.use('/procesos', express.static(`${process.cwd()}/public/procesos`), serveIndex('app/public/procesos', { icons: true }))
+  // legal (PDFs de políticas) — sin listado
+  app.use('/legal', express.static(LEGAL_DIR, {
+    maxAge: '1d',
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith('.pdf')) {
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Cache-Control', 'public, max-age=86400, immutable');
+      }
+    }
+  }))
 
-  // backup
-  app.use('/backup', express.static(`${process.cwd()}/public/backup`), serveIndex('app/public/backup', { icons: true }))
+  // Fallback explícito por si express.static no matchea
+  app.get('/legal/:file', (req, res, next) => {
+    const safe = path.basename(req.params.file)   // evita path traversal
+    const filePath = path.join(LEGAL_DIR, safe)
+    if (!fs.existsSync(filePath)) return next(new Error('No existe la ruta'))
+    res.sendFile(filePath, err => err && next(err))
+  })
 
   // Swagger
   app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs))
