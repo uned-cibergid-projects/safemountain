@@ -1,0 +1,23 @@
+{
+  "counts": {
+    "apks": 201,
+    "tpls": 215506,
+    "analisis_estatico": 3,
+    "policy_matches": 0
+  },
+  "analisis_sample_keys": [
+    "_id",
+    "app_name",
+    "package_name",
+    "version_name",
+    "permissions",
+    "manifest_analysis"
+  ],
+  "analisis_sample_preview": {
+    "package_name": "ua.gov.diia.app",
+    "app_name": "Дія",
+    "version_name": "4.12.0.1657",
+    "permissions_type": "object",
+    "manifest_analysis_present": true
+  }
+}

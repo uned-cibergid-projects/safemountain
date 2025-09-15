@@ -1,0 +1,17 @@
+{
+  "params": {
+    "THR": 0.8,
+    "POLICY_COLL": "policy_matches",
+    "MISSING_POLICY": "skip",
+    "CATEGORY": ""
+  },
+  "counts": {
+    "apps_in_estatico": 3,
+    "apps_processed": 0,
+    "apps_skipped_for_missing_policy": 3,
+    "distinct_permissions": 0
+  },
+  "global_hist_incoh_per_app": [],
+  "top_permissions_by_use": [],
+  "top_permissions_by_incoh": []
+}

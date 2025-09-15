@@ -1,0 +1,10 @@
+permission,code_total,code_host,code_tpl,policy_mentions,sim_max,flag,sample_sentence
+"App can be installed on a vulnerable upatched Android version 6.0-6.0.1, [minSdk=23]",1,,,0,0,INCOHERENTE,
+Clear text traffic is Enabled For App [android:usesCleartextTraffic=true],1,,,0,0,INCOHERENTE,
+App has a Network Security Configuration [android:networkSecurityConfig=@xml/net_config],1,,,0,0,INCOHERENTE,
+"Service com.google.android.gms.auth.api.signin.RevocationBoundService is Protected by a permission, but the protection level of the permission should be checked. [<strong>Permission: </strong>com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION] [android:exported=true]",1,,,0,0,INCOHERENTE,
+"Broadcast Receiver com.google.firebase.iid.FirebaseInstanceIdReceiver is Protected by a permission, but the protection level of the permission should be checked. [<strong>Permission: </strong>com.google.android.c2dm.permission.SEND] [android:exported=true]",1,,,0,0,INCOHERENTE,
+"Service androidx.work.impl.background.systemjob.SystemJobService is Protected by a permission, but the protection level of the permission should be checked. [<strong>Permission: </strong>android.permission.BIND_JOB_SERVICE] [android:exported=true]",1,,,0,0,INCOHERENTE,
+"Broadcast Receiver androidx.work.impl.diagnostics.DiagnosticsReceiver is Protected by a permission, but the protection level of the permission should be checked. [<strong>Permission: </strong>android.permission.DUMP] [android:exported=true]",1,,,0,0,INCOHERENTE,
+Activity androidx.compose.ui.tooling.PreviewActivity is not Protected. [android:exported=true],1,,,0,0,INCOHERENTE,
+"Broadcast Receiver androidx.profileinstaller.ProfileInstallReceiver is Protected by a permission, but the protection level of the permission should be checked. [<strong>Permission: </strong>android.permission.DUMP] [android:exported=true]",1,,,0,0,INCOHERENTE,
