@@ -1,0 +1,5 @@
+[POST] com.xingin.xhs
+  APK: /home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks/social/com.xingin.xhs/rednote-%E5%B0%8F%E7%BA%A2%E4%B9%A6%E5%9B%BD%E9%99%85%E7%89%88.apk
+  API: http://127.0.0.1:8020/api/analisis/mobsf/analizar
+  CAT: social
+curl: (7) Failed to connect to 127.0.0.1 port 8020: Conexión rehusada

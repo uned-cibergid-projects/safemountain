@@ -1,0 +1,5 @@
+[POST] winter.whatsapp.status.save.statussaver
+  APK: /home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks/social/winter.whatsapp.status.save.statussaver/status-saver-download-save.apk
+  API: http://127.0.0.1:8020/api/analisis/mobsf/analizar
+  CAT: social
+curl: (7) Failed to connect to 127.0.0.1 port 8020: Conexión rehusada

@@ -1,0 +1,5 @@
+[POST] com.sina.weibo
+  APK: /home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks/social/com.sina.weibo/%E5%BE%AE%E5%8D%9A.apk
+  API: http://127.0.0.1:8020/api/analisis/mobsf/analizar
+  CAT: social
+curl: (7) Failed to connect to 127.0.0.1 port 8020: Conexión rehusada

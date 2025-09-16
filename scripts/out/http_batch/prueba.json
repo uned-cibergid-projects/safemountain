@@ -1,0 +1,5 @@
+[POST] prueba
+  APK: /home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks/social/prueba/315a5e9e359c8a4888bbbbd5ebe37400a09b335cbda9ac8f53bcf5b6e85bc36f.apk
+  API: http://127.0.0.1:8020/api/analisis/mobsf/analizar
+  CAT: social
+curl: (7) Failed to connect to 127.0.0.1 port 8020: Conexión rehusada

@@ -1,0 +1,6 @@
+[POST] com.amberfog.vkfree
+  APK: /home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks/social/com.amberfog.vkfree/amberfog-for-vk.apk
+  API: http://127.0.0.1:8020/api/analisis/mobsf/analizar
+  CAT: social
+{"ok":true,"mensaje":"Archivo analizado correctamente","datos":{"category":"social","package":"com.amberfog.vkfree","name":"amberfog-for-vk.apk"}}
+Respuesta en /tmp/mobsf_post_com.amberfog.vkfree.json
