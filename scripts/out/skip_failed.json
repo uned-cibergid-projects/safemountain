@@ -1,0 +1,42 @@
+{
+  "br.gov.caixa.trabalhador": {
+    "ignored": true,
+    "reason": "no_apk_found",
+    "ts": "2025-09-16T08:03:47.272Z"
+  },
+  "com.asiainno.uplive.aiglamour": {
+    "ignored": true,
+    "reason": "retries_exhausted",
+    "ts": "2025-09-16T08:33:52.320Z"
+  },
+  "com.baaz.baazapp": {
+    "ignored": true,
+    "reason": "retries_exhausted",
+    "ts": "2025-09-16T09:03:57.364Z"
+  },
+  "com.bringsgame.kiss": {
+    "ignored": true,
+    "reason": "retries_exhausted",
+    "ts": "2025-09-16T10:31:15.333Z"
+  },
+  "com.bringsgame.love": {
+    "ignored": true,
+    "reason": "retries_exhausted",
+    "ts": "2025-09-16T11:01:20.372Z"
+  },
+  "com.cardfeed.video_public": {
+    "ignored": true,
+    "reason": "retries_exhausted",
+    "ts": "2025-09-16T11:34:08.209Z"
+  },
+  "com.chatous.chatous": {
+    "ignored": true,
+    "reason": "retries_exhausted",
+    "ts": "2025-09-16T12:10:29.324Z"
+  },
+  "com.chatroullete.alternative": {
+    "ignored": true,
+    "reason": "no_apk_found",
+    "ts": "2025-09-16T12:10:29.333Z"
+  }
+}
