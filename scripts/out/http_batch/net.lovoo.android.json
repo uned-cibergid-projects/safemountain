@@ -1,5 +1,1 @@
-[POST] net.lovoo.android
-  APK: /home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks/social/net.lovoo.android/lovoo-dating-app-chat-app.apk
-  API: http://127.0.0.1:8020/api/analisis/mobsf/analizar
-  CAT: social
-curl: (7) Failed to connect to 127.0.0.1 port 8020: Conexión rehusada
+{"ok":true,"mensaje":"Archivo analizado correctamente","datos":{"category":"social","package":"net.lovoo.android","name":"lovoo-dating-app-chat-app.apk"}}

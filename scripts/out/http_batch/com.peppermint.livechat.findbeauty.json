@@ -1,5 +1,1 @@
-[POST] com.peppermint.livechat.findbeauty
-  APK: /home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks/social/com.peppermint.livechat.findbeauty/peppermint-live-chat-meeting.apk
-  API: http://127.0.0.1:8020/api/analisis/mobsf/analizar
-  CAT: social
 curl: (7) Failed to connect to 127.0.0.1 port 8020: Conexión rehusada

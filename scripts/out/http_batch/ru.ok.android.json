@@ -1,5 +1,1 @@
-[POST] ru.ok.android
-  APK: /home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks/social/ru.ok.android/ok-social-network.apk
-  API: http://127.0.0.1:8020/api/analisis/mobsf/analizar
-  CAT: social
-curl: (7) Failed to connect to 127.0.0.1 port 8020: Conexión rehusada
+{"ok":true,"mensaje":"Archivo analizado correctamente","datos":{"category":"social","package":"ru.ok.android","name":"ok-social-network.apk"}}

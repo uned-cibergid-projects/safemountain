@@ -1,5 +1,1 @@
-[POST] com.guochao.faceshow
-  APK: /home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks/social/com.guochao.faceshow/buzzcast-live-video-chat-app.apk
-  API: http://127.0.0.1:8020/api/analisis/mobsf/analizar
-  CAT: social
 curl: (7) Failed to connect to 127.0.0.1 port 8020: Conexión rehusada

@@ -1,5 +1,1 @@
-[POST] com.yy.hiyo
-  APK: /home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks/social/com.yy.hiyo/hago-party-chat-games.apk
-  API: http://127.0.0.1:8020/api/analisis/mobsf/analizar
-  CAT: social
-curl: (7) Failed to connect to 127.0.0.1 port 8020: Conexión rehusada
+{"ok":true,"mensaje":"Archivo analizado correctamente","datos":{"category":"social","package":"com.yy.hiyo","name":"hago-party-chat-games.apk"}}

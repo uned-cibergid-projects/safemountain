@@ -1,5 +1,1 @@
-[POST] com.saaviinfinet.narishakti_yojana_doot
-  APK: /home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks/social/com.saaviinfinet.narishakti_yojana_doot/narishakti-doot.apk
-  API: http://127.0.0.1:8020/api/analisis/mobsf/analizar
-  CAT: social
 curl: (7) Failed to connect to 127.0.0.1 port 8020: Conexión rehusada

@@ -1,23 +1,24 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# === Ajustes ===
 PROJ="/home/ciber/projects/SafeMountain/api"
 LOCK="/home/ciber/projects/SafeMountain/api/scripts/.batch.lock"
 LOGDIR="/home/ciber/projects/SafeMountain/api/scripts/out"
 LOG="$LOGDIR/batch_cron.log"
 
 mkdir -p "$LOGDIR"
-# Asegura Node en PATH (si usas nvm, descomenta la línea siguiente)
-# source "$HOME/.nvm/nvm.sh" >/dev/null 2>&1 || true
-
 cd "$PROJ"
 
-# Usa flock para evitar solapes (-n = no esperar si ya hay lock)
-{
-  echo "[$(date '+%F %T')] ===== batch start ====="
-  echo "PWD=$(pwd)"
-  echo "node=$(command -v node)"
+# (opcional) si usas nvm, descomenta:
+# source "$HOME/.nvm/nvm.sh" >/dev/null 2>&1 || true
+
+STAMP() { date '+%F %T'; }
+
+# Intenta ejecutar con lock no bloqueante (-n). Si ya está corriendo, no hace nada.
+if /usr/bin/flock -n "$LOCK" bash -lc '
+  echo "['"$(date +%F\ %T)"'] ===== batch start ====="
+  echo "PWD=$PWD"
+  echo "node=$(command -v node || true)"
 
   LIMIT=5 \
   BASE_DIR="/home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks" \
@@ -29,11 +30,10 @@ cd "$PROJ"
   node scripts/batch_post_apks.js
 
   RC=$?
-  echo "[$(date '+%F %T')] ===== batch end (rc=$RC) ====="
+  echo "['"$(date +%F\ %T)"'] ===== batch end (rc=$RC) ====="
   exit $RC
-} 9> "$LOCK" |& tee -a "$LOG" | tail -n +1
-
-# La magia del lock:
-# '9> "$LOCK"' abre el descriptor 9 sobre el lockfile
-# 'flock -n 9 -c ...' se podría usar, pero esta forma con redirección + subshell
-# evita carrera y nos deja el lock activo durante todo el bloque.
+' >> "$LOG" 2>&1; then
+  echo "[$(STAMP)] Lanzado batch (lock adquirido)" >> "$LOG"
+else
+  echo "[$(STAMP)] Saltado: ya hay una ejecución en curso (lock en $LOCK)" >> "$LOG"
+fi

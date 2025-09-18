@@ -1,5 +1,1 @@
-[POST] cool.monkey.android
-  APK: /home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks/social/cool.monkey.android/monkey-random-video-chat.apk
-  API: http://127.0.0.1:8020/api/analisis/mobsf/analizar
-  CAT: social
-curl: (7) Failed to connect to 127.0.0.1 port 8020: Conexión rehusada
+curl: (28) Operation timed out after 900000 milliseconds with 0 bytes received

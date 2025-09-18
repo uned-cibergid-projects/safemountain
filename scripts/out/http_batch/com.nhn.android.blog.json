@@ -1,5 +1,1 @@
-[POST] com.nhn.android.blog
-  APK: /home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks/social/com.nhn.android.blog/%EB%84%A4%EC%9D%B4%EB%B2%84-%EB%B8%94%EB%A1%9C%EA%B7%B8-naver-blog.apk
-  API: http://127.0.0.1:8020/api/analisis/mobsf/analizar
-  CAT: social
 curl: (7) Failed to connect to 127.0.0.1 port 8020: Conexión rehusada

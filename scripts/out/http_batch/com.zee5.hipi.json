@@ -1,5 +1,1 @@
-[POST] com.zee5.hipi
-  APK: /home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks/social/com.zee5.hipi/hipi-short-videos-%7C-rewards.apk
-  API: http://127.0.0.1:8020/api/analisis/mobsf/analizar
-  CAT: social
-curl: (7) Failed to connect to 127.0.0.1 port 8020: Conexión rehusada
+{"ok":true,"mensaje":"Archivo analizado correctamente","datos":{"category":"social","package":"com.zee5.hipi","name":"hipi-short-videos-%7C-rewards.apk"}}

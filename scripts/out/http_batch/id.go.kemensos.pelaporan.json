@@ -1,5 +1,1 @@
-[POST] id.go.kemensos.pelaporan
-  APK: /home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks/social/id.go.kemensos.pelaporan/aplikasi-cek-bansos.apk
-  API: http://127.0.0.1:8020/api/analisis/mobsf/analizar
-  CAT: social
-curl: (7) Failed to connect to 127.0.0.1 port 8020: Conexión rehusada
+{"ok":true,"mensaje":"Archivo analizado correctamente","datos":{"category":"social","package":"id.go.kemensos.pelaporan","name":"aplikasi-cek-bansos.apk"}}

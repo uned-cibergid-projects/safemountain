@@ -1,5 +1,1 @@
-[POST] com.imo.android.imoimlite
-  APK: /home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks/social/com.imo.android.imoimlite/imo-lite-video-calls-and-chat.apk
-  API: http://127.0.0.1:8020/api/analisis/mobsf/analizar
-  CAT: social
 curl: (7) Failed to connect to 127.0.0.1 port 8020: Conexión rehusada

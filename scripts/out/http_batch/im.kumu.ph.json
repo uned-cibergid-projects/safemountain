@@ -1,5 +1,1 @@
-[POST] im.kumu.ph
-  APK: /home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks/social/im.kumu.ph/kumu-livestream-community.apk
-  API: http://127.0.0.1:8020/api/analisis/mobsf/analizar
-  CAT: social
-curl: (7) Failed to connect to 127.0.0.1 port 8020: Conexión rehusada
+{"ok":true,"mensaje":"Archivo analizado correctamente","datos":{"category":"social","package":"im.kumu.ph","name":"kumu-livestream-community.apk"}}

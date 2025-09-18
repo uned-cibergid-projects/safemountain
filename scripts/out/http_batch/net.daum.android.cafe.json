@@ -1,5 +1,1 @@
-[POST] net.daum.android.cafe
-  APK: /home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks/social/net.daum.android.cafe/daum-cafe-%EB%8B%A4%EC%9D%8C-%EC%B9%B4%ED%8E%98.apk
-  API: http://127.0.0.1:8020/api/analisis/mobsf/analizar
-  CAT: social
-curl: (7) Failed to connect to 127.0.0.1 port 8020: Conexión rehusada
+curl: (28) Operation timed out after 900000 milliseconds with 0 bytes received
