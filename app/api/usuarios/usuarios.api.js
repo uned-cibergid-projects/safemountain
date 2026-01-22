@@ -124,7 +124,7 @@ module.exports = (app, ruta) => {
     *                         example: 0
     */
   app.route(ruta)
-    .get((req, res, next) => {
+    .post((req, res, next) => {
       const opciones = req.body
 
       USUARIOS.buscarUsuarios(opciones)
