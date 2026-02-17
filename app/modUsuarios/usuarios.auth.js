@@ -286,18 +286,23 @@ async function cerrarSesion (token) {
  * @param {string} token - Token generado para la verificación.
  * @returns {Promise<void>}
  */
-function enviarCorreoVerificacion (usuario, contenido) {
-  const transporter = nodemailer.createTransport({
-    host: 'sandbox.smtp.mailtrap.io',
-    port: 2525,
-    auth: {
-      user: SMTP_MAIL_USER,
-      pass: SMTP_MAIL_PASSWORD
-    }
-  })
+const { SMTP_MAIL_HOST, SMTP_MAIL_PORT, SMTP_MAIL_SECURE, SMTP_MAIL_IGNORE_TLS, SMTP_MAIL_FROM } = config[ENV]
 
+const transporter = nodemailer.createTransport({
+  host: SMTP_MAIL_HOST,
+  port: Number(SMTP_MAIL_PORT),
+  secure: Boolean(SMTP_MAIL_SECURE) && SMTP_MAIL_SECURE !== 'false', // por si viene string del .env
+  ignoreTLS: SMTP_MAIL_IGNORE_TLS === true || SMTP_MAIL_IGNORE_TLS === 'true',
+
+  // Auth solo si existe (en vuestro caso probablemente NO)
+  ...(SMTP_MAIL_USER
+    ? { auth: { user: SMTP_MAIL_USER, pass: SMTP_MAIL_PASSWORD } }
+    : {})
+})
+
+function enviarCorreoVerificacion (usuario, contenido) {
   const mailOptions = {
-    from: '"SafeMountain" <noreply@safemountain.com>',
+    from: SMTP_MAIL_FROM || '"INTECCA UNED" <no-reply@intecca.uned.es>',
     to: usuario.email,
     subject: contenido.subject,
     text: contenido.text,
