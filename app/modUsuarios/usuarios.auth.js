@@ -288,6 +288,16 @@ async function cerrarSesion (token) {
  */
 const { SMTP_MAIL_HOST, SMTP_MAIL_PORT, SMTP_MAIL_SECURE, SMTP_MAIL_IGNORE_TLS, SMTP_MAIL_FROM } = config[ENV]
 
+console.log('[MAIL ENV]', {
+  NODE_ENV: process.env.NODE_ENV,
+  ENV,
+  SMTP_MAIL_HOST,
+  SMTP_MAIL_PORT,
+  SMTP_MAIL_SECURE,
+  SMTP_MAIL_IGNORE_TLS,
+  SMTP_MAIL_FROM
+})
+
 const transporter = nodemailer.createTransport({
   host: SMTP_MAIL_HOST,
   port: Number(SMTP_MAIL_PORT),
