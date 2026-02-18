@@ -227,9 +227,6 @@ async function crearUsuario (data) {
  * @returns {Promise<Object>} Retorna el usuario con tokens de sesión.
  */
 async function iniciarSesion (credenciales) {
-  if (!(await verificarCaptcha(credenciales.captchaToken))) {
-    throw new Error('El CAPTCHA no es válido.')
-  }
 
   const usuario = await CRUD.leerCampo({
     filtro: { $or: [{ email: credenciales.emailOrUsername.toLowerCase() }, { username: credenciales.emailOrUsername }] }
