@@ -341,10 +341,10 @@ async function solicitarCambioPassword (email) {
 
   await enviarCorreoVerificacion(usuarioBD, {
     subject: 'Recuperación de contraseña',
-    text: `Hola ${usuarioBD.nombre}, usa el siguiente enlace para cambiar tu contraseña: http://10.201.54.168:8020/api/auth/reset-password/${resetToken}`,
+    text: `Hola ${usuarioBD.nombre}, usa el siguiente enlace para cambiar tu contraseña: https://intecca.uned.es/cyberhub/epalsafer/api/auth/reset-password/${resetToken}`,
     html: `<p>Hola <strong>${usuarioBD.nombre}</strong>,</p>
            <p>Haz clic en el siguiente enlace para cambiar tu contraseña:</p>
-           <a href="http://10.201.54.168:8020/api/auth/reset-password/${resetToken}">Restablecer contraseña</a>`
+           <a href="https://intecca.uned.es/cyberhub/epalsafer/api/auth/reset-password/${resetToken}">Restablecer contraseña</a>`
   })
   return { ok: true, mensaje: 'Correo de recuperación enviado.' }
 }

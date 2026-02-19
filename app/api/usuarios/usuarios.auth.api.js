@@ -155,7 +155,7 @@ module.exports = (app, ruta) => {
           verificationTokenExpires: new Date(Date.now() + 3600000) // 1 hora
         })
 
-        const urlVerificacion = `http://10.201.54.168:8020/api/auth/verify/${tokenVerificacion}`
+        const urlVerificacion = `https://intecca.uned.es/cyberhub/epalsafer/api/auth/verify/${tokenVerificacion}`
 
         const contenido = {
           urlVerificacion,
