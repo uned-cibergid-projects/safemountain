@@ -500,6 +500,7 @@ module.exports = (app, ruta) => {
   app.route(`${ruta}/verify/:token`)
     .get((req, res) => {
       const { token } = req.params
+    
       const opciones = {
         filtro: {
           verificationToken: token,
@@ -508,14 +509,18 @@ module.exports = (app, ruta) => {
         campos: {},
         limite: 1
       }
-
+    
       USUARIOS.buscarUsuarios(opciones)
         .then((resultado) => {
-          if (!resultado.ok || resultado.datos.length === 0) {
+          // soporta datos como array u objeto
+          const usuarioBD = Array.isArray(resultado.datos)
+            ? resultado.datos[0]
+            : resultado.datos
+        
+          if (!resultado.ok || !usuarioBD) {
             throw new Error('Token incorrecto o expirado.')
           }
-
-          const usuarioBD = resultado.datos
+        
           return USUARIOS.modificarUsuario(usuarioBD._id, {
             verificado: true,
             verificationToken: null,
@@ -526,20 +531,11 @@ module.exports = (app, ruta) => {
           if (!usuarioVerificado) {
             throw new Error('No se pudo verificar el usuario.')
           }
-
-          res.status(200).json({
-            ok: true,
-            mensaje: 'Usuario verificado correctamente',
-            datos: usuarioVerificado
-          })
+        
+          return res.redirect(302, 'https://intecca.uned.es/cyberhub/epalsafer/login?verified=1')
         })
         .catch((err) => {
-          res.status(400).json({
-            ok: false,
-            mensaje: err.message,
-            datos: [],
-            error: err.stack
-          })
+          res.status(400).json({ ok:false, mensaje: err.message, datos: [] })
         })
     })
 
