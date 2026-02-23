@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-BASE_DIR="${BASE_DIR:-/home/ciber/projects/ePalSafer/nfs/incibe/analisisAplicaciones/datasets/hostApks}"
+BASE_DIR="${BASE_DIR:-/home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks}"
 SUBDIR="${SUBDIR:-social}"
 
 # Endpoint del backend (si corres en helena y escucha en 0.0.0.0:8020, también vale 10.201.54.162)

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-PROJ="/home/ciber/projects/ePalSafer/api"
+PROJ="/home/ciber/projects/SafeMountain/api"
 LOCK="$PROJ/scripts/.batch.lock"
 LOGDIR="$PROJ/scripts/out"
 LOG="$LOGDIR/batch_cron.log"
@@ -46,7 +46,7 @@ STAMP() { date '+%F %T'; }
   # Ejecuta con flock usando el Node correcto (sin abrir otra shell)
   if /usr/bin/flock -n "$LOCK" \
     env LIMIT=5 \
-        BASE_DIR="/home/ciber/projects/ePalSafer/nfs/incibe/analisisAplicaciones/datasets/hostApks" \
+        BASE_DIR="/home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks" \
         SUBDIR="social" \
         API="http://127.0.0.1:8020/api/analisis/mobsf/analizar" \
         CAT="social" \

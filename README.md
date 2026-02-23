@@ -66,7 +66,7 @@ Estas bibliotecas se utilizan únicamente en el entorno de desarrollo para facil
 
 1. Clonar el repositorio:
 ```bash
-git clone http://185.179.105.169:8929/analisisapp/ePalSafer/api.git
+git clone http://185.179.105.169:8929/analisisapp/safemountain/api.git
 ```
 2. Instalar las dependencias:
 ```bash

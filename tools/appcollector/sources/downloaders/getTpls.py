@@ -130,7 +130,7 @@ async def main():
     logger = logging.getLogger("logger")
     exceptionLogger = logging.getLogger("exceptionLogger")
 
-    nfsSaveFolder = "/home/ciber/projects/ePalSafer/nfs/incibe/analisisAplicaciones/datasets/hostTpls/"
+    nfsSaveFolder = "/home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostTpls/"
     checkFolder(nfsSaveFolder)
 
     total, used, free = shutil.disk_usage(nfsSaveFolder)

@@ -18,7 +18,6 @@ import libloom.preprocess.CodeInfoCollector;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.net.URISyntaxException;
 
 
 
@@ -114,7 +113,7 @@ public class LIBLOOM {
      * --------------------------------------------------------------------*/
     private void runDetection(LIBLOOM libloom) throws IOException, ClassHierarchyException {
         logger.info("===== runDetection =====");
-        File fileApkDir = Paths.get("/home/ciber/projects/ePalSafer/api/tools/libloom/tmpSingleApkProfiles").toFile();
+        File fileApkDir = Paths.get("/home/ciber/projects/SafeMountain/api/tools/libloom/tmpSingleApkProfiles").toFile();
         File[] apks = findFilesRecursively(fileApkDir, ".txt"); // perfiles APK
         File[] tpls = findFilesRecursively(PROFILE_TPL_PATH.toFile(), ".txt"); // perfiles TPL
 
