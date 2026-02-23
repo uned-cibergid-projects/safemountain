@@ -19,7 +19,7 @@ sudo apt install python3-pip
 pip install --upgrade pip
 sudo apt-get install libpoppler-cpp-dev
 
-git clone http://185.179.105.169:8929/analisisapp/safemountain/modules/mobsf.git
+git clone http://185.179.105.169:8929/analisisapp/ePalSafer/modules/mobsf.git
 
 cd mobsf
 python3.10 -m venv cmobsf_env

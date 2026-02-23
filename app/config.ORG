@@ -54,7 +54,7 @@ module.exports = {
       pass: '',
       port: 49016
     },
-    BASE_DIRECTORY: '/home/dblancoaza/SafeMountain/nfs/incibePro/analisisAplicaciones/datasets/hostApks/',
+    BASE_DIRECTORY: '/home/dblancoaza/ePalSafer/nfs/incibePro/analisisAplicaciones/datasets/hostApks/',
     CARPETAS,
     DEBUG,
     EXPORTACION,
@@ -96,7 +96,7 @@ module.exports = {
       pass: '',
       port: 49016
     },
-    BASE_DIRECTORY: '/home/ciber/projects/SafeMountain/nfs/incibePro/analisisAplicaciones/datasets/hostApks',
+    BASE_DIRECTORY: '/home/ciber/projects/ePalSafer/nfs/incibePro/analisisAplicaciones/datasets/hostApks',
     CARPETAS,
     DEBUG,
     EXPORTACION,
@@ -138,7 +138,7 @@ module.exports = {
       pass: '',
       port: 49016
     },
-    BASE_DIRECTORY: '/home/ciber/projects/SafeMountain/nfs/incibePro/analisisAplicaciones/datasets/hostApks',
+    BASE_DIRECTORY: '/home/ciber/projects/ePalSafer/nfs/incibePro/analisisAplicaciones/datasets/hostApks',
     CARPETAS,
     DEBUG,
     EXPORTACION,
@@ -180,7 +180,7 @@ module.exports = {
       pass: '',
       port: 49016
     },
-    BASE_DIRECTORY: '/home/ciber/projects/SafeMountain/nfs/incibePro/analisisAplicaciones/datasets/hostApks',
+    BASE_DIRECTORY: '/home/ciber/projects/ePalSafer/nfs/incibePro/analisisAplicaciones/datasets/hostApks',
     CARPETAS,
     DEBUG,
     EXPORTACION,

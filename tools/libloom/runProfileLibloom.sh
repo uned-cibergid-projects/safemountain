@@ -6,7 +6,7 @@
 # ============================================================================
 
 # CONFIGURACIÓN
-LOG_DIR="/home/ciber/projects/SafeMountain/api/tools/libloom/logs"
+LOG_DIR="/home/ciber/projects/ePalSafer/api/tools/libloom/logs"
 LOG_FILE="$LOG_DIR/cronLibloomProfile.log"
 TEMP_LOG_FILE="$LOG_DIR/temp_cronLibloomProfile.log"
 DATE=$(date "+%Y-%m-%d %H:%M:%S")
@@ -17,7 +17,7 @@ mkdir -p "$LOG_DIR"
 echo "[$DATE] Iniciando ejecución de perfilado LIBLOOM..." >> "$LOG_FILE"
 
 # Ruta al directorio del código Java de LIBLOOM
-LIBLOOM_DIR="/home/ciber/projects/SafeMountain/api/tools/libloom"
+LIBLOOM_DIR="/home/ciber/projects/ePalSafer/api/tools/libloom"
 
 # Construir classpath (incluye carpeta out y dependencias)
 CLASSPATH="$LIBLOOM_DIR/out:$LIBLOOM_DIR/lib/*"

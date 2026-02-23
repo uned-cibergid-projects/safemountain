@@ -5,8 +5,8 @@
 # ===========================================
 
 # Rutas y configuración
-PYTHON_PATH="/home/ciber/projects/SafeMountain/api/tools/appcollector/appcollector_env/bin/python3"
-PROJECT_ROOT="/home/ciber/projects/SafeMountain/api/tools/appcollector"
+PYTHON_PATH="/home/ciber/projects/ePalSafer/api/tools/appcollector/appcollector_env/bin/python3"
+PROJECT_ROOT="/home/ciber/projects/ePalSafer/api/tools/appcollector"
 SCRIPT_LIST_PATH="$PROJECT_ROOT/sources/dataCollectors/getHostAppsList.py"
 SCRIPT_META_PATH="$PROJECT_ROOT/sources/dataCollectors/getHostAppsMetadata.py"
 

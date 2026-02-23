@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-PROJ="/home/ciber/projects/SafeMountain/api"
-LOCK="/home/ciber/projects/SafeMountain/api/scripts/.batch.lock"
-LOGDIR="/home/ciber/projects/SafeMountain/api/scripts/out"
+PROJ="/home/ciber/projects/ePalSafer/api"
+LOCK="/home/ciber/projects/ePalSafer/api/scripts/.batch.lock"
+LOGDIR="/home/ciber/projects/ePalSafer/api/scripts/out"
 LOG="$LOGDIR/batch_cron.log"
 
 mkdir -p "$LOGDIR"
@@ -21,7 +21,7 @@ if /usr/bin/flock -n "$LOCK" bash -lc '
   echo "node=$(command -v node || true)"
 
   LIMIT=5 \
-  BASE_DIR="/home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks" \
+  BASE_DIR="/home/ciber/projects/ePalSafer/nfs/incibe/analisisAplicaciones/datasets/hostApks" \
   SUBDIR="social" \
   API="http://127.0.0.1:8020/api/analisis/mobsf/analizar" \
   CAT="social" \

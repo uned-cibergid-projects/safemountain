@@ -4,11 +4,11 @@
 # Script para lanzar getHostApks.py
 # ========================================
 
-PYTHON_PATH="/home/ciber/projects/SafeMountain/api/tools/appcollector/appcollector_env/bin/python3"
-SCRIPT_PATH="/home/ciber/projects/SafeMountain/api/tools/appcollector/sources/downloaders/getHostApks.py"
-PROJECT_ROOT="/home/ciber/projects/SafeMountain/api/tools/appcollector"
-CRON_LOG="/home/ciber/projects/SafeMountain/api/tools/appcollector/logs/cronHostApks.log"
-TEMP_LOG_FILE="/home/ciber/projects/SafeMountain/api/tools/appcollector/logs/temp_cronHostApks.log"
+PYTHON_PATH="/home/ciber/projects/ePalSafer/api/tools/appcollector/appcollector_env/bin/python3"
+SCRIPT_PATH="/home/ciber/projects/ePalSafer/api/tools/appcollector/sources/downloaders/getHostApks.py"
+PROJECT_ROOT="/home/ciber/projects/ePalSafer/api/tools/appcollector"
+CRON_LOG="/home/ciber/projects/ePalSafer/api/tools/appcollector/logs/cronHostApks.log"
+TEMP_LOG_FILE="/home/ciber/projects/ePalSafer/api/tools/appcollector/logs/temp_cronHostApks.log"
 
 mkdir -p "$(dirname "$CRON_LOG")"
 NOW=$(date "+%Y-%m-%d %H:%M:%S")

@@ -1,5 +1,5 @@
 [POST] com.americasbestpics
-  APK: /home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks/social/com.americasbestpics/abpv-america%E2%80%99s-best-pics-vids.apk
+  APK: /home/ciber/projects/ePalSafer/nfs/incibe/analisisAplicaciones/datasets/hostApks/social/com.americasbestpics/abpv-america%E2%80%99s-best-pics-vids.apk
   API: http://127.0.0.1:8020/api/analisis/mobsf/analizar
   CAT: social
 {"ok":true,"mensaje":"Archivo analizado correctamente","datos":{"category":"entertainment","package":"com.americasbestpics","name":"abpv-america%E2%80%99s-best-pics-vids.apk"}}

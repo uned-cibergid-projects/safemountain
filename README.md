@@ -1,6 +1,6 @@
-# 🏔️ SafeMountain - API
+# 🏔️ ePalSafer - API
 
-SafeMountain es una herramienta diseñada con el objetivo de detectar y evaluar todos los riesgos de privacidad asociados a una determinada aplicación móvil o página web.
+ePalSafer es una herramienta diseñada con el objetivo de detectar y evaluar todos los riesgos de privacidad asociados a una determinada aplicación móvil o página web.
 
 ## ✅ Requisitos previos
 
@@ -66,7 +66,7 @@ Estas bibliotecas se utilizan únicamente en el entorno de desarrollo para facil
 
 1. Clonar el repositorio:
 ```bash
-git clone http://185.179.105.169:8929/analisisapp/safemountain/api.git
+git clone http://185.179.105.169:8929/analisisapp/ePalSafer/api.git
 ```
 2. Instalar las dependencias:
 ```bash

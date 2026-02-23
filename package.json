@@ -1,7 +1,7 @@
 {
-  "name": "safemountain",
+  "name": "ePalSafer",
   "version": "1.0.1",
-  "description": "SafeMountain es una herramienta diseñada con el objetivo de detectar y evaluar todos los riesgos de privacidad asociados a una determinada aplicación móvil o página web.",
+  "description": "ePalSafer es una herramienta diseñada con el objetivo de detectar y evaluar todos los riesgos de privacidad asociados a una determinada aplicación móvil o página web.",
   "private": true,
   "main": "./app/bin/www",
   "author": "Intecca",

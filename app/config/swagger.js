@@ -7,9 +7,9 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'SafeMountain API',
+      title: 'ePalSafer API',
       version: '1.0.0',
-      description: 'SafeMountain es una herramienta diseñada con el objetivo de detectar y evaluar todos los riesgos de privacidad asociados a una determinada aplicación móvil o página web.',
+      description: 'ePalSafer es una herramienta diseñada con el objetivo de detectar y evaluar todos los riesgos de privacidad asociados a una determinada aplicación móvil o página web.',
       servers: [
         {
           url: 'http://localhost:8020',

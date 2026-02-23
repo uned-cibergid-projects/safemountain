@@ -22,7 +22,7 @@ const specs = require('./swagger')
 module.exports = (app) => {
   var app = express()
 
-  // --- Raíz del proyecto: .../SafeMountain/API
+  // --- Raíz del proyecto: .../ePalSafer/API
   const ROOT_DIR  = path.resolve(__dirname, '..', '..')
   const PUBLIC_DIR = path.join(ROOT_DIR, 'public')
   const LEGAL_DIR  = path.join(PUBLIC_DIR, 'legal')

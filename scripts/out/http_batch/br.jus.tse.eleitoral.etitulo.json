@@ -1,5 +1,5 @@
 [POST] br.jus.tse.eleitoral.etitulo
-  APK: /home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks/social/br.jus.tse.eleitoral.etitulo/e-t%C3%ADtulo.apk
+  APK: /home/ciber/projects/ePalSafer/nfs/incibe/analisisAplicaciones/datasets/hostApks/social/br.jus.tse.eleitoral.etitulo/e-t%C3%ADtulo.apk
   API: http://127.0.0.1:8020/api/analisis/mobsf/analizar
   CAT: social
 {"ok":true,"mensaje":"Archivo analizado correctamente","datos":{"category":"tools","package":"br.jus.tse.eleitoral.etitulo","name":"e-t%C3%ADtulo.apk"}}

@@ -26,7 +26,7 @@ const CONFIG = require('../config.js')[process.env.NODE_ENV || 'development']
 // --------------------------------------------------------- //
 //  CONSTANTES DE RUTAS (mantener en sync con despliegue NFS)//
 // --------------------------------------------------------- //
-const NFS_BASE           = '/home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets'
+const NFS_BASE           = '/home/ciber/projects/ePalSafer/nfs/incibe/analisisAplicaciones/datasets'
 const BASE_HOST_APKS     = path.join(NFS_BASE, 'hostApks')           // árbol completo de APKs
 const BASE_PROFILES      = path.join(NFS_BASE, 'profiles')           // raíz de perfiles
 const PROFILE_APK_DIR    = path.join(BASE_PROFILES, 'apks', 'social')

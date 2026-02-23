@@ -8,7 +8,7 @@ const { spawn } = require('child_process');
 const { Analisis } = require('./lib/db');
 
 // =================== CONFIG por entorno ===================
-const BASE_DIR      = process.env.BASE_DIR      || '/home/ciber/projects/SafeMountain/nfs/incibe/analisisAplicaciones/datasets/hostApks';
+const BASE_DIR      = process.env.BASE_DIR      || '/home/ciber/projects/ePalSafer/nfs/incibe/analisisAplicaciones/datasets/hostApks';
 const SUBDIR        = process.env.SUBDIR        || 'social';
 const API           = process.env.API           || 'http://127.0.0.1:8020/api/analisis/mobsf/analizar';
 const CAT           = process.env.CAT           || 'social';
