@@ -168,6 +168,7 @@ const usuarioSchema = new Schema(
     nombre: { type: String },
     username: { type: String, unique: true},
     email: { type: String, unique: true, required: true },
+    institution: { type: String },
     passwordHash: { type: String, required: true },
     rol: {
       type: String,
