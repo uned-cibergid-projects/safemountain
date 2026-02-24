@@ -165,8 +165,8 @@ const { usuariosConnection } = require('../mongoose')
  */
 const usuarioSchema = new Schema(
   {
-    nombre: { type: String, required: true },
-    username: { type: String, unique: true, required: true },
+    nombre: { type: String },
+    username: { type: String, unique: true},
     email: { type: String, unique: true, required: true },
     passwordHash: { type: String, required: true },
     rol: {
@@ -181,7 +181,6 @@ const usuarioSchema = new Schema(
     },
     fechaRegistro: { type: Date, default: Date.now },
     ultimaActividad: { type: Date, default: null },
-    telefono: { type: String, default: null },
     fotoPerfil: { type: String, default: null },
     biografia: { type: String, default: null },
     configuracion: {

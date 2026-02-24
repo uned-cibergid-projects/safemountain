@@ -5,8 +5,6 @@
  *  ▸ Sirve /locales/:lng/:ns.json   (compatible con i18next-http-backend)
  *  ▸ Valida los parámetros para evitar path-traversal
  *  ▸ Responde con Cache-Control (1 h) para aligerar tu servidor
- *
- * © Daniel – jul-2025
  */
 
 const path = require('path');
