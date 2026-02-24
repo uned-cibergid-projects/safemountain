@@ -68,3 +68,9 @@ thumbs.db
 bower_components
 
 
+# Binarios grandes / temporales
+*.apk
+*.jar
+tools/libloom/tmpHostApks/
+temp/
+tools/jadx/lib/
