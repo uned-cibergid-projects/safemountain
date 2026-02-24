@@ -152,12 +152,6 @@ function validarPasswordFuerte (password) {
  */
 async function crearUsuario (data) {
   try {
-    if (!data.nombre) {
-      throw new Error('El campo "nombre" es obligatorio.')
-    }
-    if (!data.username) {
-      throw new Error('El campo "username" es obligatorio.')
-    }
     if (!data.email) {
       throw new Error('El campo "email" es obligatorio.')
     }
