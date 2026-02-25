@@ -1,6 +1,12 @@
-# 🏔️ ePalSafer - API
+# 🏔️ SafeMountain — Framework de análisis de privacidad
 
-ePalSafer es una herramienta diseñada con el objetivo de detectar y evaluar todos los riesgos de privacidad asociados a una determinada aplicación móvil o página web.
+**SafeMountain** es nuestro framework para el análisis de problemas de privacidad en **aplicaciones móviles** y **redes sociales**. Su función es realizar análisis completos y generar resultados estructurados.
+
+Estos resultados son los que después consume **ePalSafer** para mostrarlos a las personas usuarias.
+
+# 🔐 ePalSafer — API
+
+**ePalSafer** es nuestra aplicación (sitio web y app móvil) que proporciona acceso a las personas usuarias a los análisis generados por SafeMountain, permitiendo consultar resultados de forma sencilla y centralizada.
 
 ## ✅ Requisitos previos
 
