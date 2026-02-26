@@ -1,5 +1,9 @@
 # 🏔️ SafeMountain — Framework de análisis de privacidad
 
+<p align="center">
+  <img src="docs/banda_logos_completa_2.png" alt="Financiado por la Unión Europea (NextGenerationEU), Gobierno de España / INCIBE, UNED, CSIC" width="100%">
+</p>
+
 **SafeMountain** es nuestro framework para el análisis de problemas de privacidad en **aplicaciones móviles** y **redes sociales**. Su función es realizar análisis completos y generar resultados estructurados.
 
 Estos resultados son los que después consume **ePalSafer** para mostrarlos a las personas usuarias.
@@ -176,3 +180,9 @@ La documentación generada automáticamente se encuentra en la carpeta `docs`. L
 Para poder acceder a ellas, se debe abrir cualquiera de sus archivos `.html` en un navegador. 
 
 Una versión estéticamente más atractiva de la documentación Swagger-JSDoc de las rutas se encuentra en `/api-docs/`.
+
+---
+
+## 🤝 Agradecimientos
+
+Los autores desean agradecer el apoyo del Gobierno de España (a través del Instituto Nacional de Ciberseguridad de España, INCIBE), con el Proyecto de Investigación Estratégico "Análisis de aplicaciones móviles desde la perspectiva de la protección de datos: Ciber-protección y Ciber-riesgos de la información ciudadana'', en el contexto del Plan de Recuperación, Transformación y Resiliencia financiado por la Unión Europea (NextGenerationEU/PRTR).
