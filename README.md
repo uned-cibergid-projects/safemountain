@@ -183,6 +183,6 @@ Una versión estéticamente más atractiva de la documentación Swagger-JSDoc de
 
 ---
 
-## 🤝 Agradecimientos
+## Agradecimientos
 
 Los autores desean agradecer el apoyo del Gobierno de España (a través del Instituto Nacional de Ciberseguridad de España, INCIBE), con el Proyecto de Investigación Estratégico "Análisis de aplicaciones móviles desde la perspectiva de la protección de datos: Ciber-protección y Ciber-riesgos de la información ciudadana'', en el contexto del Plan de Recuperación, Transformación y Resiliencia financiado por la Unión Europea (NextGenerationEU/PRTR).
